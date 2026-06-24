@@ -6,7 +6,6 @@
   <title>Ayoub Elazhari — Portfolio</title>
   <link rel="icon" type="image/png" href="iconlogo.png" />
 
-  <!-- SF Pro font via Apple CDN fallback stack -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -121,18 +120,23 @@
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--c-border);
     }
+    
+    /* Glowing Logo */
     .nav-logo-img {
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      border: 2px solid var(--c-gold-1);
+      border: 2px solid rgba(255,214,10,0.4);
       object-fit: cover;
       display: block;
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
     }
     .nav-logo-img:hover {
       transform: scale(1.05);
+      border-color: var(--c-gold-1);
+      box-shadow: 0 0 20px 4px rgba(255,214,10,0.5); /* Outer Glow */
     }
+    
     .nav-links {
       display: flex;
       gap: 36px;
@@ -145,16 +149,37 @@
       letter-spacing: 0.01em;
     }
     .nav-links a:hover { color: var(--c-text-1); }
-    .nav-cta {
+    
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    /* Base dark mode button */
+    .nav-btn {
       font-size: 14px;
       font-weight: 500;
       padding: 8px 18px;
       border-radius: 980px;
+      border: 1px solid rgba(255,214,10,0.5);
+      color: var(--c-gold-1);
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+    
+    /* Default hover style (stays mostly dark) */
+    .nav-btn:hover {
+      background: rgba(255,214,10,0.1);
+      transform: scale(1.02);
+    }
+
+    /* Fill hover style (switches to light mode/solid fill) */
+    .nav-btn.fill-hover:hover {
       background: var(--g-gold);
       color: #000;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(255,214,10,0.3);
     }
-    .nav-cta:hover { opacity: 0.88; transform: scale(1.02); }
 
     /* ─────────────────────────────────────────
        HERO
@@ -366,6 +391,8 @@
       border: 2px solid rgba(255,214,10,0.25);
       box-shadow: 0 0 0 8px rgba(255,214,10,0.05);
     }
+    
+    /* Interactive Avatar Ring */
     .about-avatar-ring {
       position: absolute;
       inset: -14px;
@@ -380,12 +407,23 @@
       background: var(--c-gold-1);
       border-radius: 50%;
       top: 50%; left: -4px;
-      transform: translateY(-50%);
+      transform: translateY(-50%) scale(1);
+      transition: all 0.3s ease;
     }
     @keyframes spin-slow {
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
     }
+    
+    /* Hover Effects for Avatar Ring */
+    .about-avatar-wrap:hover .about-avatar-ring {
+      animation-play-state: paused;
+    }
+    .about-avatar-wrap:hover .about-avatar-ring::before {
+      transform: translateY(-50%) scale(1.8);
+      box-shadow: 0 0 12px 2px var(--c-gold-1);
+    }
+
     .about-text .section-body + .section-body {
       margin-top: 16px;
     }
@@ -577,12 +615,19 @@
       position: relative;
     }
     .exp-item:last-child { border-bottom: 1px solid var(--c-border); }
+    
+    /* Interactive Dates */
     .exp-date {
       font-size: 13px;
       color: var(--c-text-3);
       padding-top: 4px;
       font-variant-numeric: tabular-nums;
+      transition: color 0.3s ease;
     }
+    .exp-item:hover .exp-date {
+      color: var(--c-gold-1);
+    }
+
     .exp-role {
       font-size: 18px;
       font-weight: 600;
@@ -628,7 +673,19 @@
       max-width: 640px;
       margin: 0 auto;
     }
-    .contact-inner .section-title { margin-bottom: 16px; }
+    
+    /* Interactive Contact Title */
+    .contact-inner .section-title { 
+      margin-bottom: 16px; 
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .contact-inner .section-title:hover {
+      color: var(--c-gold-1);
+      transform: scale(1.05);
+      text-shadow: 0 0 24px rgba(255,214,10,0.6);
+    }
+
     .contact-inner .section-body  { margin: 0 auto; text-align: center; }
     .contact-links {
       display: flex;
@@ -706,14 +763,12 @@
 
 <body>
 
-  <!-- ───── CURSOR ───── -->
   <div id="cursor-dot"></div>
   <div id="cursor-aura"></div>
 
-  <!-- ───── NAV ───── -->
   <nav id="nav">
     <a href="#">
-      <img src="ayoublinkedin.png" alt="Ayoub Elazhari" class="nav-logo-img" />
+      <img src="iconlogo2.png" alt="Ayoub Elazhari" class="nav-logo-img" />
     </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
@@ -722,10 +777,12 @@
       <li><a href="#creative">Experience</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="https://github.com/AelElz" target="_blank" class="nav-cta">GitHub ↗</a>
+    <div class="nav-actions">
+      <a href="https://drive.google.com/drive/folders/1Vl_DFiYwikwCEADdW0VSgKDCcGFCmEYV?usp=drive_link" target="_blank" class="nav-btn fill-hover">Creative Work ↗</a>
+      <a href="https://github.com/AelElz" target="_blank" class="nav-btn fill-hover">GitHub ↗</a>
+    </div>
   </nav>
 
-  <!-- ───── HERO ───── -->
   <section id="hero">
     <p class="hero-eyebrow">Software Engineer · Creative Director</p>
     <h1 class="hero-title">
@@ -745,7 +802,6 @@
     </div>
   </section>
 
-  <!-- ───── ABOUT ───── -->
   <section id="about">
     <div class="container">
       <div class="about-grid">
@@ -778,7 +834,6 @@
     </div>
   </section>
 
-  <!-- ───── SKILLS ───── -->
   <section id="skills">
     <div class="container">
       <div class="skills-header">
@@ -820,21 +875,13 @@
         <div class="skill-card reveal reveal-delay-2">
           <div class="skill-icon">🎨</div>
           <div class="skill-name">Visual Design</div>
-          <div class="skill-desc" style="margin-bottom: 16px;">Figma, Photoshop, Illustrator — brand direction, layout, and production design.</div>
-          
-          <!-- New Portfolio Button -->
-          <a href= "https://drive.google.com/drive/folders/1yFVNUhzNmBUlIfdT152jBWbFv-Z2HMVF?usp=drive_link" 
-             target="_blank" 
-             style="display: inline-block; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 980px; border: 1px solid rgba(255,214,10,0.3); color: var(--c-gold-1); transition: all 0.3s ease;">
-             View Creative Work ↗
-          </a>
+          <div class="skill-desc">Figma, Photoshop, Illustrator — brand direction, layout, and production design.</div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- ───── PROJECTS ───── -->
   <section id="projects">
     <div class="container">
       <div class="projects-header">
@@ -847,7 +894,6 @@
 
       <div class="projects-grid">
 
-        <!-- Featured -->
         <div class="project-card featured reveal">
           <span class="project-badge">Featured</span>
           <div class="project-name">Containerized Infrastructure Stack</div>
@@ -937,7 +983,6 @@
     </div>
   </section>
 
-  <!-- ───── EXPERIENCE ───── -->
   <section id="creative">
     <div class="container">
       <div class="creative-header">
@@ -999,7 +1044,6 @@
     </div>
   </section>
 
-  <!-- ───── CONTACT ───── -->
   <section id="contact">
     <div class="container">
       <div class="contact-inner">
@@ -1036,14 +1080,11 @@
     </div>
   </section>
 
-  <!-- ───── FOOTER ───── -->
   <footer>
     <p>© 2026 Ayoub Elazhari · Crafted with <span>care</span> and late-night coding sessions</p>
   </footer>
 
-  <!-- ───── SCRIPT ───── -->
-
-<script>
+  <script>
     // ── Cursor ──
     const dot  = document.getElementById('cursor-dot');
     const aura = document.getElementById('cursor-aura');
@@ -1062,8 +1103,8 @@
     }
     animateCursor();
 
-    // Hover state on interactive elements
-    const hoverEls = document.querySelectorAll('a, button, .skill-card, .project-card, .contact-link, .btn-primary, .btn-ghost, .nav-logo-img');
+    // Hover state on interactive elements (updated to include the new interactable areas!)
+    const hoverEls = document.querySelectorAll('a, button, .skill-card, .project-card, .contact-link, .btn-primary, .btn-ghost, .nav-logo-img, .nav-btn, .about-avatar-wrap, .exp-item, .contact-inner .section-title');
     
     hoverEls.forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
@@ -1072,7 +1113,6 @@
       // Ensure clicking an 'a' tag doesn't get blocked
       if (el.tagName === 'A') {
         el.addEventListener('click', (e) => {
-          // This allows the link to navigate naturally
           window.open(el.href, el.target || '_self');
         });
       }
@@ -1118,6 +1158,6 @@
 
     sections.forEach(s => sectionIO.observe(s));
   </script>
-  
+
 </body>
 </html>
