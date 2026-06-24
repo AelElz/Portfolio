@@ -1041,41 +1041,45 @@
     <p>© 2026 Ayoub Elazhari · Crafted with <span>care</span> and late-night coding sessions</p>
   </footer>
 
-  <!-- ───── SCRIPTS ───── -->
-  <script>
+  <!-- ───── SCRIPT ───── -->
+
+<script>
     // ── Cursor ──
     const dot  = document.getElementById('cursor-dot');
     const aura = document.getElementById('cursor-aura');
     let mx = 0, my = 0, ax = 0, ay = 0;
-    let raf;
 
     document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
     function animateCursor() {
-      // Dot snaps fast
       dot.style.left  = mx + 'px';
       dot.style.top   = my + 'px';
-      // Aura lerps
       ax += (mx - ax) * 0.14;
       ay += (my - ay) * 0.14;
       aura.style.left = ax + 'px';
       aura.style.top  = ay + 'px';
-      raf = requestAnimationFrame(animateCursor);
+      requestAnimationFrame(animateCursor);
     }
     animateCursor();
 
     // Hover state on interactive elements
     const hoverEls = document.querySelectorAll('a, button, .skill-card, .project-card, .contact-link, .btn-primary, .btn-ghost, .nav-logo-img');
+    
     hoverEls.forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      
+      // Ensure clicking an 'a' tag doesn't get blocked
+      if (el.tagName === 'A') {
+        el.addEventListener('click', (e) => {
+          // This allows the link to navigate naturally
+          window.open(el.href, el.target || '_self');
+        });
+      }
     });
 
     document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
     document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
-
-    document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; aura.style.opacity = '0'; });
-    document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; aura.style.opacity = '1'; });
 
     // ── Nav scroll ──
     const nav = document.getElementById('nav');
