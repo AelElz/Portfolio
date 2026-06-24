@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayoub Elazhari — Portfolio</title>
+
+  <!-- SF Pro font via Apple CDN fallback stack -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* ─────────────────────────────────────────
+       TOKENS — edit these to retheme everything
+    ───────────────────────────────────────── */
+    :root {
+      --c-bg:          #171717;
+      --c-surface:     #171717;
+      --c-surface-2:   #171717;
+      --c-border:      rgba(255,255,255,0.07);
+
+      /* Yellow-gold palette */
+      --c-gold-1:      #ffe979;   /* pure gold */
+      --c-gold-2:      #FF9F0A;   /* warm amber */
+      --c-gold-3:      #FFE066;   /* bright highlight */
+      --c-gold-4:      #B8860B;   /* deep gold */
+
+      /* Gradient shortcuts */
+      --g-gold:        linear-gradient(135deg, var(--c-gold-1), var(--c-gold-2));
+      --g-gold-soft:   linear-gradient(135deg, rgba(255,214,10,0.12), rgba(255,159,10,0.06));
+      --g-gold-text:   linear-gradient(135deg, var(--c-gold-3), var(--c-gold-1), var(--c-gold-2));
+
+      --c-text-1:      #f5f5f7;
+      --c-text-2:      #a1a1a6;
+      --c-text-3:      #6e6e73;
+
+      /* Typography */
+      --font:          -apple-system, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
+      --font-mono:     "SF Mono", "Fira Code", monospace;
+
+      /* Spacing */
+      --nav-h:         64px;
+      --section-gap:   140px;
+      --max-w:         980px;
+      --radius:        18px;
+      --radius-sm:     10px;
+
+      /* Cursor */
+      --cursor-size:   12px;
+      --cursor-aura:   40px;
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--c-bg);
+      color: var(--c-text-1);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─────────────────────────────────────────
+       CUSTOM CURSOR
+    ───────────────────────────────────────── */
+    #cursor-dot {
+      position: fixed;
+      width: var(--cursor-size);
+      height: var(--cursor-size);
+      background: var(--c-gold-1);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease, opacity 0.2s ease, background 0.2s ease;
+      mix-blend-mode: difference;
+    }
+    #cursor-aura {
+      position: fixed;
+      width: var(--cursor-aura);
+      height: var(--cursor-aura);
+      border: 1.5px solid rgba(255,214,10,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94),
+                  width 0.3s ease, height 0.3s ease,
+                  border-color 0.3s ease, opacity 0.2s ease;
+    }
+    body.cursor-hover #cursor-dot   { transform: translate(-50%,-50%) scale(0.4); }
+    body.cursor-hover #cursor-aura  {
+      width: 60px; height: 60px;
+      border-color: rgba(255,214,10,0.7);
+      background: rgba(255,214,10,0.05);
+    }
+    body.cursor-click #cursor-dot   { transform: translate(-50%,-50%) scale(1.6); }
+    body.cursor-click #cursor-aura  { width: 24px; height: 24px; opacity: 0.6; }
+
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      z-index: 100;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .nav-logo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--c-gold-1);
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .nav-logo-img:hover {
+      transform: scale(1.05);
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--c-text-2);
+      transition: color 0.2s ease;
+      letter-spacing: 0.01em;
+    }
+    .nav-links a:hover { color: var(--c-text-1); }
+    .nav-cta {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 18px;
+      border-radius: 980px;
+      background: var(--g-gold);
+      color: #000;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .nav-cta:hover { opacity: 0.88; transform: scale(1.02); }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient glow behind hero */
+    #hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,214,10,0.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: glow-pulse 4s ease-in-out infinite;
+    }
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+      50%       { opacity: 1;   transform: translate(-50%,-50%) scale(1.12); }
+    }
+
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c-gold-1);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fade-up 0.7s ease forwards 0.2s;
+    }
+    .hero-title {
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.04;
+      color: var(--c-text-1);
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fade-up 0.8s ease forwards 0.4s;
+    }
+    .hero-title .gold {
+      background: var(--g-gold-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(18px, 2.5vw, 24px);
+      font-weight: 400;
+      color: var(--c-text-2);
+      max-width: 560px;
+      margin: 18px auto 0;
+      line-height: 1.55;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fade-up 0.8s ease forwards 0.6s;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-top: 44px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fade-up 0.8s ease forwards 0.8s;
+    }
+    .btn-primary {
+      padding: 14px 28px;
+      border-radius: 980px;
+      background: var(--g-gold);
+      color: #000;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: scale(1.03); }
+    .btn-ghost {
+      padding: 14px 28px;
+      border-radius: 980px;
+      border: 1px solid rgba(255,214,10,0.35);
+      color: var(--c-gold-1);
+      font-size: 16px;
+      font-weight: 500;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover {
+      background: rgba(255,214,10,0.08);
+      border-color: rgba(255,214,10,0.6);
+      transform: scale(1.03);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      animation: fade-up 0.8s ease forwards 1.2s;
+    }
+    .scroll-hint span {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-text-3);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--c-gold-1), transparent);
+      animation: scroll-drop 1.6s ease-in-out infinite;
+    }
+    @keyframes scroll-drop {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ─────────────────────────────────────────
+       SHARED SECTION LAYOUT
+    ───────────────────────────────────────── */
+    section {
+      padding: var(--section-gap) 24px;
+    }
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-gold-1);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--c-text-1);
+      margin-bottom: 20px;
+    }
+    .section-body {
+      font-size: 17px;
+      color: var(--c-text-2);
+      line-height: 1.65;
+      max-width: 600px;
+    }
+
+    /* Scroll-reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─────────────────────────────────────────
+       ABOUT
+    ───────────────────────────────────────── */
+    #about {
+      background: var(--c-surface);
+      border-top: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-avatar-wrap {
+      position: relative;
+      width: fit-content;
+    }
+    .about-avatar {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255,214,10,0.25);
+      box-shadow: 0 0 0 8px rgba(255,214,10,0.05);
+    }
+    .about-avatar-ring {
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,214,10,0.2);
+      animation: spin-slow 12s linear infinite;
+    }
+    .about-avatar-ring::before {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      background: var(--c-gold-1);
+      border-radius: 50%;
+      top: 50%; left: -4px;
+      transform: translateY(-50%);
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .about-text .section-body + .section-body {
+      margin-top: 16px;
+    }
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+    .tag {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 980px;
+      background: var(--g-gold-soft);
+      border: 1px solid rgba(255,214,10,0.2);
+      color: var(--c-gold-1);
+    }
+
+    /* ─────────────────────────────────────────
+       SKILLS
+    ───────────────────────────────────────── */
+    #skills { }
+    .skills-header { margin-bottom: 60px; }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .skill-card {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--g-gold-soft);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .skill-card:hover {
+      border-color: rgba(255,214,10,0.35);
+      transform: translateY(-3px);
+    }
+    .skill-card:hover::before { opacity: 1; }
+    .skill-icon {
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+    .skill-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--c-text-1);
+      margin-bottom: 6px;
+      position: relative;
+    }
+    .skill-desc {
+      font-size: 13px;
+      color: var(--c-text-3);
+      line-height: 1.5;
+      position: relative;
+    }
+
+    /* ─────────────────────────────────────────
+       PROJECTS
+    ───────────────────────────────────────── */
+    #projects {
+      background: var(--c-surface);
+      border-top: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .projects-header { margin-bottom: 60px; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .project-card {
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--g-gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover {
+      border-color: rgba(255,214,10,0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .project-card:hover::after { transform: scaleX(1); }
+    .project-card.featured {
+      grid-column: span 2;
+      background: var(--c-surface-2);
+      border-color: rgba(255,214,10,0.15);
+    }
+    .project-badge {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-gold-1);
+      background: rgba(255,214,10,0.1);
+      border: 1px solid rgba(255,214,10,0.2);
+      padding: 4px 10px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+    .project-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--c-text-1);
+      letter-spacing: -0.02em;
+    }
+    .project-desc {
+      font-size: 15px;
+      color: var(--c-text-2);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .project-lang {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--c-text-3);
+    }
+    .lang-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+    .lang-c     { background: #555599; }
+    .lang-cpp   { background: #f34b7d; }
+    .lang-docker { background: #384d54; }
+    .lang-bash  { background: #89e051; }
+    .project-link {
+      font-size: 13px;
+      color: var(--c-gold-1);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap 0.2s ease;
+    }
+    .project-link:hover { gap: 9px; }
+    .project-link svg { width: 12px; height: 12px; }
+
+    /* ─────────────────────────────────────────
+       EXPERIENCE / CREATIVE
+    ───────────────────────────────────────── */
+    #creative { }
+    .creative-header { margin-bottom: 60px; }
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 40px;
+      padding: 32px 0;
+      border-top: 1px solid var(--c-border);
+      position: relative;
+    }
+    .exp-item:last-child { border-bottom: 1px solid var(--c-border); }
+    .exp-date {
+      font-size: 13px;
+      color: var(--c-text-3);
+      padding-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .exp-role {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--c-text-1);
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+    .exp-company {
+      font-size: 14px;
+      color: var(--c-gold-1);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .exp-body {
+      font-size: 15px;
+      color: var(--c-text-2);
+      line-height: 1.6;
+    }
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .exp-tag {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: var(--c-surface-2);
+      color: var(--c-text-3);
+      border: 1px solid var(--c-border);
+    }
+
+    /* ─────────────────────────────────────────
+       CONTACT
+    ───────────────────────────────────────── */
+    #contact {
+      background: var(--c-surface);
+      border-top: 1px solid var(--c-border);
+    }
+    .contact-inner {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .contact-inner .section-title { margin-bottom: 16px; }
+    .contact-inner .section-body  { margin: 0 auto; text-align: center; }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 44px;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--c-border);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--c-text-1);
+      background: var(--c-bg);
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+    .contact-link:hover {
+      border-color: rgba(255,214,10,0.4);
+      background: rgba(255,214,10,0.04);
+      transform: translateY(-2px);
+    }
+    .contact-link svg {
+      width: 18px; height: 18px;
+      fill: var(--c-gold-1);
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer {
+      padding: 32px 24px;
+      text-align: center;
+      border-top: 1px solid var(--c-border);
+    }
+    footer p {
+      font-size: 13px;
+      color: var(--c-text-3);
+    }
+    footer span { color: var(--c-gold-1); }
+
+    /* ─────────────────────────────────────────
+       ANIMATIONS
+    ───────────────────────────────────────── */
+    @keyframes fade-up {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-column: span 1; }
+      .exp-item { grid-template-columns: 1fr; gap: 6px; }
+      body { cursor: auto; }
+      #cursor-dot, #cursor-aura { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ───── CURSOR ───── -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-aura"></div>
+
+  <!-- ───── NAV ───── -->
+  <nav id="nav">
+    <a href="#">
+      <img src="ayoublinkedin.png" alt="Ayoub Elazhari" class="nav-logo-img" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#creative">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://github.com/AelElz" target="_blank" class="nav-cta">GitHub ↗</a>
+  </nav>
+
+  <!-- ───── HERO ───── -->
+  <section id="hero">
+    <p class="hero-eyebrow">Software Engineer · Creative Director</p>
+    <h1 class="hero-title">
+      Building systems.<br>
+      <span class="gold">Crafting experiences.</span>
+    </h1>
+    <p class="hero-sub">
+      42 Network student at 1337 Coding School — low-level systems, DevOps infrastructure, and 5+ years in creative direction.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-ghost">Get in touch</a>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ───── ABOUT ───── -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-avatar-wrap reveal">
+          <img
+            class="about-avatar"
+            src="https://avatars.githubusercontent.com/u/155688529?v=4"
+            alt="Ayoub Elazhari"
+          />
+          <div class="about-avatar-ring"></div>
+        </div>
+        <div class="about-text">
+          <p class="section-label reveal">About</p>
+          <h2 class="section-title reveal reveal-delay-1">Ayoub Elazhari</h2>
+          <p class="section-body reveal reveal-delay-2">
+            I'm a software engineering student at <strong style="color:var(--c-text-1)">1337 Coding School</strong> (42 Network, Morocco), building low-level systems and DevOps infrastructure the hard way — with no hand-holding and no limits.
+          </p>
+          <p class="section-body reveal reveal-delay-3" style="margin-top:14px;">
+            Alongside code, I bring 5+ years of creative industry experience — video editing, motion graphics, and creative direction for clients including <strong style="color:var(--c-text-1)">OCP Group, Hilton Hotels,</strong> and <strong style="color:var(--c-text-1)">Cleverlytics</strong>. Two worlds, one mindset.
+          </p>
+          <div class="about-tags reveal reveal-delay-4">
+            <span class="tag">1337 / 42 Network</span>
+            <span class="tag">Morocco</span>
+            <span class="tag">Systems Programmer</span>
+            <span class="tag">DevOps</span>
+            <span class="tag">Creative Director</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── SKILLS ───── -->
+  <section id="skills">
+    <div class="container">
+      <div class="skills-header">
+        <p class="section-label reveal">Skills</p>
+        <h2 class="section-title reveal reveal-delay-1">What I work with</h2>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-card reveal reveal-delay-1">
+          <div class="skill-icon">⚙️</div>
+          <div class="skill-name">C / C++</div>
+          <div class="skill-desc">Systems programming, memory management, low-level algorithms, and POSIX APIs.</div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-2">
+          <div class="skill-icon">🐳</div>
+          <div class="skill-name">Docker & DevOps</div>
+          <div class="skill-desc">Containerized infrastructure, Docker Compose, Nginx reverse proxies, and CI/CD pipelines.</div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-3">
+          <div class="skill-icon">🐚</div>
+          <div class="skill-name">Bash / Shell</div>
+          <div class="skill-desc">Script automation, Unix internals, and OS-level system administration on Linux & macOS.</div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-4">
+          <div class="skill-icon">🔧</div>
+          <div class="skill-name">Git & Toolchain</div>
+          <div class="skill-desc">Git, Make, GCC, Valgrind, Neovim — disciplined engineering workflow from the terminal.</div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-1">
+          <div class="skill-icon">🎬</div>
+          <div class="skill-name">Motion Design</div>
+          <div class="skill-desc">After Effects, Premiere Pro, DaVinci Resolve — animation, compositing, and editorial.</div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-2">
+          <div class="skill-icon">🎨</div>
+          <div class="skill-name">Visual Design</div>
+          <div class="skill-desc">Figma, Photoshop, Illustrator — brand direction, layout, and production design.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── PROJECTS ───── -->
+  <section id="projects">
+    <div class="container">
+      <div class="projects-header">
+        <p class="section-label reveal">Projects</p>
+        <h2 class="section-title reveal reveal-delay-1">What I've built</h2>
+        <p class="section-body reveal reveal-delay-2">
+          Every project from the 42 curriculum is built from scratch — no frameworks, no shortcuts.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- Featured -->
+        <div class="project-card featured reveal">
+          <span class="project-badge">Featured</span>
+          <div class="project-name">Containerized Infrastructure Stack</div>
+          <div class="project-desc">
+            Full containerized web infrastructure built with Docker Compose, featuring secure service isolation, reverse proxying with NGINX, and persistent database architecture. This is the Inception project — complex multi-service orchestration from the ground up.
+          </div>
+          <div class="project-footer">
+            <div class="project-lang">
+              <span class="lang-dot lang-docker"></span>Dockerfile
+            </div>
+            <a href="https://github.com/AelElz/containerized-infrastructure-stack" target="_blank" class="project-link">
+              View on GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-1">
+          <span class="project-badge">Systems</span>
+          <div class="project-name">Runtime Concurrency System</div>
+          <div class="project-desc">
+            Low-level concurrency engine in C demonstrating thread synchronization, shared resource control, and safe parallel execution using pthreads.
+          </div>
+          <div class="project-footer">
+            <div class="project-lang">
+              <span class="lang-dot lang-c"></span>C
+            </div>
+            <a href="https://github.com/AelElz/runtime-concurrency-system" target="_blank" class="project-link">
+              View on GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-2">
+          <span class="project-badge">Graphics</span>
+          <div class="project-name">Raycasting Engine</div>
+          <div class="project-desc">
+            3D raycasting renderer inspired by Wolfenstein 3D, written in C. Full game engine with texture mapping, collision detection, and real-time rendering.
+          </div>
+          <div class="project-footer">
+            <div class="project-lang">
+              <span class="lang-dot lang-c"></span>C
+            </div>
+            <a href="https://github.com/AelElz/raycasting-engine" target="_blank" class="project-link">
+              View on GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-1">
+          <span class="project-badge">Security</span>
+          <div class="project-name">Debian Server Hardening</div>
+          <div class="project-desc">
+            Production-grade Debian VM hardening — SSH config, firewall setup, user management, and automated security monitoring.
+          </div>
+          <div class="project-footer">
+            <div class="project-lang">
+              <span class="lang-dot lang-bash"></span>Shell
+            </div>
+            <a href="https://github.com/AelElz/debian-server-hardening" target="_blank" class="project-link">
+              View on GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-2">
+          <span class="project-badge">Shell</span>
+          <div class="project-name">Custom Unix Shell</div>
+          <div class="project-desc">
+            Fully functional Unix shell built in C from scratch — parsing, execution, pipes, redirections, and all builtins. The Minishell project.
+          </div>
+          <div class="project-footer">
+            <div class="project-lang">
+              <span class="lang-dot lang-c"></span>C
+            </div>
+            <a href="https://github.com/AelElz" target="_blank" class="project-link">
+              View on GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── EXPERIENCE ───── -->
+  <section id="creative">
+    <div class="container">
+      <div class="creative-header">
+        <p class="section-label reveal">Experience</p>
+        <h2 class="section-title reveal reveal-delay-1">Two tracks, one mind</h2>
+        <p class="section-body reveal reveal-delay-2">
+          Engineering and creative work aren't separate careers — they're the same obsession with craft.
+        </p>
+      </div>
+
+      <div class="exp-list">
+
+        <div class="exp-item reveal">
+          <div class="exp-date">2024 — Present</div>
+          <div>
+            <div class="exp-role">Software Engineering Student</div>
+            <div class="exp-company">1337 Coding School · 42 Network</div>
+            <div class="exp-body">Building OS-level projects in C/C++ with zero external libraries. Completed Minishell, Philosophers, Cub3D, Push_swap, Minitalk, Inception, and more.</div>
+            <div class="exp-tags">
+              <span class="exp-tag">C</span>
+              <span class="exp-tag">C++</span>
+              <span class="exp-tag">Docker</span>
+              <span class="exp-tag">Nginx</span>
+              <span class="exp-tag">Linux</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal reveal-delay-1">
+          <div class="exp-date">2024 — Present</div>
+          <div>
+            <div class="exp-role">Freelance Video Editor & Creative Director</div>
+            <div class="exp-company">Cleverlytics · OCP Group · Hilton Hotels</div>
+            <div class="exp-body">Motion graphics, animated explainer videos, and creative direction for institutional and enterprise clients across Morocco. Full production pipeline from script to delivery.</div>
+            <div class="exp-tags">
+              <span class="exp-tag">After Effects</span>
+              <span class="exp-tag">Premiere Pro</span>
+              <span class="exp-tag">Figma</span>
+              <span class="exp-tag">Motion Design</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal reveal-delay-2">
+          <div class="exp-date">2024 — 2026</div>
+          <div>
+            <div class="exp-role">Videographer & Media Producer</div>
+            <div class="exp-company">UM6P · SOLE Organization · Language Center</div>
+            <div class="exp-body">Produced institutional video content, event coverage, and promotional campaigns for Mohammed VI Polytechnic University and its organizations.</div>
+            <div class="exp-tags">
+              <span class="exp-tag">Videography</span>
+              <span class="exp-tag">Sound Design</span>
+              <span class="exp-tag">Adobe Editing Programs</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── CONTACT ───── -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <p class="section-label reveal">Contact</p>
+        <h2 class="section-title reveal reveal-delay-1">Let's build something.</h2>
+        <p class="section-body reveal reveal-delay-2">
+          Open to internships, freelance projects, and interesting collaborations — in software engineering, creative work, or both.
+        </p>
+        <div class="contact-links reveal reveal-delay-3">
+
+          <a href="https://github.com/AelElz" target="_blank" class="contact-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            GitHub
+          </a>
+
+          <a href="https://www.linkedin.com/in/ayoub-elazhari-958bb1233" target="_blank" class="contact-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            LinkedIn
+          </a>
+
+          <a href="mailto:ayoub2elazhari@gmail.com" class="contact-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+            </svg>
+            Email
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── FOOTER ───── -->
+  <footer>
+    <p>© 2026 Ayoub Elazhari · Crafted with <span>care</span> and late-night coding sessions</p>
+  </footer>
+
+  <!-- ───── SCRIPTS ───── -->
+  <script>
+    // ── Cursor ──
+    const dot  = document.getElementById('cursor-dot');
+    const aura = document.getElementById('cursor-aura');
+    let mx = 0, my = 0, ax = 0, ay = 0;
+    let raf;
+
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    function animateCursor() {
+      // Dot snaps fast
+      dot.style.left  = mx + 'px';
+      dot.style.top   = my + 'px';
+      // Aura lerps
+      ax += (mx - ax) * 0.14;
+      ay += (my - ay) * 0.14;
+      aura.style.left = ax + 'px';
+      aura.style.top  = ay + 'px';
+      raf = requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover state on interactive elements
+    const hoverEls = document.querySelectorAll('a, button, .skill-card, .project-card, .contact-link, .btn-primary, .btn-ghost, .nav-logo-img');
+    hoverEls.forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
+    document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
+
+    document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; aura.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; aura.style.opacity = '1'; });
+
+    // ── Nav scroll ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    reveals.forEach(el => io.observe(el));
+
+    // ── Smooth active nav links ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const sectionIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => {
+            a.style.color = a.getAttribute('href') === '#' + e.target.id
+              ? 'var(--c-text-1)'
+              : '';
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+
+    sections.forEach(s => sectionIO.observe(s));
+  </script>
+
+</body>
+</html>
