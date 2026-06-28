@@ -26,7 +26,7 @@ const RESPONSES = [
     reply: "<strong>1337 Coding School</strong> (42 Network), a peer-learning, project-based school with no teachers and no hand-holding. Projects completed: Minishell, Philosophers, Cub3D, Push_swap, Minitalk, Inception, and more.",
   },
   {
-    keys: ['intern', 'internship', 'hire', 'hiring', 'available', 'opportunity', 'job'],
+    keys: ['intern', 'internship','Intern', 'Internship', 'hire', 'hiring', 'Hire', 'Hiring', 'available', 'opportunity', 'job'],
     reply: "Ayoub is actively looking for a <strong>software engineering internship</strong>, Fullstack, backend or systems work. Reach him directly at ayoub2elazhari@gmail.com or via LinkedIn.",
   },
   {
