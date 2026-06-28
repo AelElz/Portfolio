@@ -4,15 +4,16 @@
    ============================================================ */
 
 /* ── Wrapper ── */
-#chatbot {
+#chatbot
+{
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 60px;
+  right: 50px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* ─────────────────────────────────────────
@@ -20,8 +21,8 @@
 ───────────────────────────────────────── */
 #chat-trigger {
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background: #1e1e1e;
   border: 1.5px solid rgba(255, 214, 10, 0.45);
