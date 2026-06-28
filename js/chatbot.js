@@ -6,50 +6,50 @@
 /* ── Response map ── */
 const RESPONSES = [
   {
-    keys: ['hello', 'hi', 'hey', 'sup', 'salut', 'bonjour'],
+    keys: ['hello', 'hi', 'hey', 'sup', 'salut', 'bonjour', 'wech', 'yo', 'Yo', 'Hello', 'Hi', 'Hey'],
     reply: "Hey 👋 I'm a bot version of Ayoub's portfolio. Ask me about his projects, skills, experience, or how to get in touch.",
   },
   {
     keys: ['project', 'built', 'work', 'inception', 'docker', 'container'],
-    reply: "Ayoub's featured project is <strong>Inception</strong> — a full Docker Compose infrastructure with NGINX reverse proxy and persistent databases, built from scratch at 1337. He also built a raycasting engine (Wolfenstein-style), a custom Unix shell, and a thread-safe concurrency system in C.",
+    reply: "Ayoub's featured project is <strong>Inception</strong>, a full Docker Compose infrastructure with NGINX reverse proxy and persistent databases, built from scratch at 1337. He also built a raycasting engine (Wolfenstein-style), a custom Unix shell, and a thread-safe concurrency system in C.",
   },
   {
     keys: ['skill', 'stack', 'language', 'tech', 'use', 'know'],
-    reply: "Core stack: <strong>C, C++, Docker, Bash, Nginx</strong>. On the creative side: After Effects, Premiere Pro, Figma, DaVinci Resolve. He's most fluent in low-level systems and DevOps — the stuff most devs avoid.",
+    reply: "Core stack: <strong>C, C++, Docker, Bash, Nginx</strong>. On the creative side: After Effects, Premiere Pro, Figma, DaVinci Resolve. He's most fluent in low-level systems and DevOps, the stuff most devs avoid.",
   },
   {
     keys: ['experience', 'job', 'work', 'freelance', 'client', 'ocp', 'hilton', 'cleverlytics', 'um6p'],
-    reply: "Ayoub does freelance creative direction for <strong>OCP Group, Hilton Hotels,</strong> and <strong>Cleverlytics</strong> — motion graphics and full-production video. He also produced institutional media for <strong>UM6P</strong> (Mohammed VI Polytechnic University).",
+    reply: "Ayoub does freelance creative direction for <strong>OCP Group, Hilton Hotels,</strong> and <strong>Cleverlytics</strong>, motion graphics and full-production video. He also produced institutional media for <strong>UM6P</strong> (Mohammed VI Polytechnic University).",
   },
   {
     keys: ['school', '1337', '42', 'student', 'cursus', 'curriculum'],
-    reply: "<strong>1337 Coding School</strong> (42 Network, Morocco) — a peer-learning, project-based school with no teachers and no hand-holding. Projects completed: Minishell, Philosophers, Cub3D, Push_swap, Minitalk, Inception, and more.",
+    reply: "<strong>1337 Coding School</strong> (42 Network), a peer-learning, project-based school with no teachers and no hand-holding. Projects completed: Minishell, Philosophers, Cub3D, Push_swap, Minitalk, Inception, and more.",
   },
   {
-    keys: ['intern', 'internship', 'hire', 'hiring', 'available', 'opportunity'],
-    reply: "Ayoub is actively looking for a <strong>software engineering internship</strong> — backend, DevOps, or systems work. Reach him directly at ayoub2elazhari@gmail.com or via LinkedIn.",
+    keys: ['intern', 'internship', 'hire', 'hiring', 'available', 'opportunity', 'job'],
+    reply: "Ayoub is actively looking for a <strong>software engineering internship</strong>, Fullstack, backend or systems work. Reach him directly at ayoub2elazhari@gmail.com or via LinkedIn.",
   },
   {
     keys: ['contact', 'email', 'reach', 'linkedin', 'github', 'touch', 'connect'],
     reply: "Best ways to reach Ayoub:<br>📧 ayoub2elazhari@gmail.com<br>💼 <a href='https://www.linkedin.com/in/ayoub-elazhari-958bb1233' target='_blank' style='color:var(--c-gold-1)'>LinkedIn</a><br>🐙 <a href='https://github.com/AelElz' target='_blank' style='color:var(--c-gold-1)'>GitHub</a>",
   },
   {
-    keys: ['creative', 'video', 'motion', 'design', 'edit', 'director', 'film'],
-    reply: "5+ years in creative production — video editing, motion graphics, sound design. Check his creative reel via the <strong>Creative Work ↗</strong> link at the top of the page.",
+    keys: ['creative', 'video', 'motion', 'design', 'edit', 'director', 'film', 'art direction', 'editing'],
+    reply: "5+ years in creative production, video editing, motion graphics, sound design. Check his creative reel via the <strong>Creative Work ↗</strong> link at the top of the page.",
   },
   {
     keys: ['morocco', 'casablanca', 'location', 'based', 'where'],
-    reply: "Based in Morocco — currently between Casablanca and Ben Guerir (1337 campus).",
+    reply: "Based in Morocco, currently at Casablanca.",
   },
   {
     keys: ['who', 'about', 'yourself', 'tell me', 'ayoub'],
-    reply: "Ayoub Elazhari — software engineering student at 1337 (42 Network) and freelance creative director. He builds OS-level systems in C/C++ by day and motion graphics for enterprise clients by night. Two tracks, one mindset.",
+    reply: "Ayoub Elazhari, software engineering student at 1337 (42 Network) and freelance creative director. He builds OS-level systems in C/C++ by day and motion graphics for enterprise clients by night. Two tracks, one mindset.",
   },
 ];
 
-const FALLBACK = "I'm not sure about that one — for anything specific, reach Ayoub directly at ayoub2elazhari@gmail.com. He's quick to reply.";
+const FALLBACK = "I'm not sure about that one, for anything specific, reach Ayoub directly at ayoub2elazhari@gmail.com. He's quick to reply.";
 
-const GREETING = "Hey, I'm Ayoub's portfolio bot. What do you want to know? 👇";
+const GREETING = "Hey, I'm Ayoub's bot. What do you want to know? 👇";
 
 const CHIPS = [
   { label: 'Projects', query: 'projects' },
