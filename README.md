@@ -12,7 +12,6 @@ portfolio/
 ├── index.html              # Entry point — all sections live here
 │
 ├── assets/                 # Images & icons (not tracked in repo)
-│   ├── iconlogo.png        # Favicon
 │   └── iconlogo2.png       # Nav logo
 │
 ├── css/

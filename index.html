@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ayoub Elazhari — Portfolio</title>
+  <title>Ayoub Elazhari Portfolio</title>
   <link rel="icon" type="image/png" href="iconlogo2.png" />
 
   <!-- Fonts -->
@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="css/projects.css" />
   <link rel="stylesheet" href="css/experience.css" />
   <link rel="stylesheet" href="css/contact.css" />
+  <link rel="stylesheet" href="css/chatbot.css" />
   <link rel="stylesheet" href="css/animations.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
@@ -59,7 +60,7 @@
       <span class="gold">Crafting experiences.</span>
     </h1>
     <p class="hero-sub">
-      42 Network student at 1337 Coding School — low-level systems, DevOps infrastructure, and 5+ years in creative direction.
+      1337 coding school student from 42 network, low level systems, DevOps infrastructure, and 4+ years in creative direction.
     </p>
     <div class="hero-actions">
       <a href="#projects" class="btn-primary">View Projects</a>
@@ -87,10 +88,10 @@
           <p class="section-label reveal">About</p>
           <h2 class="section-title reveal reveal-delay-1">Ayoub Elazhari</h2>
           <p class="section-body reveal reveal-delay-2">
-            I'm a software engineering student at <strong>1337 Coding School</strong> (42 Network, Morocco), building low-level systems and DevOps infrastructure the hard way — with no hand-holding and no limits.
+            I'm a software engineering student at <strong>1337 Coding School</strong> (42 Network, Morocco), building low level systems and DevOps infrastructure the hard way, with no hand-holding and no limits.
           </p>
           <p class="section-body reveal reveal-delay-3">
-            Alongside code, I bring 5+ years of creative industry experience — video editing, motion graphics, and creative direction for clients including <strong>OCP Group, Hilton Hotels,</strong> and <strong>Cleverlytics</strong>. Two worlds, one mindset.
+            Alongside code, I bring 4+ years of creative industry experience, video editing, motion graphics, and creative direction for clients including <strong>OCP Group, Hilton Hotels,</strong> and <strong>Cleverlytics</strong>. Two worlds, one mindset.
           </p>
           <div class="about-tags reveal reveal-delay-4">
             <span class="tag">1337 / 42 Network</span>
@@ -115,7 +116,7 @@
         <div class="skill-card reveal reveal-delay-1">
           <div class="skill-icon">⚙️</div>
           <div class="skill-name">C / C++</div>
-          <div class="skill-desc">Systems programming, memory management, low-level algorithms, and POSIX APIs.</div>
+          <div class="skill-desc">Systems programming, memory management, low level algorithms, and POSIX APIs.</div>
         </div>
         <div class="skill-card reveal reveal-delay-2">
           <div class="skill-icon">🐳</div>
@@ -130,17 +131,17 @@
         <div class="skill-card reveal reveal-delay-4">
           <div class="skill-icon">🔧</div>
           <div class="skill-name">Git & Toolchain</div>
-          <div class="skill-desc">Git, Make, GCC, Valgrind, Neovim — disciplined engineering workflow from the terminal.</div>
+          <div class="skill-desc">Git, Make, GCC, Valgrind, Neovim, disciplined engineering workflow from the terminal.</div>
         </div>
         <div class="skill-card reveal reveal-delay-1">
           <div class="skill-icon">🎬</div>
           <div class="skill-name">Motion Design</div>
-          <div class="skill-desc">After Effects, Premiere Pro, DaVinci Resolve — animation, compositing, and editorial.</div>
+          <div class="skill-desc">After Effects, Premiere Pro, animation, compositing, and storytelling.</div>
         </div>
         <div class="skill-card reveal reveal-delay-2">
           <div class="skill-icon">🎨</div>
           <div class="skill-name">Visual Design</div>
-          <div class="skill-desc">Figma, Photoshop, Illustrator — brand direction, layout, and production design.</div>
+          <div class="skill-desc">Figma, Photoshop, brand direction, layout, and production design.</div>
         </div>
       </div>
     </div>
@@ -153,7 +154,7 @@
         <p class="section-label reveal">Projects</p>
         <h2 class="section-title reveal reveal-delay-1">What I've built</h2>
         <p class="section-body reveal reveal-delay-2">
-          Every project from the 42 curriculum is built from scratch — no frameworks, no shortcuts.
+          Every project from the 1337 curriculum is built from scratch, no frameworks, no shortcuts.
         </p>
       </div>
       <div class="projects-grid">
@@ -246,7 +247,7 @@
         <p class="section-label reveal">Experience</p>
         <h2 class="section-title reveal reveal-delay-1">Two tracks, one mind</h2>
         <p class="section-body reveal reveal-delay-2">
-          Engineering and creative work aren't separate careers — they're the same obsession with craft.
+          Engineering and creative work aren't separate careers, they're the same obsession with craft.
         </p>
       </div>
       <div class="exp-list">
@@ -307,7 +308,7 @@
         <p class="section-label reveal">Contact</p>
         <h2 class="section-title contact-title reveal reveal-delay-1">Let's build something.</h2>
         <p class="section-body reveal reveal-delay-2">
-          Open to internships, freelance projects, and interesting collaborations — in software engineering, creative work, or both.
+          Open to internships, freelance projects, and interesting collaborations, in software engineering, creative work, or both.
         </p>
         <div class="contact-links reveal reveal-delay-3">
 
@@ -342,9 +343,61 @@
     <p>© 2026 Ayoub Elazhari · Crafted with <span>care</span> and late-night coding sessions</p>
   </footer>
 
+  <!-- Chatbot widget -->
+  <div id="chatbot">
+    <!-- Panel -->
+    <div id="chat-panel" role="dialog" aria-label="Chat with Ayoub's portfolio bot">
+
+      <div class="chat-header">
+        <img
+          class="chat-header-avatar"
+          src="https://avatars.githubusercontent.com/u/155688529?v=4"
+          alt="Ayoub"
+        />
+        <div class="chat-header-info">
+          <div class="chat-header-name">Ayoub · Portfolio Bot</div>
+          <div class="chat-header-status">
+            <span class="status-dot"></span>
+            <span>Usually responds instantly</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chat-messages"></div>
+
+      <div class="chat-chips" id="chat-chips"></div>
+
+      <div class="chat-input-row">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Ask something…"
+          autocomplete="off"
+          maxlength="200"
+        />
+        <button id="chat-send" aria-label="Send message">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Trigger button -->
+    <button id="chat-trigger" aria-label="Open chat">
+      <div class="chat-orbit"></div>
+      <div class="chat-pulse"></div>
+      <div class="chat-notify"></div>
+      <span class="chat-trigger-icon">&gt;_</span>
+      <span class="chat-close-icon">×</span>
+    </button>
+  </div>
+
   <!-- Scripts -->
   <script src="js/cursor.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/reveal.js"></script>
+  <script src="js/chatbot.js"></script>
 </body>
 </html>
