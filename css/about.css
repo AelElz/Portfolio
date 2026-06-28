@@ -1,0 +1,84 @@
+/* ============================================================
+   about.css — About section
+   ============================================================ */
+
+#about {
+  background: var(--c-surface);
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* ── Avatar ── */
+.about-avatar-wrap {
+  position: relative;
+  width: fit-content;
+}
+
+.about-avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 214, 10, 0.25);
+  box-shadow: 0 0 0 8px rgba(255, 214, 10, 0.05);
+}
+
+/* Spinning orbit ring */
+.about-avatar-ring {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 214, 10, 0.2);
+  animation: spin-slow 12s linear infinite;
+}
+
+.about-avatar-ring::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--c-gold-1);
+  border-radius: 50%;
+  top: 50%;
+  left: -4px;
+  transform: translateY(-50%) scale(1);
+  transition: all 0.3s ease;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Hover — pause ring and pulse the dot */
+.about-avatar-wrap:hover .about-avatar-ring {
+  animation-play-state: paused;
+}
+
+.about-avatar-wrap:hover .about-avatar-ring::before {
+  transform: translateY(-50%) scale(1.8);
+  box-shadow: 0 0 12px 2px var(--c-gold-1);
+}
+
+/* ── Text ── */
+.about-text .section-body + .section-body {
+  margin-top: 16px;
+}
+
+.about-text strong {
+  color: var(--c-text-1);
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}

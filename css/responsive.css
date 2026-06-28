@@ -1,0 +1,46 @@
+/* ============================================================
+   responsive.css — Mobile & tablet breakpoints
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  /* Nav */
+  nav {
+    padding: 0 24px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  /* About */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Projects */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card.featured {
+    grid-column: span 1;
+  }
+
+  /* Experience */
+  .exp-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  /* Cursor — hide on touch devices */
+  body {
+    cursor: auto;
+  }
+
+  #cursor-dot,
+  #cursor-aura {
+    display: none;
+  }
+}

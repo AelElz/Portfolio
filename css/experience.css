@@ -1,0 +1,79 @@
+/* ============================================================
+   experience.css — Experience timeline section
+   ============================================================ */
+
+.creative-header {
+  margin-bottom: 60px;
+}
+
+.exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Row ── */
+.exp-item {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 40px;
+  padding: 32px 0;
+  border-top: 1px solid var(--c-border);
+  position: relative;
+}
+
+.exp-item:last-child {
+  border-bottom: 1px solid var(--c-border);
+}
+
+/* Date glows gold on row hover */
+.exp-date {
+  font-size: 13px;
+  color: var(--c-text-3);
+  padding-top: 4px;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
+}
+
+.exp-item:hover .exp-date {
+  color: var(--c-gold-1);
+}
+
+/* ── Content ── */
+.exp-role {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--c-text-1);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.exp-company {
+  font-size: 14px;
+  color: var(--c-gold-1);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.exp-body {
+  font-size: 15px;
+  color: var(--c-text-2);
+  line-height: 1.6;
+}
+
+/* ── Tech tags ── */
+.exp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.exp-tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--c-surface-2);
+  color: var(--c-text-3);
+  border: 1px solid var(--c-border);
+}

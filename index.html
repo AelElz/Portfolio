@@ -4,768 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ayoub Elazhari — Portfolio</title>
-  <link rel="icon" type="image/png" href="iconlogo.png" />
+  <link rel="icon" type="image/png" href="assets/iconlogo.png" />
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    /* ─────────────────────────────────────────
-       TOKENS — edit these to retheme everything
-    ───────────────────────────────────────── */
-    :root {
-      --c-bg:          #171717;
-      --c-surface:     #171717;
-      --c-surface-2:   #171717;
-      --c-border:      rgba(255,255,255,0.07);
-
-      /* Yellow-gold palette */
-      --c-gold-1:      #ffe979;   /* pure gold */
-      --c-gold-2:      #ffe5be;   /* warm amber */
-      --c-gold-3:      #FFE066;   /* bright highlight */
-      --c-gold-4:      #B8860B;   /* deep gold */
-
-      /* Gradient shortcuts */
-      --g-gold:        linear-gradient(135deg, var(--c-gold-1), var(--c-gold-2));
-      --g-gold-soft:   linear-gradient(135deg, rgba(255,214,10,0.12), rgba(255,159,10,0.06));
-      --g-gold-text:   linear-gradient(135deg, var(--c-gold-3), var(--c-gold-1), var(--c-gold-2));
-
-      --c-text-1:      #f5f5f7;
-      --c-text-2:      #a6a6a1;
-      --c-text-3:      #7a7556;
-
-      /* Typography */
-      --font:          -apple-system, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
-      --font-mono:     "SF Mono", "Fira Code", monospace;
-
-      /* Spacing */
-      --nav-h:         64px;
-      --section-gap:   140px;
-      --max-w:         980px;
-      --radius:        18px;
-      --radius-sm:     10px;
-
-      /* Cursor */
-      --cursor-size:   12px;
-      --cursor-aura:   40px;
-    }
-
-    /* ─── RESET ─── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font);
-      background: var(--c-bg);
-      color: var(--c-text-1);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      cursor: none;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-
-    /* ─────────────────────────────────────────
-       CUSTOM CURSOR
-    ───────────────────────────────────────── */
-    #cursor-dot {
-      position: fixed;
-      width: var(--cursor-size);
-      height: var(--cursor-size);
-      background: var(--c-gold-1);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.08s ease, opacity 0.2s ease, background 0.2s ease;
-      mix-blend-mode: difference;
-    }
-    #cursor-aura {
-      position: fixed;
-      width: var(--cursor-aura);
-      height: var(--cursor-aura);
-      border: 1.5px solid rgba(255,214,10,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94),
-                  width 0.3s ease, height 0.3s ease,
-                  border-color 0.3s ease, opacity 0.2s ease;
-    }
-    body.cursor-hover #cursor-dot   { transform: translate(-50%,-50%) scale(0.4); }
-    body.cursor-hover #cursor-aura  {
-      width: 60px; height: 60px;
-      border-color: rgba(255,214,10,0.7);
-      background: rgba(255,214,10,0.05);
-    }
-    body.cursor-click #cursor-dot   { transform: translate(-50%,-50%) scale(1.6); }
-    body.cursor-click #cursor-aura  { width: 24px; height: 24px; opacity: 0.6; }
-
-    /* ─────────────────────────────────────────
-       NAV
-    ───────────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: var(--nav-h);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      z-index: 100;
-      transition: background 0.4s ease, backdrop-filter 0.4s ease;
-    }
-    nav.scrolled {
-      background: rgba(10,10,10,0.78);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--c-border);
-    }
-    
-    /* Glowing Logo */
-    .nav-logo-img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,214,10,0.4);
-      object-fit: cover;
-      display: block;
-      transition: all 0.3s ease;
-    }
-    .nav-logo-img:hover {
-      transform: scale(1.05);
-      border-color: var(--c-gold-1);
-      box-shadow: 0 0 20px 4px rgba(255,214,10,0.5); /* Outer Glow */
-    }
-    
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 14px;
-      color: var(--c-text-2);
-      transition: color 0.2s ease;
-      letter-spacing: 0.01em;
-    }
-    .nav-links a:hover { color: var(--c-text-1); }
-    
-    .nav-actions {
-      display: flex;
-      gap: 12px;
-    }
-    
-    /* Base dark mode button */
-    .nav-btn {
-      font-size: 14px;
-      font-weight: 500;
-      padding: 8px 18px;
-      border-radius: 980px;
-      border: 1px solid rgba(255,214,10,0.5);
-      color: var(--c-gold-1);
-      background: transparent;
-      transition: all 0.3s ease;
-    }
-    
-    /* Default hover style (stays mostly dark) */
-    .nav-btn:hover {
-      background: rgba(255,214,10,0.1);
-      transform: scale(1.02);
-    }
-
-    /* Fill hover style (switches to light mode/solid fill) */
-    .nav-btn.fill-hover:hover {
-      background: var(--g-gold);
-      color: #000;
-      border-color: transparent;
-      box-shadow: 0 4px 15px rgba(255,214,10,0.3);
-    }
-
-    /* ─────────────────────────────────────────
-       HERO
-    ───────────────────────────────────────── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Ambient glow behind hero */
-    #hero::before {
-      content: '';
-      position: absolute;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(255,214,10,0.12) 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      animation: glow-pulse 4s ease-in-out infinite;
-    }
-    @keyframes glow-pulse {
-      0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
-      50%       { opacity: 1;   transform: translate(-50%,-50%) scale(1.12); }
-    }
-
-    .hero-eyebrow {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--c-gold-1);
-      margin-bottom: 20px;
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fade-up 0.7s ease forwards 0.2s;
-    }
-    .hero-title {
-      font-size: clamp(48px, 7vw, 88px);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.04;
-      color: var(--c-text-1);
-      margin-bottom: 10px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fade-up 0.8s ease forwards 0.4s;
-    }
-    .hero-title .gold {
-      background: var(--g-gold-text);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-sub {
-      font-size: clamp(18px, 2.5vw, 24px);
-      font-weight: 400;
-      color: var(--c-text-2);
-      max-width: 560px;
-      margin: 18px auto 0;
-      line-height: 1.55;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fade-up 0.8s ease forwards 0.6s;
-    }
-    .hero-actions {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      margin-top: 44px;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fade-up 0.8s ease forwards 0.8s;
-    }
-    .btn-primary {
-      padding: 14px 28px;
-      border-radius: 980px;
-      background: var(--g-gold);
-      color: #000;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .btn-primary:hover { opacity: 0.88; transform: scale(1.03); }
-    .btn-ghost {
-      padding: 14px 28px;
-      border-radius: 980px;
-      border: 1px solid rgba(255,214,10,0.35);
-      color: var(--c-gold-1);
-      font-size: 16px;
-      font-weight: 500;
-      transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    }
-    .btn-ghost:hover {
-      background: rgba(255,214,10,0.08);
-      border-color: rgba(255,214,10,0.6);
-      transform: scale(1.03);
-    }
-
-    /* Scroll indicator */
-    .scroll-hint {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      opacity: 0;
-      animation: fade-up 0.8s ease forwards 1.2s;
-    }
-    .scroll-hint span {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--c-text-3);
-    }
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--c-gold-1), transparent);
-      animation: scroll-drop 1.6s ease-in-out infinite;
-    }
-    @keyframes scroll-drop {
-      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
-      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
-      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
-    }
-
-    /* ─────────────────────────────────────────
-       SHARED SECTION LAYOUT
-    ───────────────────────────────────────── */
-    section {
-      padding: var(--section-gap) 24px;
-    }
-    .container {
-      max-width: var(--max-w);
-      margin: 0 auto;
-    }
-    .section-label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--c-gold-1);
-      margin-bottom: 14px;
-    }
-    .section-title {
-      font-size: clamp(32px, 4vw, 52px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: var(--c-text-1);
-      margin-bottom: 20px;
-    }
-    .section-body {
-      font-size: 17px;
-      color: var(--c-text-2);
-      line-height: 1.65;
-      max-width: 600px;
-    }
-
-    /* Scroll-reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-
-    /* ─────────────────────────────────────────
-       ABOUT
-    ───────────────────────────────────────── */
-    #about {
-      background: var(--c-surface);
-      border-top: 1px solid var(--c-border);
-      border-bottom: 1px solid var(--c-border);
-    }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .about-avatar-wrap {
-      position: relative;
-      width: fit-content;
-    }
-    .about-avatar {
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255,214,10,0.25);
-      box-shadow: 0 0 0 8px rgba(255,214,10,0.05);
-    }
-    
-    /* Interactive Avatar Ring */
-    .about-avatar-ring {
-      position: absolute;
-      inset: -14px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,214,10,0.2);
-      animation: spin-slow 12s linear infinite;
-    }
-    .about-avatar-ring::before {
-      content: '';
-      position: absolute;
-      width: 8px; height: 8px;
-      background: var(--c-gold-1);
-      border-radius: 50%;
-      top: 50%; left: -4px;
-      transform: translateY(-50%) scale(1);
-      transition: all 0.3s ease;
-    }
-    @keyframes spin-slow {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    
-    /* Hover Effects for Avatar Ring */
-    .about-avatar-wrap:hover .about-avatar-ring {
-      animation-play-state: paused;
-    }
-    .about-avatar-wrap:hover .about-avatar-ring::before {
-      transform: translateY(-50%) scale(1.8);
-      box-shadow: 0 0 12px 2px var(--c-gold-1);
-    }
-
-    .about-text .section-body + .section-body {
-      margin-top: 16px;
-    }
-    .about-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 28px;
-    }
-    .tag {
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 980px;
-      background: var(--g-gold-soft);
-      border: 1px solid rgba(255,214,10,0.2);
-      color: var(--c-gold-1);
-    }
-
-    /* ─────────────────────────────────────────
-       SKILLS
-    ───────────────────────────────────────── */
-    #skills { }
-    .skills-header { margin-bottom: 60px; }
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-    }
-    .skill-card {
-      background: var(--c-surface);
-      border: 1px solid var(--c-border);
-      border-radius: var(--radius);
-      padding: 28px;
-      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .skill-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--g-gold-soft);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .skill-card:hover {
-      border-color: rgba(255,214,10,0.35);
-      transform: translateY(-3px);
-    }
-    .skill-card:hover::before { opacity: 1; }
-    .skill-icon {
-      font-size: 26px;
-      margin-bottom: 14px;
-    }
-    .skill-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--c-text-1);
-      margin-bottom: 6px;
-      position: relative;
-    }
-    .skill-desc {
-      font-size: 13px;
-      color: var(--c-text-3);
-      line-height: 1.5;
-      position: relative;
-    }
-
-    /* ─────────────────────────────────────────
-       PROJECTS
-    ───────────────────────────────────────── */
-    #projects {
-      background: var(--c-surface);
-      border-top: 1px solid var(--c-border);
-      border-bottom: 1px solid var(--c-border);
-    }
-    .projects-header { margin-bottom: 60px; }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    .project-card {
-      background: var(--c-bg);
-      border: 1px solid var(--c-border);
-      border-radius: var(--radius);
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .project-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--g-gold);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s ease;
-    }
-    .project-card:hover {
-      border-color: rgba(255,214,10,0.25);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    }
-    .project-card:hover::after { transform: scaleX(1); }
-    .project-card.featured {
-      grid-column: span 2;
-      background: var(--c-surface-2);
-      border-color: rgba(255,214,10,0.15);
-    }
-    .project-badge {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--c-gold-1);
-      background: rgba(255,214,10,0.1);
-      border: 1px solid rgba(255,214,10,0.2);
-      padding: 4px 10px;
-      border-radius: 4px;
-      width: fit-content;
-    }
-    .project-name {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--c-text-1);
-      letter-spacing: -0.02em;
-    }
-    .project-desc {
-      font-size: 15px;
-      color: var(--c-text-2);
-      line-height: 1.6;
-      flex: 1;
-    }
-    .project-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-    }
-    .project-lang {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      color: var(--c-text-3);
-    }
-    .lang-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-    }
-    .lang-c     { background: #555599; }
-    .lang-cpp   { background: #f34b7d; }
-    .lang-docker { background: #384d54; }
-    .lang-bash  { background: #89e051; }
-    .project-link {
-      font-size: 13px;
-      color: var(--c-gold-1);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: gap 0.2s ease;
-    }
-    .project-link:hover { gap: 9px; }
-    .project-link svg { width: 12px; height: 12px; }
-
-    /* ─────────────────────────────────────────
-       EXPERIENCE / CREATIVE
-    ───────────────────────────────────────── */
-    #creative { }
-    .creative-header { margin-bottom: 60px; }
-    .exp-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .exp-item {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 40px;
-      padding: 32px 0;
-      border-top: 1px solid var(--c-border);
-      position: relative;
-    }
-    .exp-item:last-child { border-bottom: 1px solid var(--c-border); }
-    
-    /* Interactive Dates */
-    .exp-date {
-      font-size: 13px;
-      color: var(--c-text-3);
-      padding-top: 4px;
-      font-variant-numeric: tabular-nums;
-      transition: color 0.3s ease;
-    }
-    .exp-item:hover .exp-date {
-      color: var(--c-gold-1);
-    }
-
-    .exp-role {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--c-text-1);
-      margin-bottom: 4px;
-      letter-spacing: -0.02em;
-    }
-    .exp-company {
-      font-size: 14px;
-      color: var(--c-gold-1);
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-    .exp-body {
-      font-size: 15px;
-      color: var(--c-text-2);
-      line-height: 1.6;
-    }
-    .exp-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
-    }
-    .exp-tag {
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 4px;
-      background: var(--c-surface-2);
-      color: var(--c-text-3);
-      border: 1px solid var(--c-border);
-    }
-
-    /* ─────────────────────────────────────────
-       CONTACT
-    ───────────────────────────────────────── */
-    #contact {
-      background: var(--c-surface);
-      border-top: 1px solid var(--c-border);
-    }
-    .contact-inner {
-      text-align: center;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    
-    /* Interactive Contact Title */
-    .contact-inner .section-title { 
-      margin-bottom: 16px; 
-      display: inline-block;
-      transition: all 0.3s ease;
-    }
-    .contact-inner .section-title:hover {
-      color: var(--c-gold-1);
-      transform: scale(1.05);
-      text-shadow: 0 0 24px rgba(255,214,10,0.6);
-    }
-
-    .contact-inner .section-body  { margin: 0 auto; text-align: center; }
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 44px;
-      flex-wrap: wrap;
-    }
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 24px;
-      border-radius: 12px;
-      border: 1px solid var(--c-border);
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--c-text-1);
-      background: var(--c-bg);
-      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
-    }
-    .contact-link:hover {
-      border-color: rgba(255,214,10,0.4);
-      background: rgba(255,214,10,0.04);
-      transform: translateY(-2px);
-    }
-    .contact-link svg {
-      width: 18px; height: 18px;
-      fill: var(--c-gold-1);
-    }
-
-    /* ─────────────────────────────────────────
-       FOOTER
-    ───────────────────────────────────────── */
-    footer {
-      padding: 32px 24px;
-      text-align: center;
-      border-top: 1px solid var(--c-border);
-    }
-    footer p {
-      font-size: 13px;
-      color: var(--c-text-3);
-    }
-    footer span { color: var(--c-gold-1); }
-
-    /* ─────────────────────────────────────────
-       ANIMATIONS
-    ───────────────────────────────────────── */
-    @keyframes fade-up {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─────────────────────────────────────────
-       RESPONSIVE
-    ───────────────────────────────────────── */
-    @media (max-width: 768px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-card.featured { grid-column: span 1; }
-      .exp-item { grid-template-columns: 1fr; gap: 6px; }
-      body { cursor: auto; }
-      #cursor-dot, #cursor-aura { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/cursor.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/sections.css" />
+  <link rel="stylesheet" href="css/about.css" />
+  <link rel="stylesheet" href="css/skills.css" />
+  <link rel="stylesheet" href="css/projects.css" />
+  <link rel="stylesheet" href="css/experience.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
 </head>
 
 <body>
 
+  <!-- Custom cursor -->
   <div id="cursor-dot"></div>
   <div id="cursor-aura"></div>
 
+  <!-- Navigation -->
   <nav id="nav">
     <a href="#">
       <img src="iconlogo2.png" alt="Ayoub Elazhari" class="nav-logo-img" />
@@ -783,6 +51,7 @@
     </div>
   </nav>
 
+  <!-- Hero -->
   <section id="hero">
     <p class="hero-eyebrow">Software Engineer · Creative Director</p>
     <h1 class="hero-title">
@@ -802,6 +71,7 @@
     </div>
   </section>
 
+  <!-- About -->
   <section id="about">
     <div class="container">
       <div class="about-grid">
@@ -817,10 +87,10 @@
           <p class="section-label reveal">About</p>
           <h2 class="section-title reveal reveal-delay-1">Ayoub Elazhari</h2>
           <p class="section-body reveal reveal-delay-2">
-            I'm a software engineering student at <strong style="color:var(--c-text-1)">1337 Coding School</strong> (42 Network, Morocco), building low-level systems and DevOps infrastructure the hard way — with no hand-holding and no limits.
+            I'm a software engineering student at <strong>1337 Coding School</strong> (42 Network, Morocco), building low-level systems and DevOps infrastructure the hard way — with no hand-holding and no limits.
           </p>
-          <p class="section-body reveal reveal-delay-3" style="margin-top:14px;">
-            Alongside code, I bring 5+ years of creative industry experience — video editing, motion graphics, and creative direction for clients including <strong style="color:var(--c-text-1)">OCP Group, Hilton Hotels,</strong> and <strong style="color:var(--c-text-1)">Cleverlytics</strong>. Two worlds, one mindset.
+          <p class="section-body reveal reveal-delay-3">
+            Alongside code, I bring 5+ years of creative industry experience — video editing, motion graphics, and creative direction for clients including <strong>OCP Group, Hilton Hotels,</strong> and <strong>Cleverlytics</strong>. Two worlds, one mindset.
           </p>
           <div class="about-tags reveal reveal-delay-4">
             <span class="tag">1337 / 42 Network</span>
@@ -834,6 +104,7 @@
     </div>
   </section>
 
+  <!-- Skills -->
   <section id="skills">
     <div class="container">
       <div class="skills-header">
@@ -841,47 +112,41 @@
         <h2 class="section-title reveal reveal-delay-1">What I work with</h2>
       </div>
       <div class="skills-grid">
-
         <div class="skill-card reveal reveal-delay-1">
           <div class="skill-icon">⚙️</div>
           <div class="skill-name">C / C++</div>
           <div class="skill-desc">Systems programming, memory management, low-level algorithms, and POSIX APIs.</div>
         </div>
-
         <div class="skill-card reveal reveal-delay-2">
           <div class="skill-icon">🐳</div>
           <div class="skill-name">Docker & DevOps</div>
           <div class="skill-desc">Containerized infrastructure, Docker Compose, Nginx reverse proxies, and CI/CD pipelines.</div>
         </div>
-
         <div class="skill-card reveal reveal-delay-3">
           <div class="skill-icon">🐚</div>
           <div class="skill-name">Bash / Shell</div>
           <div class="skill-desc">Script automation, Unix internals, and OS-level system administration on Linux & macOS.</div>
         </div>
-
         <div class="skill-card reveal reveal-delay-4">
           <div class="skill-icon">🔧</div>
           <div class="skill-name">Git & Toolchain</div>
           <div class="skill-desc">Git, Make, GCC, Valgrind, Neovim — disciplined engineering workflow from the terminal.</div>
         </div>
-
         <div class="skill-card reveal reveal-delay-1">
           <div class="skill-icon">🎬</div>
           <div class="skill-name">Motion Design</div>
           <div class="skill-desc">After Effects, Premiere Pro, DaVinci Resolve — animation, compositing, and editorial.</div>
         </div>
-
         <div class="skill-card reveal reveal-delay-2">
           <div class="skill-icon">🎨</div>
           <div class="skill-name">Visual Design</div>
           <div class="skill-desc">Figma, Photoshop, Illustrator — brand direction, layout, and production design.</div>
         </div>
-
       </div>
     </div>
   </section>
 
+  <!-- Projects -->
   <section id="projects">
     <div class="container">
       <div class="projects-header">
@@ -891,7 +156,6 @@
           Every project from the 42 curriculum is built from scratch — no frameworks, no shortcuts.
         </p>
       </div>
-
       <div class="projects-grid">
 
         <div class="project-card featured reveal">
@@ -918,9 +182,7 @@
             Low-level concurrency engine in C demonstrating thread synchronization, shared resource control, and safe parallel execution using pthreads.
           </div>
           <div class="project-footer">
-            <div class="project-lang">
-              <span class="lang-dot lang-c"></span>C
-            </div>
+            <div class="project-lang"><span class="lang-dot lang-c"></span>C</div>
             <a href="https://github.com/AelElz/runtime-concurrency-system" target="_blank" class="project-link">
               View on GitHub
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -935,9 +197,7 @@
             3D raycasting renderer inspired by Wolfenstein 3D, written in C. Full game engine with texture mapping, collision detection, and real-time rendering.
           </div>
           <div class="project-footer">
-            <div class="project-lang">
-              <span class="lang-dot lang-c"></span>C
-            </div>
+            <div class="project-lang"><span class="lang-dot lang-c"></span>C</div>
             <a href="https://github.com/AelElz/raycasting-engine" target="_blank" class="project-link">
               View on GitHub
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -952,9 +212,7 @@
             Production-grade Debian VM hardening — SSH config, firewall setup, user management, and automated security monitoring.
           </div>
           <div class="project-footer">
-            <div class="project-lang">
-              <span class="lang-dot lang-bash"></span>Shell
-            </div>
+            <div class="project-lang"><span class="lang-dot lang-bash"></span>Shell</div>
             <a href="https://github.com/AelElz/debian-server-hardening" target="_blank" class="project-link">
               View on GitHub
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -969,9 +227,7 @@
             Fully functional Unix shell built in C from scratch — parsing, execution, pipes, redirections, and all builtins. The Minishell project.
           </div>
           <div class="project-footer">
-            <div class="project-lang">
-              <span class="lang-dot lang-c"></span>C
-            </div>
+            <div class="project-lang"><span class="lang-dot lang-c"></span>C</div>
             <a href="https://github.com/AelElz" target="_blank" class="project-link">
               View on GitHub
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -983,6 +239,7 @@
     </div>
   </section>
 
+  <!-- Experience -->
   <section id="creative">
     <div class="container">
       <div class="creative-header">
@@ -992,7 +249,6 @@
           Engineering and creative work aren't separate careers — they're the same obsession with craft.
         </p>
       </div>
-
       <div class="exp-list">
 
         <div class="exp-item reveal">
@@ -1044,11 +300,12 @@
     </div>
   </section>
 
+  <!-- Contact -->
   <section id="contact">
     <div class="container">
       <div class="contact-inner">
         <p class="section-label reveal">Contact</p>
-        <h2 class="section-title reveal reveal-delay-1">Let's build something.</h2>
+        <h2 class="section-title contact-title reveal reveal-delay-1">Let's build something.</h2>
         <p class="section-body reveal reveal-delay-2">
           Open to internships, freelance projects, and interesting collaborations — in software engineering, creative work, or both.
         </p>
@@ -1080,84 +337,14 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>© 2026 Ayoub Elazhari · Crafted with <span>care</span> and late-night coding sessions</p>
   </footer>
 
-  <script>
-    // ── Cursor ──
-    const dot  = document.getElementById('cursor-dot');
-    const aura = document.getElementById('cursor-aura');
-    let mx = 0, my = 0, ax = 0, ay = 0;
-
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-    function animateCursor() {
-      dot.style.left  = mx + 'px';
-      dot.style.top   = my + 'px';
-      ax += (mx - ax) * 0.14;
-      ay += (my - ay) * 0.14;
-      aura.style.left = ax + 'px';
-      aura.style.top  = ay + 'px';
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-
-    // Hover state on interactive elements (updated to include the new interactable areas!)
-    const hoverEls = document.querySelectorAll('a, button, .skill-card, .project-card, .contact-link, .btn-primary, .btn-ghost, .nav-logo-img, .nav-btn, .about-avatar-wrap, .exp-item, .contact-inner .section-title');
-    
-    hoverEls.forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-      
-      // Ensure clicking an 'a' tag doesn't get blocked
-      if (el.tagName === 'A') {
-        el.addEventListener('click', (e) => {
-          window.open(el.href, el.target || '_self');
-        });
-      }
-    });
-
-    document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
-    document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
-
-    // ── Nav scroll ──
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
-
-    // ── Scroll reveal ──
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-    reveals.forEach(el => io.observe(el));
-
-    // ── Smooth active nav links ──
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-
-    const sectionIO = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          navLinks.forEach(a => {
-            a.style.color = a.getAttribute('href') === '#' + e.target.id
-              ? 'var(--c-text-1)'
-              : '';
-          });
-        }
-      });
-    }, { threshold: 0.5 });
-
-    sections.forEach(s => sectionIO.observe(s));
-  </script>
-
+  <!-- Scripts -->
+  <script src="js/cursor.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/reveal.js"></script>
 </body>
 </html>

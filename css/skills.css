@@ -1,0 +1,64 @@
+/* ============================================================
+   skills.css — Skills grid section
+   ============================================================ */
+
+.skills-header {
+  margin-bottom: 60px;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* ── Card ── */
+.skill-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+/* Gold sheen on hover */
+.skill-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--g-gold-soft);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skill-card:hover {
+  border-color: rgba(255, 214, 10, 0.35);
+  transform: translateY(-3px);
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Card content ── */
+.skill-icon {
+  font-size: 26px;
+  margin-bottom: 14px;
+}
+
+.skill-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-text-1);
+  margin-bottom: 6px;
+  position: relative; /* stays above ::before overlay */
+}
+
+.skill-desc {
+  font-size: 13px;
+  color: var(--c-text-3);
+  line-height: 1.5;
+  position: relative; /* stays above ::before overlay */
+}

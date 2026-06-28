@@ -1,0 +1,56 @@
+/* ============================================================
+   cursor.css — Custom cursor dot and aura
+   ============================================================ */
+
+#cursor-dot {
+  position: fixed;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  background: var(--c-gold-1);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease, opacity 0.2s ease, background 0.2s ease;
+  mix-blend-mode: difference;
+}
+
+#cursor-aura {
+  position: fixed;
+  width: var(--cursor-aura);
+  height: var(--cursor-aura);
+  border: 1.5px solid rgba(255, 214, 10, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    width 0.3s ease,
+    height 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.2s ease;
+}
+
+/* Hover state */
+body.cursor-hover #cursor-dot {
+  transform: translate(-50%, -50%) scale(0.4);
+}
+
+body.cursor-hover #cursor-aura {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(255, 214, 10, 0.7);
+  background: rgba(255, 214, 10, 0.05);
+}
+
+/* Click state */
+body.cursor-click #cursor-dot {
+  transform: translate(-50%, -50%) scale(1.6);
+}
+
+body.cursor-click #cursor-aura {
+  width: 24px;
+  height: 24px;
+  opacity: 0.6;
+}

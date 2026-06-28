@@ -1,0 +1,45 @@
+/* ============================================================
+   tokens.css — Design tokens
+   Edit this file to retheme the entire site.
+   All other CSS files reference these variables.
+   ============================================================ */
+
+:root {
+
+  /* ── Colors ── */
+  --c-bg:          #171717;
+  --c-surface:     #171717;
+  --c-surface-2:   #171717;
+  --c-border:      rgba(255, 255, 255, 0.07);
+
+  /* Gold palette */
+  --c-gold-1:      #ffe979;   /* pure gold       */
+  --c-gold-2:      #ffe5be;   /* warm amber      */
+  --c-gold-3:      #FFE066;   /* bright highlight */
+  --c-gold-4:      #B8860B;   /* deep gold       */
+
+  /* Gradients */
+  --g-gold:        linear-gradient(135deg, var(--c-gold-1), var(--c-gold-2));
+  --g-gold-soft:   linear-gradient(135deg, rgba(255, 214, 10, 0.12), rgba(255, 159, 10, 0.06));
+  --g-gold-text:   linear-gradient(135deg, var(--c-gold-3), var(--c-gold-1), var(--c-gold-2));
+
+  /* Text */
+  --c-text-1:      #f5f5f7;
+  --c-text-2:      #a6a6a1;
+  --c-text-3:      #7a7556;
+
+  /* ── Typography ── */
+  --font:          -apple-system, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
+  --font-mono:     "SF Mono", "Fira Code", monospace;
+
+  /* ── Layout ── */
+  --nav-h:         64px;
+  --section-gap:   140px;
+  --max-w:         980px;
+  --radius:        18px;
+  --radius-sm:     10px;
+
+  /* ── Cursor ── */
+  --cursor-size:   12px;
+  --cursor-aura:   40px;
+}
