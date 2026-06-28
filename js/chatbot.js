@@ -6,15 +6,15 @@
 /* ── Response map ── */
 const RESPONSES = [
   {
-    keys: ['hello', 'hi', 'hey', 'sup', 'salut', 'bonjour', 'wech', 'yo', 'Yo', 'Hello', 'Hi', 'Hey'],
+    keys: ['hello', 'hi', 'hey', 'sup', 'salut', 'bonjour'],
     reply: "Hey 👋 I'm a bot version of Ayoub's portfolio. Ask me about his projects, skills, experience, or how to get in touch.",
   },
   {
-    keys: ['project', 'built', 'work', 'inception', 'docker', 'container'],
+    keys: ['projects', 'built', 'work', 'inception', 'docker', 'container'],
     reply: "Ayoub's featured project is <strong>Inception</strong>, a full Docker Compose infrastructure with NGINX reverse proxy and persistent databases, built from scratch at 1337. He also built a raycasting engine (Wolfenstein-style), a custom Unix shell, and a thread-safe concurrency system in C.",
   },
   {
-    keys: ['skill', 'stack', 'language', 'tech', 'use', 'know'],
+    keys: ['skills', 'stack', 'language', 'tech', 'use', 'know'],
     reply: "Core stack: <strong>C, C++, Docker, Bash, Nginx</strong>. On the creative side: After Effects, Premiere Pro, Figma, DaVinci Resolve. He's most fluent in low-level systems and DevOps, the stuff most devs avoid.",
   },
   {
@@ -26,7 +26,7 @@ const RESPONSES = [
     reply: "<strong>1337 Coding School</strong> (42 Network), a peer-learning, project-based school with no teachers and no hand-holding. Projects completed: Minishell, Philosophers, Cub3D, Push_swap, Minitalk, Inception, and more.",
   },
   {
-    keys: ['intern', 'internship','Intern', 'Internship', 'hire', 'hiring', 'Hire', 'Hiring', 'available', 'opportunity', 'job'],
+    keys: ['internship', 'intern','Intern', 'hire', 'hiring', 'available', 'opportunity'],
     reply: "Ayoub is actively looking for a <strong>software engineering internship</strong>, Fullstack, backend or systems work. Reach him directly at ayoub2elazhari@gmail.com or via LinkedIn.",
   },
   {
@@ -113,8 +113,15 @@ input.addEventListener('keydown', (e) => {
 /* ── Keyword matching ── */
 function getReply(text) {
   const lower = text.toLowerCase();
+  
   for (const entry of RESPONSES) {
-    if (entry.keys.some((k) => lower.includes(k))) {
+    // Use \b to ensure it only matches whole words
+    const isMatch = entry.keys.some((k) => {
+      const regex = new RegExp(`\\b${k}\\b`, 'i');
+      return regex.test(lower);
+    });
+
+    if (isMatch) {
       return entry.reply;
     }
   }
