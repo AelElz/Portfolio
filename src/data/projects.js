@@ -1,0 +1,43 @@
+export const PROJECTS = [
+  {
+    featured: true,
+    badge: 'Featured',
+    name: 'Containerized Infrastructure Stack',
+    desc: 'Full containerized web infrastructure built with Docker Compose, featuring secure service isolation, reverse proxying with NGINX, and persistent database architecture. This is the Inception project — complex multi-service orchestration from the ground up.',
+    lang: 'Dockerfile',
+    langClass: 'lang-docker',
+    href: 'https://github.com/AelElz/containerized-infrastructure-stack',
+  },
+  {
+    badge: 'Systems',
+    name: 'Runtime Concurrency System',
+    desc: 'Low-level concurrency engine in C demonstrating thread synchronization, shared resource control, and safe parallel execution using pthreads.',
+    lang: 'C',
+    langClass: 'lang-c',
+    href: 'https://github.com/AelElz/runtime-concurrency-system',
+  },
+  {
+    badge: 'Graphics',
+    name: 'Raycasting Engine',
+    desc: '3D raycasting renderer inspired by Wolfenstein 3D, written in C. Full game engine with texture mapping, collision detection, and real-time rendering.',
+    lang: 'C',
+    langClass: 'lang-c',
+    href: 'https://github.com/AelElz/raycasting-engine',
+  },
+  {
+    badge: 'Security',
+    name: 'Debian Server Hardening',
+    desc: 'Production-grade Debian VM hardening — SSH config, firewall setup, user management, and automated security monitoring.',
+    lang: 'Shell',
+    langClass: 'lang-bash',
+    href: 'https://github.com/AelElz/debian-server-hardening',
+  },
+  {
+    badge: 'Shell',
+    name: 'Custom Unix Shell',
+    desc: 'Fully functional Unix shell built in C from scratch — parsing, execution, pipes, redirections, and all builtins. The Minishell project.',
+    lang: 'C',
+    langClass: 'lang-c',
+    href: 'https://github.com/AelElz',
+  },
+];

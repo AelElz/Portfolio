@@ -1,0 +1,62 @@
+/* ============================================================
+   motion-design.css — Motion Design deep-dive page (video grid)
+   ============================================================ */
+
+.video-section {
+  border-top: 1px solid var(--c-border);
+}
+
+.video-section-title {
+  margin-bottom: 40px;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 32px;
+}
+
+.video-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.video-card:hover {
+  border-color: rgba(255, 214, 10, 0.35);
+  transform: translateY(-3px);
+}
+
+.video-embed {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--c-surface-2);
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--c-text-1);
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+.video-desc {
+  font-size: 14px;
+  color: var(--c-text-3);
+  line-height: 1.6;
+  margin-top: 8px;
+}

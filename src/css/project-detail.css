@@ -1,0 +1,433 @@
+/* ============================================================
+   project-detail.css — Shared layout for skill deep-dive pages
+   (C/C++, Docker & DevOps, ...) plus their diagram visuals
+   ============================================================ */
+
+.deepdive-page {
+  padding-top: var(--nav-h);
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-text-2);
+  margin-bottom: 32px;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--c-gold-1);
+}
+
+.deepdive-hero {
+  padding-top: 80px;
+  padding-bottom: 60px;
+}
+
+/* ── Per-project section ── */
+.deepdive-section {
+  border-top: 1px solid var(--c-border);
+}
+
+.deepdive-header {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.deepdive-index {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-gold-1);
+  opacity: 0.6;
+}
+
+.deepdive-name {
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--c-text-1);
+  margin-bottom: 6px;
+}
+
+.deepdive-tagline {
+  font-size: 15px;
+  color: var(--c-text-2);
+}
+
+.deepdive-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.deepdive-subhead {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  margin-bottom: 12px;
+  margin-top: 28px;
+}
+
+.deepdive-subhead:first-child {
+  margin-top: 0;
+}
+
+.deepdive-body {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--c-text-2);
+}
+
+.deepdive-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.deepdive-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-text-2);
+}
+
+.deepdive-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-gold-1);
+}
+
+.deepdive-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.deepdive-github {
+  margin-top: 28px;
+}
+
+/* ── Visual panel ── */
+.deepdive-visual {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  position: sticky;
+  top: calc(var(--nav-h) + 32px);
+}
+
+.diagram {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.diagram-svg {
+  width: 100%;
+  max-width: 260px;
+}
+
+/* ── Concurrency diagram ── */
+.diagram-spoke {
+  stroke: var(--c-border);
+  stroke-width: 1;
+}
+
+.diagram-fork {
+  fill: var(--c-gold-1);
+  opacity: 0.7;
+}
+
+.diagram-node {
+  fill: var(--c-surface-2);
+  stroke: rgba(255, 214, 10, 0.35);
+  stroke-width: 1.5;
+}
+
+.diagram-node-label {
+  font-size: 9px;
+  font-weight: 600;
+  fill: var(--c-text-1);
+}
+
+.diagram-hub {
+  fill: var(--g-gold-soft);
+  stroke: var(--c-gold-1);
+  stroke-width: 1.5;
+}
+
+.diagram-hub-label {
+  font-size: 8px;
+  font-weight: 700;
+  fill: var(--c-gold-1);
+  letter-spacing: 0.02em;
+}
+
+.diagram-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--c-text-3);
+}
+
+.diagram-legend-item {
+  padding: 4px 10px;
+  border-radius: 980px;
+  border: 1px solid var(--c-border);
+  color: var(--c-text-2);
+}
+
+.diagram-legend-arrow {
+  color: var(--c-gold-1);
+}
+
+/* ── Raycast diagram ── */
+.raycast-diagram {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.raycast-map {
+  max-width: 140px;
+  flex-shrink: 0;
+}
+
+.diagram-frame {
+  fill: none;
+  stroke: var(--c-border);
+}
+
+.diagram-wall {
+  stroke: var(--c-gold-1);
+  stroke-width: 2;
+  opacity: 0.5;
+}
+
+.diagram-ray {
+  stroke: rgba(255, 214, 10, 0.45);
+  stroke-width: 1;
+}
+
+.diagram-player {
+  fill: var(--c-gold-1);
+}
+
+.raycast-columns {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  min-height: 130px;
+}
+
+.raycast-column {
+  flex: 1;
+  background: linear-gradient(180deg, var(--c-gold-1), rgba(255, 214, 10, 0.15));
+  border-radius: 3px 3px 0 0;
+  opacity: 0.85;
+}
+
+/* ── Shell pipeline diagram ── */
+.shell-diagram {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.shell-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shell-box {
+  background: var(--c-surface-2);
+  border: 1px solid rgba(255, 214, 10, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.shell-box-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-gold-1);
+}
+
+.shell-box-sub {
+  font-size: 10px;
+  color: var(--c-text-3);
+  margin-top: 4px;
+}
+
+.shell-pipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 9px;
+  color: var(--c-text-3);
+}
+
+.shell-pipe-arrow {
+  color: var(--c-gold-1);
+  font-size: 16px;
+}
+
+/* ── Docker Compose diagram ── */
+.compose-diagram {
+  gap: 12px;
+}
+
+.compose-client {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--c-text-3);
+}
+
+.compose-client-arrow {
+  color: var(--c-gold-1);
+}
+
+.compose-network {
+  width: 100%;
+  border: 1px dashed var(--c-border);
+  border-radius: var(--radius-sm);
+  padding: 24px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.compose-network-label {
+  position: absolute;
+  top: -9px;
+  left: 14px;
+  background: var(--c-surface);
+  padding: 0 8px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+}
+
+.compose-node {
+  width: 100%;
+  max-width: 200px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.compose-node-nginx {
+  border-color: rgba(255, 214, 10, 0.4);
+}
+
+.compose-node-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-text-1);
+}
+
+.compose-node-sub {
+  font-size: 10px;
+  color: var(--c-text-3);
+}
+
+.compose-edge {
+  width: 1px;
+  height: 14px;
+  background: var(--c-border);
+}
+
+.compose-volume {
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--c-gold-1);
+  border: 1px solid rgba(255, 214, 10, 0.25);
+  border-radius: 980px;
+  padding: 3px 12px;
+}
+
+/* ── Hardening layers diagram ── */
+.hardening-diagram {
+  gap: 10px;
+  width: 100%;
+}
+
+.hardening-layer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+}
+
+.hardening-layer-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-gold-1);
+}
+
+.hardening-layer-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-text-1);
+}
+
+.hardening-layer-sub {
+  font-size: 11px;
+  color: var(--c-text-3);
+  margin-top: 2px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .deepdive-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .deepdive-visual {
+    position: static;
+    min-height: 260px;
+  }
+}

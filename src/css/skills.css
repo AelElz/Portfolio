@@ -62,3 +62,17 @@
   line-height: 1.5;
   position: relative; /* stays above ::before overlay */
 }
+
+.skill-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-gold-1);
+  position: relative; /* stays above ::before overlay */
+  transition: transform 0.2s ease;
+}
+
+.skill-link:hover {
+  transform: translateX(2px);
+}
