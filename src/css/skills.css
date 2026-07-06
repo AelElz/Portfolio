@@ -43,9 +43,24 @@
 }
 
 /* ── Card content ── */
-.skill-icon {
-  font-size: 26px;
-  margin-bottom: 14px;
+/* Oversized, low-opacity icon bleeding off the card edges */
+.skill-icon-bg {
+  --icon-scale: 1;
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+  width: calc(160px * var(--icon-scale));
+  height: calc(160px * var(--icon-scale));
+  object-fit: contain;
+  opacity: 0.32;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+}
+
+.skill-card:hover .skill-icon-bg {
+  opacity: 0.45;
+  transform: scale(1.06);
 }
 
 .skill-name {
@@ -53,26 +68,61 @@
   font-weight: 600;
   color: var(--c-text-1);
   margin-bottom: 6px;
-  position: relative; /* stays above ::before overlay */
+  position: relative; /* stays above ::before overlay and icon bg */
+  z-index: 1;
 }
 
 .skill-desc {
   font-size: 13px;
   color: var(--c-text-3);
   line-height: 1.5;
-  position: relative; /* stays above ::before overlay */
+  position: relative; /* stays above ::before overlay and icon bg */
+  z-index: 1;
 }
 
 .skill-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-top: 14px;
   font-size: 12px;
   font-weight: 600;
   color: var(--c-gold-1);
-  position: relative; /* stays above ::before overlay */
-  transition: transform 0.2s ease;
+  position: relative; /* stays above ::before overlay and icon bg */
+  z-index: 1;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .skill-link:hover {
+  color: var(--c-gold-3);
   transform: translateX(2px);
+}
+
+/* Circular "button" around the arrow — satisfying click target */
+.skill-link-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 214, 10, 0.4);
+  font-size: 11px;
+  line-height: 1;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.skill-link:hover .skill-link-circle {
+  background: var(--g-gold);
+  color: #000;
+  border-color: transparent;
+  transform: scale(1.15) rotate(45deg);
+}
+
+/* Icon glows together with the "View Projects" text on hover */
+.skill-card:has(.skill-link:hover) .skill-icon-bg {
+  opacity: 0.6;
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 14px rgba(255, 214, 10, 0.65));
 }

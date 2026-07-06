@@ -15,13 +15,21 @@ export default function Skills() {
         <div className="skills-grid">
           {SKILLS.map((skill, i) => (
             <Reveal as="div" key={skill.name} className="skill-card" delay={DELAYS[i % DELAYS.length]}>
-              <div className="skill-icon">{skill.icon}</div>
+              <img
+                src={skill.iconImg}
+                alt=""
+                aria-hidden="true"
+                className="skill-icon-bg"
+                style={{ '--icon-scale': skill.iconScale || 1 }}
+              />
               <div className="skill-name">{skill.name}</div>
-              <div className="skill-desc">{skill.desc}</div>
-              {skill.link && (
+              {skill.link ? (
                 <Link to={skill.link} className="skill-link">
-                  {skill.linkLabel} ↗
+                  <span>{skill.linkLabel}</span>
+                  <span className="skill-link-circle">↗</span>
                 </Link>
+              ) : (
+                <div className="skill-desc">{skill.desc}</div>
               )}
             </Reveal>
           ))}
