@@ -4,6 +4,11 @@ import { useEffect, useRef } from 'react';
    HeroBackground — generative golden flow field
    Fine gold threads drift along an evolving Perlin-noise field,
    swirling around the cursor, with floating embers on top.
+
+   All visual parameters are proportional to the hero's size
+   (scale factor S), so the artwork looks identical on a laptop,
+   an ultrawide, or a phone — and a ResizeObserver keeps it in
+   sync with any layout change, not just window resizes.
    ============================================================ */
 
 const TAU = Math.PI * 2;
@@ -60,7 +65,7 @@ function createNoise() {
   };
 }
 
-/* Gold palette — [r, g, b, weight] */
+/* Gold palette — [r, g, b, cumulative weight] */
 const THREAD_COLORS = [
   [255, 233, 121, 0.45], // pure gold
   [255, 229, 190, 0.7],  // warm cream
@@ -76,11 +81,12 @@ function pickColor() {
   return THREAD_COLORS[0];
 }
 
-const NOISE_SCALE = 0.0014; // field zoom — lower = broader curves
+const NOISE_SCALE = 0.0014; // field zoom at S = 1 — lower = broader curves
 const CURL = 2.4;           // how much the field twists
 const TIME_DRIFT = 0.00012; // field evolution speed
 const FADE_ALPHA = 0.05;    // trail persistence — lower = longer silk
-const SWIRL_RADIUS = 200;   // cursor influence radius
+const SWIRL_RADIUS = 200;   // cursor influence radius at S = 1
+const REF_SIZE = 820;       // hero min-dimension the base values are tuned for
 
 export default function HeroBackground() {
   const canvasRef = useRef(null);
@@ -93,11 +99,13 @@ export default function HeroBackground() {
 
     let width = 0;
     let height = 0;
+    let S = 1; // visual scale — everything drawn is multiplied by this
     let raf = 0;
     let running = true;
     let inView = true;
     let last = performance.now();
     let time = Math.random() * 100;
+    let resizeTimer = 0;
 
     const mouse = { x: -9999, y: -9999, strength: 0, target: 0 };
     let threads = [];
@@ -114,6 +122,8 @@ export default function HeroBackground() {
     gctx.fillStyle = grd;
     gctx.fillRect(0, 0, 64, 64);
 
+    /* Base speed/width/size are unitless — multiplied by S when used,
+       so threads keep their look at any screen size. */
     const spawnThread = (t, randomLife) => {
       t.x = Math.random() * width;
       t.y = Math.random() * height;
@@ -140,27 +150,67 @@ export default function HeroBackground() {
       return e;
     };
 
-    const build = () => {
-      /* Kept deliberately light so scrolling stays smooth */
-      const count = Math.max(80, Math.min(180, Math.round((width * height) / 9500)));
-      threads = Array.from({ length: count }, () => spawnThread({}, true));
-      embers = Array.from({ length: Math.max(6, Math.round(count / 26)) }, () => spawnEmber({}));
+    const threadCount = () =>
+      Math.max(80, Math.min(240, Math.round((width * height) / 9500)));
+
+    const setBuffer = () => {
+      /* Adaptive resolution: big screens get a lower pixel-ratio cap so
+         the per-frame compositing cost stays flat while scrolling. */
+      const dpr = Math.min(window.devicePixelRatio || 1, width * height > 2.6e6 ? 1.25 : 1.5);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      if (!rect.width || !rect.height) return;
+
+      const prevW = width;
+      const prevH = height;
       width = rect.width;
       height = rect.height;
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      build();
+      S = Math.max(0.7, Math.min(2.4, Math.min(width, height) / REF_SIZE));
+      setBuffer();
+
+      if (!threads.length) {
+        threads = Array.from({ length: threadCount() }, () => spawnThread({}, true));
+        embers = Array.from({ length: Math.max(6, Math.round(threadCount() / 26)) }, () =>
+          spawnEmber({})
+        );
+        return;
+      }
+
+      /* Remap existing particles into the new bounds instead of
+         restarting, so resizing doesn't blank the artwork. */
+      const sx = width / prevW;
+      const sy = height / prevH;
+      for (const t of threads) {
+        t.x *= sx;
+        t.y *= sy;
+        t.px = t.x;
+        t.py = t.y;
+      }
+      for (const e of embers) {
+        e.x *= sx;
+        e.y *= sy;
+      }
+      const target = threadCount();
+      while (threads.length > target) threads.pop();
+      while (threads.length < target) threads.push(spawnThread({}, true));
+    };
+
+    const queueResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 120);
     };
 
     const step = (dt) => {
       time += TIME_DRIFT * dt * 16.7;
       mouse.strength += (mouse.target - mouse.strength) * 0.06;
+
+      const noiseScale = NOISE_SCALE / S;
+      const swirlRadius = SWIRL_RADIUS * S;
 
       /* Fade existing trails toward transparent */
       ctx.globalCompositeOperation = 'destination-out';
@@ -172,17 +222,17 @@ export default function HeroBackground() {
       ctx.lineCap = 'round';
 
       for (const t of threads) {
-        const angle = noise(t.x * NOISE_SCALE, t.y * NOISE_SCALE, time) * TAU * CURL;
-        let vx = Math.cos(angle) * t.speed;
-        let vy = Math.sin(angle) * t.speed;
+        const angle = noise(t.x * noiseScale, t.y * noiseScale, time) * TAU * CURL;
+        let vx = Math.cos(angle) * t.speed * S;
+        let vy = Math.sin(angle) * t.speed * S;
 
         /* Cursor swirl — field bends into a vortex near the mouse */
         if (mouse.strength > 0.01) {
           const dx = t.x - mouse.x;
           const dy = t.y - mouse.y;
           const d = Math.hypot(dx, dy);
-          if (d < SWIRL_RADIUS && d > 0.001) {
-            const f = (1 - d / SWIRL_RADIUS) ** 2 * mouse.strength;
+          if (d < swirlRadius && d > 0.001) {
+            const f = (1 - d / swirlRadius) ** 2 * mouse.strength * S;
             vx += ((-dy / d) * 1.6 + (dx / d) * 0.35) * f;
             vy += ((dx / d) * 1.6 + (dy / d) * 0.35) * f;
           }
@@ -194,7 +244,8 @@ export default function HeroBackground() {
         t.y += vy * dt;
         t.life -= dt;
 
-        if (t.life <= 0 || t.x < -24 || t.x > width + 24 || t.y < -24 || t.y > height + 24) {
+        const margin = 24 * S;
+        if (t.life <= 0 || t.x < -margin || t.x > width + margin || t.y < -margin || t.y > height + margin) {
           spawnThread(t, false);
           continue;
         }
@@ -203,7 +254,7 @@ export default function HeroBackground() {
         const phase = 1 - t.life / t.maxLife;
         const envelope = Math.sin(Math.min(Math.max(phase, 0), 1) * Math.PI);
         ctx.strokeStyle = `rgba(${t.r}, ${t.g}, ${t.b}, ${t.alpha * envelope})`;
-        ctx.lineWidth = t.width;
+        ctx.lineWidth = t.width * S;
         ctx.beginPath();
         ctx.moveTo(t.px, t.py);
         ctx.lineTo(t.x, t.y);
@@ -213,12 +264,13 @@ export default function HeroBackground() {
       /* Embers — slow rising sparks with twinkle */
       for (const e of embers) {
         e.phase += 0.02 * e.twinkle * dt;
-        e.y -= e.rise * dt;
-        e.x += noise(e.seed, e.y * 0.002, time) * 0.6 * dt;
-        if (e.y < -20) spawnEmber(e), (e.y = height + 10);
+        e.y -= e.rise * S * dt;
+        e.x += noise(e.seed, e.y * 0.002, time) * 0.6 * S * dt;
+        if (e.y < -20 * S) spawnEmber(e), (e.y = height + 10);
         const a = 0.28 + Math.sin(e.phase) * 0.22;
+        const size = e.size * S;
         ctx.globalAlpha = Math.max(a, 0);
-        ctx.drawImage(glow, e.x - e.size / 2, e.y - e.size / 2, e.size, e.size);
+        ctx.drawImage(glow, e.x - size / 2, e.y - size / 2, size, size);
       }
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
@@ -240,7 +292,7 @@ export default function HeroBackground() {
     };
     const onMouseLeave = () => (mouse.target = 0);
 
-    const observer = new IntersectionObserver(
+    const io = new IntersectionObserver(
       ([entry]) => {
         inView = entry.isIntersecting;
         last = performance.now();
@@ -248,9 +300,13 @@ export default function HeroBackground() {
       { threshold: 0 }
     );
 
+    /* Track the hero element's real size — catches every layout change
+       (zoom, font load, orientation, split view), not just window resize. */
+    const ro = new ResizeObserver(queueResize);
+
     resize();
-    observer.observe(canvas);
-    window.addEventListener('resize', resize);
+    io.observe(canvas);
+    ro.observe(canvas);
 
     if (reduceMotion) {
       /* No animation — develop the field once into a static artwork */
@@ -264,8 +320,9 @@ export default function HeroBackground() {
     return () => {
       running = false;
       cancelAnimationFrame(raf);
-      observer.disconnect();
-      window.removeEventListener('resize', resize);
+      clearTimeout(resizeTimer);
+      io.disconnect();
+      ro.disconnect();
       window.removeEventListener('mousemove', onMouseMove);
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
     };
