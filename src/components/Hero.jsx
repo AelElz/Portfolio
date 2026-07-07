@@ -1,9 +1,13 @@
-import HeroBackground from './HeroBackground';
-
 export default function Hero() {
   return (
     <section id="hero">
-      <HeroBackground />
+      <div className="hero-orbits" aria-hidden="true">
+        <div className="orbit-core" />
+        <div className="orbit-ring orbit-ring-1" />
+        <div className="orbit-ring orbit-ring-2" />
+        <div className="orbit-ring orbit-ring-3" />
+        <div className="orbit-ring orbit-ring-4" />
+      </div>
 
       <div className="hero-content">
         <p className="hero-eyebrow">Software Engineer · Creative Director</p>
