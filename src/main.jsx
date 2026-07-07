@@ -19,6 +19,7 @@ import './css/animations.css';
 import './css/responsive.css';
 import './css/project-detail.css';
 import './css/motion-design.css';
+import './css/page-transition.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
