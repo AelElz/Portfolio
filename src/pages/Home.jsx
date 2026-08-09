@@ -26,8 +26,11 @@ export default function Home() {
     }
     const el = document.querySelector(hash);
     if (el) {
+      /* Smooth scroll is vestibular motion, and a JS scroll ignores the
+         CSS override — so it has to ask for itself (§14). */
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       requestAnimationFrame(() =>
-        el.scrollIntoView({ behavior: underCurtain ? 'auto' : 'smooth' })
+        el.scrollIntoView({ behavior: underCurtain || reduced ? 'auto' : 'smooth' })
       );
     }
   }, [hash]);

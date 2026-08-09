@@ -1,25 +1,36 @@
 /* ============================================================
-   responsive.css — Mobile & tablet breakpoints
+   responsive.css — Breakpoints. Loads late so it reaches every
+   stylesheet (§9 tier 4).
+
+   Two independent axes: viewport WIDTH decides layout, input
+   POINTER decides interaction. A touch laptop is wide and still
+   has no cursor, so those queries must not be conflated (§16.5).
    ============================================================ */
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
 
 @media (max-width: 768px) {
 
-  /* Nav */
+  /* ── Nav: links move into the menu sheet ── */
   nav {
-    padding: 0 24px;
+    padding: 0 var(--gutter);
   }
 
-  .nav-links {
+  .nav-links,
+  .nav-actions {
     display: none;
   }
 
-  /* About */
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  #nav-menu-toggle {
+    display: flex;
   }
 
-  /* Projects */
+  /* ── Grids collapse ── */
   .projects-grid {
     grid-template-columns: 1fr;
   }
@@ -28,19 +39,58 @@
     grid-column: span 1;
   }
 
-  /* Experience */
-  .exp-item {
+  .skills-grid {
     grid-template-columns: 1fr;
-    gap: 6px;
   }
 
-  /* Cursor — hide on touch devices */
-  body {
+  .video-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* ── Experience rows stack ── */
+  .exp-item {
+    grid-template-columns: 1fr;
+    gap: 0.375rem;
+  }
+
+  /* ── Cards breathe less at this width ── */
+  .project-card,
+  .skill-card {
+    padding: 1.5rem;
+  }
+
+  .hero-actions {
+    width: 100%;
+  }
+
+  .hero-actions a {
+    flex: 1 1 auto;
+  }
+}
+
+/* ── Touch input: no custom cursor, and targets get real size ── */
+@media (pointer: coarse) {
+  body,
+  button,
+  .chip,
+  #chat-trigger,
+  #chat-send {
     cursor: auto;
   }
 
-  #cursor-dot,
-  #cursor-aura {
-    display: none;
+  /* Hover states are meaningless without a hover; the press state
+     in reset.css is what carries feedback here (§1). */
+  .project-card:hover,
+  .skill-card:hover,
+  .video-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-primary,
+  .btn-ghost,
+  .contact-link {
+    min-height: 2.75rem;
   }
 }

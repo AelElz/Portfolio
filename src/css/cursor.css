@@ -1,56 +1,91 @@
 /* ============================================================
-   cursor.css — Custom cursor dot and aura
+   cursor.css — Custom pointer. An enhancement, never the
+   mechanism: every affordance it shows is also shown by the
+   element itself (§3.2).
+
+   Position lives on the outer element and is written every
+   frame with translate3d — no transition, or it fights the
+   rAF loop and becomes input lag. State (scale, size, colour)
+   lives on the inner element, which may transition freely.
    ============================================================ */
 
-#cursor-dot {
-  position: fixed;
-  width: var(--cursor-size);
-  height: var(--cursor-size);
-  background: var(--c-gold-1);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.08s ease, opacity 0.2s ease, background 0.2s ease;
-  mix-blend-mode: difference;
-}
-
+#cursor-dot,
 #cursor-aura {
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+#cursor-dot  { z-index: calc(var(--z-pointer) + 1); }
+#cursor-aura { z-index: var(--z-pointer); }
+
+#cursor-dot i,
+#cursor-aura i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#cursor-dot i {
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  background: var(--accent);
+  mix-blend-mode: difference;
+  transition: width var(--t-state) var(--ease-out),
+              height var(--t-state) var(--ease-out),
+              opacity var(--t-state) var(--ease-out);
+}
+
+#cursor-aura i {
   width: var(--cursor-aura);
   height: var(--cursor-aura);
-  border: 1.5px solid rgba(255, 214, 10, 0.4);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition:
-    transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    width 0.3s ease,
-    height 0.3s ease,
-    border-color 0.3s ease,
-    opacity 0.2s ease;
+  border: 1px solid var(--tint-edge);
+  background: transparent;
+  transition: width var(--t-chrome) var(--ease-out),
+              height var(--t-chrome) var(--ease-out),
+              border-color var(--t-state) var(--ease-out),
+              background var(--t-state) var(--ease-out),
+              opacity var(--t-state) var(--ease-out);
 }
 
-/* Hover state */
-body.cursor-hover #cursor-dot {
-  transform: translate(-50%, -50%) scale(0.4);
+/* ── Hover: the aura opens up, the dot recedes ── */
+body.cursor-hover #cursor-dot i {
+  width: calc(var(--cursor-size) * 0.4);
+  height: calc(var(--cursor-size) * 0.4);
 }
 
-body.cursor-hover #cursor-aura {
-  width: 60px;
-  height: 60px;
-  border-color: rgba(255, 214, 10, 0.7);
-  background: rgba(255, 214, 10, 0.05);
+body.cursor-hover #cursor-aura i {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-color: var(--tint-glow);
+  background: var(--tint-wash);
 }
 
-/* Click state */
-body.cursor-click #cursor-dot {
-  transform: translate(-50%, -50%) scale(1.6);
+/* ── Press: acknowledged the instant the pointer goes down (§1) ── */
+body.cursor-press #cursor-dot i {
+  width: calc(var(--cursor-size) * 1.5);
+  height: calc(var(--cursor-size) * 1.5);
+  transition-duration: var(--t-press);
 }
 
-body.cursor-click #cursor-aura {
-  width: 24px;
-  height: 24px;
+body.cursor-press #cursor-aura i {
+  width: 1.5rem;
+  height: 1.5rem;
   opacity: 0.6;
+  transition-duration: var(--t-press);
+}
+
+/* ── No cursor on touch — by input type, not by viewport width ── */
+@media (pointer: coarse) {
+  #cursor-dot,
+  #cursor-aura {
+    display: none;
+  }
 }

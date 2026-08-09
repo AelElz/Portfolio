@@ -1,20 +1,76 @@
 /* ============================================================
-   animations.css — Shared keyframe animations
+   animations.css — Accessibility overrides. Loads late, so it
+   reaches every stylesheet (§9 tier 4).
+
+   Reduced motion means a gentler, non-vestibular equivalent —
+   NOT no feedback. Travel, loops and parallax go; opacity and
+   colour changes that aid comprehension stay (§14).
    ============================================================ */
 
-@keyframes fade-up {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Reduced motion — respect user OS preference */
 @media (prefers-reduced-motion: reduce) {
+
+  /* Smooth scrolling is vestibular motion too, and it survives a
+     blanket transition override — it has to be named. */
+  html,
+  .chat-messages {
+    scroll-behavior: auto;
+  }
+
+  /* ── Stop every ambient loop ── */
+  #hero::before,
+  .orbit-ring,
+  .about-avatar-ring,
+  .chat-orbit,
+  .chat-notify,
+  .scroll-line,
+  .status-dot,
+  .typing-dot {
+    animation: none !important;
+  }
+
+  /* The typing indicator still has to read as "in progress". */
+  .typing-dot {
+    opacity: 0.55;
+  }
+
+  /* ── Drop travel, keep the state change ── */
+  .project-card:hover,
+  .skill-card:hover,
+  .video-card:hover,
+  .contact-link:hover,
+  .skill-link:hover,
+  .about-avatar-wrap:hover .about-avatar-ring::before {
+    transform: none;
+  }
+
+  .project-card::after {
+    transition: opacity var(--t-state) var(--ease-out);
+  }
+
+  /* Press feedback becomes a dimming rather than a scale — still
+     instant, still on pointer-down, just not spatial (§1 + §14). */
+  .btn-primary:active,
+  .btn-ghost:active,
+  .nav-btn:active,
+  .nav-menu-link:active,
+  .contact-link:active,
+  .chip:active,
+  .skill-link:active,
+  .project-link:active,
+  .back-link:active,
+  .nav-logo-img:active,
+  #chat-send:active,
+  #chat-trigger:active,
+  #nav-menu-toggle:active {
+    transform: none;
+    opacity: 0.65;
+  }
+
+  /* No elastic, no overshoot anywhere. */
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-timing-function: var(--ease-out) !important;
   }
 }

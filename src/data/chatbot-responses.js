@@ -25,7 +25,7 @@ export const RESPONSES = [
   },
   {
     keys: ['contact', 'email', 'reach', 'linkedin', 'github', 'touch', 'connect'],
-    reply: "Best ways to reach Ayoub:<br>📧 ayoub2elazhari@gmail.com<br>💼 <a href='https://www.linkedin.com/in/ayoub-elazhari-958bb1233' target='_blank' style='color:var(--c-gold-1)'>LinkedIn</a><br>🐙 <a href='https://github.com/AelElz' target='_blank' style='color:var(--c-gold-1)'>GitHub</a>",
+    reply: "Best ways to reach Ayoub:<br>📧 ayoub2elazhari@gmail.com<br>💼 <a href='https://www.linkedin.com/in/ayoub-elazhari-958bb1233' target='_blank'>LinkedIn</a><br>🐙 <a href='https://github.com/AelElz' target='_blank'>GitHub</a>",
   },
   {
     keys: ['creative', 'video', 'motion', 'design', 'edit', 'director', 'film', 'art direction', 'editing'],

@@ -1,9 +1,10 @@
 /* ============================================================
-   about.css — About section
+   about.css — About section.
+   Sections separate with a hairline, not a background swap:
+   depth belongs to cards, not to bands of the page (§12).
    ============================================================ */
 
 #about {
-  background: var(--c-surface);
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
 }
@@ -11,7 +12,7 @@
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  gap: 5rem;
   align-items: center;
 }
 
@@ -22,34 +23,44 @@
 }
 
 .about-avatar {
-  width: 200px;
-  height: 200px;
+  width: 12.5rem;
+  height: 12.5rem;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 214, 10, 0.25);
-  box-shadow: 0 0 0 8px rgba(255, 214, 10, 0.05);
+  filter: grayscale(1) contrast(1.05);
+  border: 1px solid var(--tint-hairline);
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.02);
+  transition: filter var(--t-chrome) var(--ease-out),
+              border-color var(--t-state) var(--ease-out);
 }
 
-/* Spinning orbit ring */
+.about-avatar-wrap:hover .about-avatar {
+  border-color: var(--tint-edge);
+}
+
+/* Orbit ring — rotation only, and it yields to the pointer. */
 .about-avatar-ring {
   position: absolute;
   inset: -14px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 214, 10, 0.2);
-  animation: spin-slow 12s linear infinite;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  animation: spin-slow 20s linear infinite;
+  will-change: transform;
+  pointer-events: none;
 }
 
 .about-avatar-ring::before {
   content: '';
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--c-gold-1);
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
   border-radius: 50%;
   top: 50%;
-  left: -4px;
+  left: -3.5px;
   transform: translateY(-50%) scale(1);
-  transition: all 0.3s ease;
+  transition: transform var(--t-chrome) var(--ease-out),
+              box-shadow var(--t-chrome) var(--ease-out);
 }
 
 @keyframes spin-slow {
@@ -57,38 +68,29 @@
   to   { transform: rotate(360deg); }
 }
 
-/* Hover — pause ring and pulse the dot */
+/* Hover — the ring stops and its body swells toward the pointer (§8) */
 .about-avatar-wrap:hover .about-avatar-ring {
   animation-play-state: paused;
 }
 
 .about-avatar-wrap:hover .about-avatar-ring::before {
-  transform: translateY(-50%) scale(1.8);
-  box-shadow: 0 0 12px 2px var(--c-gold-1);
+  transform: translateY(-50%) scale(1.7);
+  box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.4);
 }
 
 /* ── Text ── */
 .about-text .section-body + .section-body {
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 
 .about-text strong {
   color: var(--c-text-1);
+  font-weight: 600;
 }
 
 .about-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 28px;
-}
-
-/* Edge glow when the cursor touches a tag pill */
-.about-tags .tag {
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-.about-tags .tag:hover {
-  border-color: var(--c-gold-1);
-  box-shadow: 0 0 12px 1px rgba(255, 214, 10, 0.7);
+  gap: 0.5rem;
+  margin-top: 1.75rem;
 }

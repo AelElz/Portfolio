@@ -7,26 +7,29 @@
 }
 
 .video-section-title {
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 }
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(21.25rem, 1fr));
+  gap: 2rem;
 }
 
 .video-card {
-  background: var(--c-surface);
+  background: var(--mat-raised);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
-  padding: 16px;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  padding: 1rem;
+  transition: border-color var(--t-state) var(--ease-out),
+              transform var(--t-state) var(--ease-out),
+              box-shadow var(--t-state) var(--ease-out);
 }
 
 .video-card:hover {
-  border-color: rgba(255, 214, 10, 0.35);
+  border-color: var(--tint-edge);
   transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
 }
 
 .video-embed {
@@ -35,7 +38,7 @@
   padding-top: 56.25%; /* 16:9 */
   border-radius: var(--radius-sm);
   overflow: hidden;
-  background: var(--c-surface-2);
+  background: var(--mat-sunken);
 }
 
 .video-embed iframe {
@@ -47,16 +50,17 @@
 }
 
 .video-title {
-  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
   font-weight: 600;
   color: var(--c-text-1);
-  margin-top: 16px;
-  line-height: 1.4;
+  margin-top: 1rem;
 }
 
 .video-desc {
-  font-size: 14px;
+  font-size: var(--ty-caption-size);
+  line-height: var(--ty-caption-lh);
   color: var(--c-text-3);
-  line-height: 1.6;
-  margin-top: 8px;
+  margin-top: 0.5rem;
 }

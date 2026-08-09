@@ -13,8 +13,8 @@ export default function DeepDivePage({ eyebrow, title, intro, backTo = '/#skills
         <div className="container">
           <Link to={backTo} className="back-link">← Back to Portfolio</Link>
           <Reveal as="p" className="section-label">{eyebrow}</Reveal>
-          <Reveal as="h1" className="section-title" delay={0.1}>{title}</Reveal>
-          <Reveal as="p" className="section-body" delay={0.2}>{intro}</Reveal>
+          <Reveal as="h1" className="section-title" delay={0.06}>{title}</Reveal>
+          <Reveal as="p" className="section-body" delay={0.12}>{intro}</Reveal>
         </div>
       </section>
 
@@ -32,7 +32,7 @@ export default function DeepDivePage({ eyebrow, title, intro, backTo = '/#skills
               </Reveal>
 
               <div className="deepdive-grid">
-                <Reveal as="div" delay={0.1}>
+                <Reveal as="div" delay={0.06}>
                   <h3 className="deepdive-subhead">What it is</h3>
                   <p className="deepdive-body">{item.what}</p>
 
@@ -57,7 +57,7 @@ export default function DeepDivePage({ eyebrow, title, intro, backTo = '/#skills
                   </a>
                 </Reveal>
 
-                <Reveal as="div" className="deepdive-visual" delay={0.2}>
+                <Reveal as="div" className="deepdive-visual" delay={0.12}>
                   <Diagram />
                 </Reveal>
               </div>

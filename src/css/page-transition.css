@@ -1,29 +1,30 @@
 /* ============================================================
-   page-transition.css — Route-change curtain
-   Sits above nav (100) and chatbot (1000), below cursor (9998).
+   page-transition.css — Route-change curtain.
+   Sits above chrome and float, below the pointer (§1 layer model).
    ============================================================ */
 
 .page-curtain {
   position: fixed;
   inset: 0;
-  z-index: 2000;
+  z-index: var(--z-transition);
   pointer-events: none;
   background:
-    radial-gradient(60% 45% at 50% 50%, rgba(255, 233, 121, 0.05), transparent 70%),
-    #101010;
+    radial-gradient(60% 45% at 50% 50%, rgba(255, 255, 255, 0.04), transparent 70%),
+    var(--mat-base);
   will-change: transform;
 }
 
+/* Leading and trailing edges — the material catching light as it moves. */
 .page-curtain::before,
 .page-curtain::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 5%, var(--c-gold-1) 50%, transparent 95%);
-  opacity: 0.7;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, var(--tint-glow) 50%, transparent 95%);
+  opacity: 0.6;
 }
 
 .page-curtain::before { top: 0; }
-.page-curtain::after { bottom: 0; }
+.page-curtain::after  { bottom: 0; }

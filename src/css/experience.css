@@ -1,23 +1,22 @@
 /* ============================================================
-   experience.css — Experience timeline section
+   experience.css — Experience timeline.
    ============================================================ */
 
 .creative-header {
-  margin-bottom: 60px;
+  margin-bottom: 3.75rem;
 }
 
 .exp-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 /* ── Row ── */
 .exp-item {
   display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 40px;
-  padding: 32px 0;
+  grid-template-columns: 10rem 1fr;
+  gap: 2.5rem;
+  padding: 2rem 0;
   border-top: 1px solid var(--c-border);
   position: relative;
 }
@@ -26,54 +25,54 @@
   border-bottom: 1px solid var(--c-border);
 }
 
-/* Date glows gold on row hover */
 .exp-date {
-  font-size: 13px;
+  font-size: var(--ty-caption-size);
   color: var(--c-text-3);
-  padding-top: 4px;
+  padding-top: 0.25rem;
   font-variant-numeric: tabular-nums;
-  transition: color 0.3s ease;
+  transition: color var(--t-state) var(--ease-out);
 }
 
 .exp-item:hover .exp-date {
-  color: var(--c-gold-1);
+  color: var(--c-text-1);
 }
 
 /* ── Content ── */
 .exp-role {
-  font-size: 18px;
+  font-size: 1.125rem;
+  line-height: var(--ty-headline-lh);
+  letter-spacing: var(--ty-headline-ls);
   font-weight: 600;
   color: var(--c-text-1);
-  margin-bottom: 4px;
-  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
 }
 
 .exp-company {
-  font-size: 14px;
-  color: var(--c-gold-1);
-  margin-bottom: 10px;
+  font-size: var(--ty-caption-size);
   font-weight: 500;
+  color: var(--c-text-2);
+  margin-bottom: 0.625rem;
 }
 
 .exp-body {
-  font-size: 15px;
+  font-size: var(--ty-callout-size);
+  line-height: var(--ty-callout-lh);
   color: var(--c-text-2);
-  line-height: 1.6;
 }
 
 /* ── Tech tags ── */
 .exp-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
+  gap: 0.375rem;
+  margin-top: 0.75rem;
 }
 
 .exp-tag {
-  font-size: 12px;
-  padding: 4px 10px;
+  font-size: var(--ty-label-size);
+  padding: 0.25rem 0.625rem;
   border-radius: 4px;
-  background: var(--c-surface-2);
+  background: var(--mat-raised);
   color: var(--c-text-3);
   border: 1px solid var(--c-border);
 }

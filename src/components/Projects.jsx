@@ -1,7 +1,9 @@
 import Reveal from './Reveal';
 import { PROJECTS } from '../data/projects';
 
-const DELAYS = [0, 0.1, 0.2, 0.1, 0.2];
+/* Stagger caps at 0.06s per item — enough to read as a sequence,
+   not enough to make anyone wait for it (§3.3). */
+const DELAYS = [0, 0.06, 0.12];
 
 export default function Projects() {
   return (
@@ -9,8 +11,8 @@ export default function Projects() {
       <div className="container">
         <div className="projects-header">
           <Reveal as="p" className="section-label">Projects</Reveal>
-          <Reveal as="h2" className="section-title" delay={0.1}>What I've built</Reveal>
-          <Reveal as="p" className="section-body" delay={0.2}>
+          <Reveal as="h2" className="section-title" delay={0.06}>What I've built</Reveal>
+          <Reveal as="p" className="section-body" delay={0.12}>
             Every project from the 1337 curriculum is built from scratch, no frameworks, no shortcuts.
           </Reveal>
         </div>

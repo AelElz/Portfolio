@@ -1,5 +1,7 @@
 /* ============================================================
-   nav.css — Top navigation bar
+   nav.css — Chrome layer. A translucent material that content
+   scrolls under, not an opaque strip that eats a band of the
+   viewport (§12).
    ============================================================ */
 
 nav {
@@ -11,79 +13,189 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 48px;
-  z-index: 100;
-  transition: background 0.4s ease, backdrop-filter 0.4s ease;
+  padding: 0 var(--gutter-wide);
+  z-index: var(--z-chrome);
+  transition: background var(--t-chrome) var(--ease-out),
+              backdrop-filter var(--t-chrome) var(--ease-out);
 }
 
+/* No blur until there is something behind it to blur. */
 nav.scrolled {
-  background: rgba(10, 10, 10, 0.78);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--c-border);
+  background: var(--mat-chrome);
+  backdrop-filter: var(--blur-chrome);
+  -webkit-backdrop-filter: var(--blur-chrome);
+  box-shadow: var(--shadow-chrome);
+}
+
+/* Scroll edge effect, not a hard divider — a 1px line asserts the
+   boundary the translucency is trying to dissolve (§12). */
+nav.scrolled::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 1.5rem;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.5), transparent);
 }
 
 /* ── Logo ── */
 .nav-logo-img {
-  width: 44px;
-  height: 44px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
-  border: 2px solid rgba(255, 214, 10, 0.4);
+  border: 1px solid var(--tint-hairline);
   object-fit: cover;
-  display: block;
-  transition: all 0.3s ease;
+  filter: grayscale(1) contrast(1.05);
+  transition: border-color var(--t-state) var(--ease-out),
+              opacity var(--t-state) var(--ease-out);
 }
 
 .nav-logo-img:hover {
-  transform: scale(1.05);
-  border-color: var(--c-gold-1);
-  box-shadow: 0 0 20px 4px rgba(255, 214, 10, 0.5);
+  border-color: var(--tint-edge);
+  opacity: 0.9;
+}
+
+.nav-logo-img:active {
+  transform: scale(0.96);
+  transition: transform var(--t-press) var(--ease-out);
 }
 
 /* ── Links ── */
 .nav-links {
   display: flex;
-  gap: 36px;
+  gap: 2.25rem;
   list-style: none;
 }
 
 .nav-links a {
-  font-size: 14px;
-  color: var(--c-text-2);
-  transition: color 0.2s ease;
+  position: relative;
+  font-size: var(--ty-caption-size);
   letter-spacing: 0.01em;
+  color: var(--c-text-2);
+  transition: color var(--t-state) var(--ease-out);
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.is-active {
   color: var(--c-text-1);
+}
+
+/* Current section reads as present, not just brighter. */
+.nav-links a.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.4rem;
+  height: 1px;
+  background: var(--tint-edge);
+}
+
+.nav-links a:active {
+  opacity: 0.6;
+  transition: opacity var(--t-press) var(--ease-out);
 }
 
 /* ── Action buttons ── */
 .nav-actions {
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .nav-btn {
-  font-size: 14px;
+  font-size: var(--ty-caption-size);
   font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 980px;
-  border: 1px solid rgba(255, 214, 10, 0.5);
-  color: var(--c-gold-1);
+  padding: 0.5rem 1.125rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--tint-hairline);
+  color: var(--c-text-1);
   background: transparent;
-  transition: all 0.3s ease;
+  white-space: nowrap;
+  transition: background var(--t-state) var(--ease-out),
+              border-color var(--t-state) var(--ease-out),
+              color var(--t-state) var(--ease-out);
 }
 
 .nav-btn:hover {
-  background: rgba(255, 214, 10, 0.1);
-  transform: scale(1.02);
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--on-accent);
 }
 
-/* Fill variant — goes solid on hover */
-.nav-btn.fill-hover:hover {
-  background: var(--g-gold);
-  color: #000;
-  border-color: transparent;
-  box-shadow: 0 4px 15px rgba(255, 214, 10, 0.3);
+/* ── Mobile menu toggle ── */
+#nav-menu-toggle {
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--tint-hairline);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color var(--t-state) var(--ease-out),
+              background var(--t-state) var(--ease-out);
+}
+
+#nav-menu-toggle span {
+  display: block;
+  width: 1rem;
+  height: 1.5px;
+  background: var(--c-text-1);
+  border-radius: 1px;
+  transition: transform var(--t-state) var(--ease-out),
+              opacity var(--t-state) var(--ease-out);
+}
+
+/* The glyph becomes the exit it opens — same object, not a swap (§7). */
+#nav-menu-toggle.is-open span:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+#nav-menu-toggle.is-open span:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+/* ── Mobile menu sheet ── */
+#nav-menu {
+  position: absolute;
+  top: calc(var(--nav-h) - 0.5rem);
+  right: var(--gutter);
+  min-width: 13rem;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  background: var(--mat-sheet);
+  backdrop-filter: var(--blur-sheet);
+  -webkit-backdrop-filter: var(--blur-sheet);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow-sheet);
+}
+
+#nav-menu ul {
+  list-style: none;
+}
+
+.nav-menu-link {
+  display: block;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--ty-callout-size);
+  font-weight: 500;
+  color: var(--c-text-2);
+  transition: background var(--t-state) var(--ease-out),
+              color var(--t-state) var(--ease-out);
+}
+
+.nav-menu-link:hover,
+.nav-menu-link.is-active {
+  background: var(--tint-wash);
+  color: var(--c-text-1);
+}
+
+.nav-menu-external {
+  margin-top: 0.375rem;
+  padding-top: 0.375rem;
+  border-top: 1px solid var(--c-border);
 }

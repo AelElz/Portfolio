@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import Reveal from './Reveal';
 import { SKILLS } from '../data/skills';
 
-const DELAYS = [0.1, 0.2, 0.3, 0.4, 0.1, 0.2];
+/* Stagger caps at 0.06s per item (§3.3). */
+const DELAYS = [0, 0.06, 0.12, 0.18, 0, 0.06];
 
 export default function Skills() {
   return (
@@ -10,7 +11,7 @@ export default function Skills() {
       <div className="container">
         <div className="skills-header">
           <Reveal as="p" className="section-label">Skills</Reveal>
-          <Reveal as="h2" className="section-title" delay={0.1}>What I work with</Reveal>
+          <Reveal as="h2" className="section-title" delay={0.06}>What I work with</Reveal>
         </div>
         <div className="skills-grid">
           {SKILLS.map((skill, i) => (

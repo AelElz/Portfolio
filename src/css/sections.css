@@ -1,4 +1,5 @@
 /* ============================================================
-   sections.css — Scroll-reveal now handled by the <Reveal>
-   component + Framer Motion (see src/components/Reveal.jsx)
+   sections.css — Scroll reveals are handled by the <Reveal>
+   primitive (src/components/Reveal.jsx). Sections do not roll
+   their own entrance animations (§9).
    ============================================================ */

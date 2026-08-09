@@ -1,7 +1,8 @@
 import Reveal from './Reveal';
 import { EXPERIENCE } from '../data/experience';
 
-const DELAYS = [0, 0.1, 0.2];
+/* Stagger caps at 0.06s per item (§3.3). */
+const DELAYS = [0, 0.06, 0.12];
 
 export default function Experience() {
   return (
@@ -9,8 +10,8 @@ export default function Experience() {
       <div className="container">
         <div className="creative-header">
           <Reveal as="p" className="section-label">Experience</Reveal>
-          <Reveal as="h2" className="section-title" delay={0.1}>Two tracks, one mind</Reveal>
-          <Reveal as="p" className="section-body" delay={0.2}>
+          <Reveal as="h2" className="section-title" delay={0.06}>Two tracks, one mind</Reveal>
+          <Reveal as="p" className="section-body" delay={0.12}>
             Engineering and creative work aren't separate careers, they're the same obsession with craft.
           </Reveal>
         </div>

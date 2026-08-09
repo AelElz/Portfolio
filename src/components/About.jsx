@@ -17,17 +17,17 @@ export default function About() {
           </Reveal>
           <div className="about-text">
             <Reveal as="p" className="section-label">About</Reveal>
-            <Reveal as="h2" className="section-title" delay={0.1}>Ayoub Elazhari</Reveal>
-            <Reveal as="p" className="section-body" delay={0.2}>
+            <Reveal as="h2" className="section-title" delay={0.06}>Ayoub Elazhari</Reveal>
+            <Reveal as="p" className="section-body" delay={0.12}>
               I'm a software engineering student at <strong>1337 Coding School</strong> (42 Network, Morocco),
               building low level systems and DevOps infrastructure the hard way, with no hand-holding and no limits.
             </Reveal>
-            <Reveal as="p" className="section-body" delay={0.3}>
+            <Reveal as="p" className="section-body" delay={0.18}>
               Alongside code, I bring 4+ years of creative industry experience, video editing, motion graphics, and
               creative direction for clients including <strong>OCP Group, Hilton Hotels,</strong> and{' '}
               <strong>Cleverlytics</strong>. Two worlds, one mindset.
             </Reveal>
-            <Reveal className="about-tags" delay={0.4}>
+            <Reveal className="about-tags" delay={0.24}>
               {TAGS.map((tag) => (
                 <span key={tag} className="tag">{tag}</span>
               ))}

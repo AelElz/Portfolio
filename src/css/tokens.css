@@ -1,45 +1,171 @@
 /* ============================================================
-   tokens.css — Design tokens
-   Edit this file to retheme the entire site.
-   All other CSS files reference these variables.
+   tokens.css — The single source of truth.
+   Six groups: color · material · motion · type · space · layer.
+   Nothing outside this file declares a raw color, duration,
+   ease, z-index, or type size. See DESIGN.md §2.
    ============================================================ */
 
 :root {
 
-  /* ── Colors ── */
-  --c-bg:          #171717;
-  --c-surface:     #171717;
-  --c-surface-2:   #171717;
-  --c-border:      rgba(255, 255, 255, 0.07);
+  /* ══ 1. COLOR ══════════════════════════════════════════════
+     Monochrome. White is the accent; black is the ground.
+     One ramp, everything else derived from it. */
 
-  /* Gold palette */
-  --c-gold-1:      #ffe979;   /* pure gold       */
-  --c-gold-2:      #ffe5be;   /* warm amber      */
-  --c-gold-3:      #FFE066;   /* bright highlight */
-  --c-gold-4:      #B8860B;   /* deep gold       */
+  --accent:        #FFFFFF;
+  --accent-dim:    #D8D8DC;   /* gradient tail, pressed accent */
+  --accent-deep:   #8E8E93;   /* far end of display gradients */
+  --on-accent:     #000000;   /* text on a filled accent surface */
 
-  /* Gradients */
-  --g-gold:        linear-gradient(135deg, var(--c-gold-1), var(--c-gold-2));
-  --g-gold-soft:   linear-gradient(135deg, rgba(255, 214, 10, 0.12), rgba(255, 159, 10, 0.06));
-  --g-gold-text:   linear-gradient(135deg, var(--c-gold-3), var(--c-gold-1), var(--c-gold-2));
+  /* Alpha derivatives — semantic, never numeric at the call site. */
+  --tint-wash:     rgba(255, 255, 255, 0.05);   /* hover fill      */
+  --tint-hairline: rgba(255, 255, 255, 0.10);   /* quiet borders   */
+  --tint-edge:     rgba(255, 255, 255, 0.28);   /* active borders  */
+  --tint-glow:     rgba(255, 255, 255, 0.45);   /* shadow bloom    */
 
-  /* Text */
-  --c-text-1:      #f5f5f7;
-  --c-text-2:      #a6a6a1;
-  --c-text-3:      #7a7556;
+  --c-border:      rgba(255, 255, 255, 0.08);
 
-  /* ── Typography ── */
-  --font:          -apple-system, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
-  --font-mono:     "SF Mono", "Fira Code", monospace;
+  /* Text — three steps, no more. */
+  --c-text-1:      #F5F5F7;
+  --c-text-2:      #A1A1A6;
+  --c-text-3:      #6E6E73;
 
-  /* ── Layout ── */
-  --nav-h:         64px;
-  --section-gap:   140px;
-  --max-w:         980px;
+  /* Display gradient — white falling to silver. Solid backgrounds only. */
+  --g-accent:      linear-gradient(135deg, #FFFFFF, var(--accent-dim));
+  --g-accent-text: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 42%, var(--accent-deep) 100%);
+  --g-accent-soft: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+
+
+  /* ══ 2. MATERIAL ═══════════════════════════════════════════
+     Weight encodes hierarchy. Opaque carries content;
+     translucent is chrome that content scrolls under. */
+
+  --mat-base:      #0A0A0A;                    /* page               */
+  --mat-raised:    #141414;                    /* cards, above base  */
+  --mat-sunken:    #060606;                    /* insets, video wells */
+  --mat-chrome:    rgba(10, 10, 10, 0.72);     /* nav                */
+  --mat-sheet:     rgba(20, 20, 20, 0.88);     /* chat panel — heavier than
+                                                  chrome: it's the focused
+                                                  surface over busy content */
+
+  --blur-chrome:   blur(20px) saturate(180%);
+  --blur-sheet:    blur(24px) saturate(180%);
+
+  /* Bigger surface reads as thicker: stronger blur, deeper shadow. */
+  --shadow-card:   0 20px 60px rgba(0, 0, 0, 0.45);
+  --shadow-sheet:  0 24px 70px rgba(0, 0, 0, 0.55);
+  --shadow-chrome: 0 1px 24px rgba(0, 0, 0, 0.35);
+
+
+  /* ══ 3. MOTION ═════════════════════════════════════════════
+     Three durations, three eases. Springs live in
+     src/motion/springs.js — these are for discrete CSS state only. */
+
+  --t-press:       100ms;   /* pointer-down feedback  */
+  --t-state:       180ms;   /* hover, color, border   */
+  --t-chrome:      320ms;   /* material, blur ramps   */
+
+  --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in:       cubic-bezier(0.64, 0, 0.78, 0);   /* inverse of --ease-out */
+  --ease-both:     cubic-bezier(0.76, 0, 0.24, 1);
+
+
+  /* ══ 4. TYPE ═══════════════════════════════════════════════
+     System font — it already ships optical sizing and tracking
+     tables. Sizes in rem so the user's text-size setting works.
+     Tracking is size-specific: large negative, body zero, small positive. */
+
+  --font:      -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+               "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, "Fira Code", monospace;
+
+  --ty-display-size: clamp(3rem, 7vw, 5.5rem);
+  --ty-display-lh:   1.04;
+  --ty-display-ls:   -0.04em;
+
+  --ty-title-size:   clamp(2rem, 4vw, 3.25rem);
+  --ty-title-lh:     1.1;
+  --ty-title-ls:     -0.03em;
+
+  --ty-headline-size: 1.25rem;
+  --ty-headline-lh:   1.3;
+  --ty-headline-ls:   -0.02em;
+
+  --ty-body-lg-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  --ty-body-lg-lh:   1.55;
+  --ty-body-lg-ls:   -0.01em;
+
+  --ty-body-size:    1.0625rem;
+  --ty-body-lh:      1.65;
+  --ty-body-ls:      0;
+
+  --ty-callout-size: 0.9375rem;
+  --ty-callout-lh:   1.6;
+  --ty-callout-ls:   0;
+
+  --ty-caption-size: 0.8125rem;
+  --ty-caption-lh:   1.5;
+  --ty-caption-ls:   0.01em;
+
+  --ty-label-size:   0.75rem;
+  --ty-label-lh:     1.2;
+  --ty-label-ls:     0.14em;
+
+
+  /* ══ 5. SPACE ══════════════════════════════════════════════
+     rem, so layout scales with the text (§15). */
+
+  --nav-h:         4rem;
+  --section-gap:   8.75rem;
+  --max-w:         61.25rem;
+  --gutter:        1.5rem;
+  --gutter-wide:   3rem;
+  --grid-gap:      1.25rem;
+
   --radius:        18px;
   --radius-sm:     10px;
+  --radius-pill:   980px;
 
-  /* ── Cursor ── */
-  --cursor-size:   12px;
-  --cursor-aura:   40px;
+
+  /* ══ 6. LAYER ══════════════════════════════════════════════
+     Six layers. No z-index outside this table. */
+
+  --z-base:        0;
+  --z-raised:      1;
+  --z-chrome:      100;
+  --z-float:       1000;
+  --z-transition:  2000;
+  --z-pointer:     9000;
+
+
+  /* ── Cursor geometry ── */
+  --cursor-size:   10px;
+  --cursor-aura:   38px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-gap: 5.5rem;
+    --grid-gap:    1rem;
+  }
+}
+
+/* Frostier, not translucent, when the user asks for it (§14). */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --mat-chrome: var(--mat-base);
+    --mat-sheet:  var(--mat-raised);
+    --blur-chrome: none;
+    --blur-sheet:  none;
+  }
+}
+
+/* Near-solid surfaces with defined borders (§14). */
+@media (prefers-contrast: more) {
+  :root {
+    --c-border:      rgba(255, 255, 255, 0.24);
+    --tint-hairline: rgba(255, 255, 255, 0.32);
+    --tint-edge:     rgba(255, 255, 255, 0.55);
+    --c-text-2:      #C9C9CE;
+    --c-text-3:      #9A9AA0;
+  }
 }
