@@ -14,16 +14,16 @@ export const DESIGN_CLIENTS = [
     tagline: 'Brand designs and a full UI/UX landing page for a digital service company.',
     website: 'https://claro-xi.vercel.app/',
     uiux: {
-      label: 'UI / UX — Landing Page',
+      label: 'UI / UX Landing Page',
       image: '/Design/web/Landing Page.jpg',
-      alt: 'Claro Digital Service landing page — UI/UX design',
+      alt: 'Claro Digital Service landing page, UI/UX design',
     },
     designs: [
-      { image: '/Design/web/Design 1.jpg', alt: 'Claro Digital Service — design 1' },
-      { image: '/Design/web/Design 2.jpg', alt: 'Claro Digital Service — design 2' },
-      { image: '/Design/web/Design 3.jpg', alt: 'Claro Digital Service — design 3' },
-      { image: '/Design/web/Design 4.jpg', alt: 'Claro Digital Service — design 4' },
-      { image: '/Design/web/Design 5.jpg', alt: 'Claro Digital Service — design 5' },
+      { image: '/Design/web/Design 1.jpg', alt: 'Claro Digital Service design 1' },
+      { image: '/Design/web/Design 2.jpg', alt: 'Claro Digital Service design 2' },
+      { image: '/Design/web/Design 3.jpg', alt: 'Claro Digital Service design 3' },
+      { image: '/Design/web/Design 4.jpg', alt: 'Claro Digital Service design 4' },
+      { image: '/Design/web/Design 5.jpg', alt: 'Claro Digital Service design 5' },
     ],
   },
 ];

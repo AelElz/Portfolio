@@ -36,7 +36,7 @@ export function ComposeDiagram() {
 
 const LAYERS = [
   { label: 'Firewall (ufw)', sub: 'default-deny inbound' },
-  { label: 'SSH — keys only', sub: 'root login disabled' },
+  { label: 'SSH: keys only', sub: 'root login disabled' },
   { label: 'Fail2ban', sub: 'auto-bans repeat failures' },
   { label: 'Least-privilege users', sub: 'sudo, not root' },
 ];

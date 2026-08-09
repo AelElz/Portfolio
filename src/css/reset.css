@@ -71,12 +71,13 @@ section {
 /* ── Type scale ──
    Hierarchy is weight + size + leading as a set (§15). */
 
+/* Plain SF Pro, sentence case — hierarchy comes from weight and colour,
+   not from dressing the label up as a second typeface. */
 .section-label {
   font-size: var(--ty-label-size);
   line-height: var(--ty-label-lh);
   letter-spacing: var(--ty-label-ls);
   font-weight: 600;
-  text-transform: uppercase;
   color: var(--c-text-3);
   margin-bottom: 0.875rem;
 }

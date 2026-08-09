@@ -39,7 +39,7 @@
 }
 
 .chat-trigger-icon {
-  font-family: var(--font-mono);
+  font-family: var(--font);
   font-size: var(--ty-caption-size);
   font-weight: 600;
   color: var(--c-text-1);

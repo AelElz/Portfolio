@@ -21,7 +21,7 @@ export default function VisualDesignPage() {
             Design that ships,<br />brands that stick.
           </Reveal>
           <Reveal as="p" className="section-body" delay={0.12}>
-            Brand systems, campaign visuals, and full UI/UX — designed end to end and
+            Brand systems, campaign visuals, and full UI/UX, designed end to end and
             shipped for real clients. Here's the client work, straight from production.
           </Reveal>
         </div>

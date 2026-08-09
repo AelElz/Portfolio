@@ -77,9 +77,9 @@
      tables. Sizes in rem so the user's text-size setting works.
      Tracking is size-specific: large negative, body zero, small positive. */
 
-  --font:      -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+  /* One face everywhere: SF Pro. No mono accents, no second family. */
+  --font:      "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
                "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, "Fira Code", monospace;
 
   --ty-display-size: clamp(3rem, 7vw, 5.5rem);
   --ty-display-lh:   1.04;
@@ -109,9 +109,9 @@
   --ty-caption-lh:   1.5;
   --ty-caption-ls:   0.01em;
 
-  --ty-label-size:   0.75rem;
+  --ty-label-size:   0.8125rem;
   --ty-label-lh:     1.2;
-  --ty-label-ls:     0.14em;
+  --ty-label-ls:     0.01em;
 
 
   /* ══ 5. SPACE ══════════════════════════════════════════════

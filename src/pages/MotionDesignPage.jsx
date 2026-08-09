@@ -19,7 +19,7 @@ export default function MotionDesignPage() {
             Motion graphics & cinematic work
           </Reveal>
           <Reveal as="p" className="section-body" delay={0.12}>
-            The other track — 4+ years of video editing, motion graphics, and creative direction
+            The other track: 4+ years of video editing, motion graphics, and creative direction
             for institutional and enterprise clients. Same craft mindset as the code, different medium.
           </Reveal>
         </div>

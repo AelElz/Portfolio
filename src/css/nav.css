@@ -65,8 +65,16 @@ nav.scrolled::after {
 /* ── Links ── */
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 2.25rem;
   list-style: none;
+}
+
+/* Every item is the same flex row, so the one with a chevron sits on
+   exactly the same line as the ones without. */
+.nav-links li {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a {
@@ -101,12 +109,15 @@ nav.scrolled::after {
 /* ── Skills dropdown ── */
 .nav-dd-wrap {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
 }
 
+/* The chevron hangs off the side of the word without taking layout
+   space, so "Skills" keeps exactly the same rhythm as its neighbours. */
 .nav-dd-toggle {
+  position: absolute;
+  left: calc(100% + 0.2rem);
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
