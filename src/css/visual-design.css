@@ -63,11 +63,120 @@
   box-shadow: var(--shadow-card);
 }
 
-/* ── The alternating list ── */
-.design-list {
+/* ── Carousel — the drag-to-swipe rail (§7.2) ── */
+.design-carousel {
+  outline: none;
+}
+
+.design-carousel:focus-visible {
+  outline: 2px solid var(--tint-edge);
+  outline-offset: 6px;
+  border-radius: var(--radius);
+}
+
+.design-viewport {
+  position: relative;
+  overflow: hidden;
+  /* Bleed room so frame shadows aren't clipped by the overflow. */
+  margin: 0 calc(-1 * var(--gutter) / 2);
+  padding: 0 calc(var(--gutter) / 2);
+}
+
+.design-track {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
+  touch-action: pan-y;   /* the rail owns horizontal, the page keeps vertical */
+  cursor: grab;
+  will-change: transform;
+}
+
+.design-track:active {
+  cursor: grabbing;
+}
+
+.design-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+/* Inside the rail the frame is a slide, not a hover card — lifting it
+   during a drag would fight the gesture. */
+.design-slide .design-frame:hover {
+  transform: none;
+}
+
+/* Arrows — click steps one slide; the drag is the primary gesture and
+   these make it discoverable (and reachable by keyboard). */
+.design-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mat-sheet);
+  backdrop-filter: var(--blur-chrome);
+  -webkit-backdrop-filter: var(--blur-chrome);
+  border: 1px solid var(--tint-hairline);
+  color: var(--c-text-1);
+  z-index: var(--z-raised);
+  transition: border-color var(--t-state) var(--ease-out),
+              background var(--t-state) var(--ease-out),
+              opacity var(--t-state) var(--ease-out);
+}
+
+.design-arrow svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.design-arrow:hover:not(:disabled) {
+  border-color: var(--tint-edge);
+  background: var(--mat-raised);
+}
+
+.design-arrow:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.94);
+  transition: transform var(--t-press) var(--ease-out);
+}
+
+.design-arrow:disabled {
+  opacity: 0.3;
+  cursor: auto;
+}
+
+.design-arrow-prev { left: 1rem; }
+.design-arrow-next { right: 1rem; }
+
+/* Dots — where am I, where can I go (§16 Wayfinding). */
+.design-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+}
+
+.design-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: var(--tint-hairline);
+  transition: background var(--t-state) var(--ease-out),
+              transform var(--t-state) var(--ease-out);
+}
+
+.design-dot:hover {
+  background: var(--tint-edge);
+}
+
+.design-dot.is-active {
+  background: var(--accent);
+  transform: scale(1.25);
 }
 
 @media (max-width: 768px) {
@@ -76,7 +185,11 @@
     align-items: flex-start;
   }
 
-  .design-list {
-    gap: 1.25rem;
+  .design-arrow {
+    width: 2.25rem;
+    height: 2.25rem;
   }
+
+  .design-arrow-prev { left: 0.5rem; }
+  .design-arrow-next { right: 0.5rem; }
 }

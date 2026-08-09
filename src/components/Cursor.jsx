@@ -7,6 +7,7 @@ const HOVER_SELECTOR = [
   '.nav-logo-img', '.nav-btn', '.nav-menu-link',
   '.about-avatar-wrap', '.exp-item',
   '.tag', '.chip',
+  '.design-track', '.design-arrow', '.design-dot',
 ].join(', ');
 
 export default function Cursor() {

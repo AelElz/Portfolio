@@ -21,6 +21,9 @@
   --tint-hairline: rgba(255, 255, 255, 0.10);   /* quiet borders   */
   --tint-edge:     rgba(255, 255, 255, 0.28);   /* active borders  */
   --tint-glow:     rgba(255, 255, 255, 0.45);   /* shadow bloom    */
+  --tint-faint:    rgba(255, 255, 255, 0.07);   /* decorative rings, faint lines */
+  --glow-core:     rgba(255, 255, 255, 0.30);   /* orbit body glows */
+  --edge-fade:     rgba(10, 10, 10, 0.5);       /* scroll edge smudge under chrome */
 
   --c-border:      rgba(255, 255, 255, 0.08);
 
@@ -142,6 +145,47 @@
   --cursor-aura:   38px;
 }
 
+/* ══ LIGHT THEME ═══════════════════════════════════════════
+   The same system, inverted: black becomes the accent, white
+   the ground. Set via data-theme on <html> (see index.html
+   bootstrap + the nav toggle). Only tokens change — no other
+   file knows which theme is active. */
+
+:root[data-theme='light'] {
+  --accent:        #000000;
+  --accent-dim:    #3A3A3C;
+  --accent-deep:   #86868B;
+  --on-accent:     #FFFFFF;
+
+  --tint-wash:     rgba(0, 0, 0, 0.04);
+  --tint-hairline: rgba(0, 0, 0, 0.12);
+  --tint-edge:     rgba(0, 0, 0, 0.30);
+  --tint-glow:     rgba(0, 0, 0, 0.30);
+  --tint-faint:    rgba(0, 0, 0, 0.08);
+  --glow-core:     rgba(0, 0, 0, 0.22);
+  --edge-fade:     rgba(245, 245, 247, 0.55);
+
+  --c-border:      rgba(0, 0, 0, 0.10);
+
+  --c-text-1:      #1D1D1F;
+  --c-text-2:      #55555A;
+  --c-text-3:      #86868B;
+
+  --g-accent:      linear-gradient(135deg, #000000, var(--accent-dim));
+  --g-accent-text: linear-gradient(135deg, #000000 0%, #000000 42%, var(--accent-deep) 100%);
+  --g-accent-soft: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.015));
+
+  --mat-base:      #F5F5F7;
+  --mat-raised:    #FFFFFF;
+  --mat-sunken:    #E8E8EA;
+  --mat-chrome:    rgba(245, 245, 247, 0.72);
+  --mat-sheet:     rgba(255, 255, 255, 0.88);
+
+  --shadow-card:   0 20px 60px rgba(0, 0, 0, 0.10);
+  --shadow-sheet:  0 24px 70px rgba(0, 0, 0, 0.16);
+  --shadow-chrome: 0 1px 24px rgba(0, 0, 0, 0.06);
+}
+
 @media (max-width: 768px) {
   :root {
     --section-gap: 5.5rem;
@@ -167,5 +211,13 @@
     --tint-edge:     rgba(255, 255, 255, 0.55);
     --c-text-2:      #C9C9CE;
     --c-text-3:      #9A9AA0;
+  }
+
+  :root[data-theme='light'] {
+    --c-border:      rgba(0, 0, 0, 0.35);
+    --tint-hairline: rgba(0, 0, 0, 0.40);
+    --tint-edge:     rgba(0, 0, 0, 0.60);
+    --c-text-2:      #3A3A3C;
+    --c-text-3:      #55555A;
   }
 }

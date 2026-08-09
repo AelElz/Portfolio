@@ -36,7 +36,10 @@
 #cursor-dot i {
   width: var(--cursor-size);
   height: var(--cursor-size);
-  background: var(--accent);
+  /* Always literal white: with difference blending, white inverts
+     whatever is behind it in BOTH themes. A theme-aware accent here
+     would vanish on its own background. */
+  background: #FFFFFF;
   mix-blend-mode: difference;
   transition: width var(--t-state) var(--ease-out),
               height var(--t-state) var(--ease-out),

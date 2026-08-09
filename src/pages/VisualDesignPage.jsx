@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal';
+import DesignCarousel from '../components/DesignCarousel';
 import { DESIGN_CLIENTS } from '../data/visual-design';
 
 export default function VisualDesignPage() {
@@ -61,22 +62,16 @@ export default function VisualDesignPage() {
               </div>
             )}
 
-            {/* Designs — each one slides in from an alternating side (§8:
-                the entrance direction telegraphs the rhythm of the list) */}
+            {/* Designs — a drag-to-swipe rail: grab a slide with the cursor
+                and throw it left or right; arrows and dots step it too */}
             <div className="design-group">
               <Reveal as="p" className="section-label">Brand & Campaign Designs</Reveal>
-              <div className="design-list">
-                {client.designs.map((design, i) => (
-                  <Reveal
-                    as="div"
-                    key={design.image}
-                    className="design-frame"
-                    from={i % 2 === 0 ? 'left' : 'right'}
-                  >
-                    <img src={design.image} alt={design.alt} loading="lazy" decoding="async" />
-                  </Reveal>
-                ))}
-              </div>
+              <Reveal as="div" delay={0.06}>
+                <DesignCarousel
+                  items={client.designs}
+                  label={`${client.name} designs`}
+                />
+              </Reveal>
             </div>
           </div>
         </section>

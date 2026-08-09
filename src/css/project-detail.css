@@ -175,7 +175,7 @@
 }
 
 .diagram-hub {
-  fill: rgba(255, 255, 255, 0.06);
+  fill: var(--tint-wash);
   stroke: var(--accent);
   stroke-width: 1.5;
 }
@@ -230,7 +230,7 @@
 }
 
 .diagram-ray {
-  stroke: rgba(255, 255, 255, 0.3);
+  stroke: var(--tint-edge);
   stroke-width: 1;
 }
 
@@ -248,7 +248,7 @@
 
 .raycast-column {
   flex: 1;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(180deg, var(--tint-glow), var(--tint-hairline));
   border-radius: 3px 3px 0 0;
   opacity: 0.85;
 }

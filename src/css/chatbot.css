@@ -81,7 +81,7 @@
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--tint-faint);
   animation: chat-spin 12s linear infinite;
   pointer-events: none;
   will-change: transform;
@@ -97,7 +97,7 @@
   top: 50%;
   left: -2px;
   transform: translateY(-50%);
-  box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 6px 2px var(--glow-core);
 }
 
 @keyframes chat-spin {
@@ -365,7 +365,7 @@
 
 #chat-input:focus {
   border-color: var(--tint-edge);
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--tint-wash);
 }
 
 #chat-send {

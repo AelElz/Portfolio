@@ -7,6 +7,22 @@
    colour changes that aid comprehension stay (§14).
    ============================================================ */
 
+/* ── Theme switch — ease the brightness jump (§14) ──
+   The nav toggle adds this class for ~400ms around a dark↔light
+   swap so every surface cross-fades instead of hard-cutting. */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: background-color var(--t-chrome) var(--ease-out),
+              background var(--t-chrome) var(--ease-out),
+              color var(--t-chrome) var(--ease-out),
+              border-color var(--t-chrome) var(--ease-out),
+              fill var(--t-chrome) var(--ease-out),
+              stroke var(--t-chrome) var(--ease-out),
+              box-shadow var(--t-chrome) var(--ease-out) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   /* Smooth scrolling is vestibular motion too, and it survives a

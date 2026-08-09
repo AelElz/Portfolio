@@ -143,3 +143,14 @@
   opacity: 0.34;
   transform: scale(1.06);
 }
+
+/* Light theme: the brightened ghost icons wash out on white cards —
+   pull them dark instead. */
+:root[data-theme='light'] .skill-icon-bg {
+  filter: grayscale(1) brightness(0.55);
+  opacity: 0.14;
+}
+
+:root[data-theme='light'] .skill-card:hover .skill-icon-bg {
+  opacity: 0.2;
+}

@@ -29,7 +29,7 @@
   position: absolute;
   width: min(37.5rem, 90vw);
   height: min(37.5rem, 90vw);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--tint-faint) 0%, transparent 70%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -62,8 +62,8 @@
   margin: -4px 0 0 -4px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 16px 4px rgba(255, 255, 255, 0.28),
-              0 0 48px 18px rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 16px 4px var(--glow-core),
+              0 0 48px 18px var(--tint-faint);
 }
 
 .orbit-ring {
@@ -71,7 +71,7 @@
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid var(--tint-faint);
   transform: translate(-50%, -50%);
   will-change: transform;
 }
@@ -87,7 +87,7 @@
   border-radius: 50%;
   background: var(--accent);
   transform: translateY(-50%);
-  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 8px 2px var(--glow-core);
 }
 
 .orbit-ring-1 {
@@ -96,10 +96,11 @@
   animation: orbit-spin 20s linear infinite;
 }
 
+/* Outer rings fade — depth falloff derived from the same token. */
 .orbit-ring-2 {
   width: 25rem;
   height: 25rem;
-  border-color: rgba(255, 255, 255, 0.07);
+  border-color: color-mix(in srgb, var(--tint-faint) 80%, transparent);
   animation: orbit-spin 32s linear infinite reverse;
 }
 
@@ -107,13 +108,13 @@
   width: 5px;
   height: 5px;
   left: -2.5px;
-  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 8px 2px color-mix(in srgb, var(--glow-core) 75%, transparent);
 }
 
 .orbit-ring-3 {
   width: 35rem;
   height: 35rem;
-  border-color: rgba(255, 255, 255, 0.05);
+  border-color: color-mix(in srgb, var(--tint-faint) 60%, transparent);
   animation: orbit-spin 46s linear infinite;
 }
 
@@ -121,13 +122,13 @@
   width: 4px;
   height: 4px;
   left: -2px;
-  box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 6px 2px color-mix(in srgb, var(--glow-core) 60%, transparent);
 }
 
 .orbit-ring-4 {
   width: 45rem;
   height: 45rem;
-  border-color: rgba(255, 255, 255, 0.04);
+  border-color: color-mix(in srgb, var(--tint-faint) 45%, transparent);
   animation: orbit-spin 62s linear infinite reverse;
 }
 
