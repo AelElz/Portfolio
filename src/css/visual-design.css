@@ -1,0 +1,82 @@
+/* ============================================================
+   visual-design.css — Visual Design / UI-UX showcase page.
+   The chrome stays monochrome; the work itself keeps its color —
+   the frame is the brand, the content is the portfolio.
+   ============================================================ */
+
+/* ── Client header row ── */
+.design-client-header {
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.design-client-info {
+  flex: 1;
+  min-width: 14rem;
+}
+
+.design-site-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ── Groups within a client ── */
+.design-group {
+  margin-top: 3rem;
+}
+
+.design-group .section-label {
+  margin-bottom: 1.25rem;
+}
+
+/* ── Image frames ──
+   16:9 shots in raised-material frames. The image fills the frame;
+   the hairline and radius keep it reading as a mounted piece. */
+.design-frame {
+  background: var(--mat-raised);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  transition: border-color var(--t-state) var(--ease-out),
+              transform var(--t-state) var(--ease-out),
+              box-shadow var(--t-state) var(--ease-out);
+}
+
+.design-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.design-frame:hover {
+  border-color: var(--tint-edge);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+}
+
+/* The featured UI/UX shot carries more weight than the list below it. */
+.design-frame-featured {
+  border-color: var(--tint-hairline);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── The alternating list ── */
+.design-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .design-client-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .design-list {
+    gap: 1.25rem;
+  }
+}

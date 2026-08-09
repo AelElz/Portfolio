@@ -27,6 +27,7 @@ import './css/experience.css';
 import './css/contact.css';
 import './css/project-detail.css';
 import './css/motion-design.css';
+import './css/visual-design.css';
 
 // ── tier 4: overrides, always last
 import './css/animations.css';

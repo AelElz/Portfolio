@@ -36,5 +36,7 @@ export const SKILLS = [
     iconImg: '/design.png',
     name: 'Visual Design',
     desc: 'Figma, Photoshop, brand direction, layout, and production design.',
+    link: '/projects/visual-design',
+    linkLabel: 'View Work',
   },
 ];
