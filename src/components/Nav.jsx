@@ -29,8 +29,11 @@ const EXTERNAL = [
 
 /* The nav's own centre line. Whatever chapter crosses it is what
    the pill is sitting on, and therefore what it has to invert
-   against. */
-const PROBE_Y = 44;
+   against. Measured from the element rather than hard-coded,
+   because the pill's height rides the fluid root — it is ~64px
+   on a phone and ~80px on a large display, so a fixed probe
+   would drift off centre exactly where the page is biggest. */
+const FALLBACK_PROBE_Y = 44;
 
 export default function Nav() {
   const [activeId, setActiveId] = useState('');
@@ -53,13 +56,16 @@ export default function Nav() {
     let lastTheme = '';
 
     const probe = () => {
+      const navRect = navRef.current?.getBoundingClientRect();
+      const probeY = navRect ? navRect.top + navRect.height / 2 : FALLBACK_PROBE_Y;
+
       const sections = document.querySelectorAll('[data-theme-section]');
       let winner = null;
       let winnerZ = -Infinity;
 
       sections.forEach((el) => {
         const rect = el.getBoundingClientRect();
-        if (rect.top > PROBE_Y || rect.bottom < PROBE_Y) return;
+        if (rect.top > probeY || rect.bottom < probeY) return;
         const z = parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
         if (z >= winnerZ) {
           winnerZ = z;

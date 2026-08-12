@@ -11,8 +11,22 @@
   padding: 0;
 }
 
+/* ── The fluid root ───────────────────────────────────────────
+   One declaration that makes the whole site device-aware. Every
+   type size, gap, radius and padding is in rem, so all of it
+   scales from this: a phone gets ~16px of body text, a 13"
+   laptop ~18px, a 27" ~20px. Without it the page is drawn at
+   one size and simply sits in more or less empty space.
+
+   `rem` inside the root's own font-size resolves against the
+   user's base size, not against this declaration — so someone
+   who has set their browser to large text still gets large
+   text, scaled proportionally. That is why this is not vw
+   alone: a pure-vw root ignores the preference entirely and is
+   an accessibility failure. The 100% floor guarantees it never
+   drops below what the user asked for. */
 html {
-  font-size: 100%;              /* honour the user's text-size setting */
+  font-size: clamp(100%, 0.96rem + 0.18vw, 1.25rem);
   background: var(--black);
   /* No scroll-behavior:smooth — Lenis owns the scroll, and a CSS
      smooth scroll on top of an interpolated one lands twice. */

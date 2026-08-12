@@ -6,10 +6,23 @@
   margin-bottom: clamp(2.2rem, 5vh, 3.6rem);
 }
 
+/* Explicit column counts, not auto-fit. There are exactly six
+   skills, and auto-fit on a wide container happily makes five
+   tracks — which leaves a 5 + 1 grid with one card stranded on
+   its own row. Capping at three keeps it an even 3 × 2 on every
+   desktop from a 13" up to a 32". */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(15.5rem, 100%), 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(0.75rem, 1.4vw, 1.1rem);
+}
+
+@media (min-width: 34rem) {
+  .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 56rem) {
+  .skills-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 .skill-card {

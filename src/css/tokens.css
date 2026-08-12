@@ -67,28 +67,40 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
                "Helvetica Neue", "Segoe UI", Roboto, Inter, Arial, sans-serif;
 
-  --ty-hero-size:  clamp(3.2rem, 10.5vw, 8.75rem);
+  /* ── Two scaling mechanisms, each where it belongs ──
+     TEXT scales through the root font size (set in reset.css),
+     so it is sized for the DEVICE: ~16px of body on a phone,
+     ~20px on a 27". That is why the sizes below are plain rem
+     with no vw — a vw term on top of a fluid root double-scales
+     and body copy ends up enormous on a large display.
+
+     DISPLAY type scales with vw, because a headline's job is to
+     fill the composition, not to be read at a comfortable
+     distance. Its floor and ceiling are rem so it still rides
+     the root at the extremes. */
+
+  --ty-hero-size:  clamp(2.5rem, 8.4vw, 8.6rem);
   --ty-hero-lh:    0.98;
   --ty-hero-ls:    -0.03em;
 
-  --ty-title-size: clamp(2rem, 4.6vw, 3.9rem);
+  --ty-title-size: clamp(1.85rem, 3.9vw, 3.5rem);
   --ty-title-lh:   1.06;
   --ty-title-ls:   -0.02em;
 
-  --ty-body-size:  clamp(1.05rem, 1.6vw, 1.35rem);
-  --ty-body-lh:    1.55;
+  --ty-body-size:  1.0625rem;
+  --ty-body-lh:    1.6;
   --ty-body-ls:    -0.005em;
 
   /* Eyebrows sit at label size in the SAME family and case as
      body text. Uppercase + wide tracking reads as a second
      typeface and cheapens the whole page — see DESIGN.md. */
-  --ty-label-size: clamp(1rem, 1.35vw, 1.28rem);
-  --ty-label-lh:   1.3;
+  --ty-label-size: 1rem;
+  --ty-label-lh:   1.4;
 
   /* Not in the brief, but the site needs a step below body for
      tags, dates and captions. Same family, same case. */
-  --ty-meta-size:  clamp(0.875rem, 1.05vw, 0.97rem);
-  --ty-meta-lh:    1.45;
+  --ty-meta-size:  0.875rem;
+  --ty-meta-lh:    1.5;
 
   /* Optical alignment of display type. Glyph side bearing scales
      with font size, so a display heading looks indented next to
@@ -118,14 +130,29 @@
   --t-reveal:   620ms;   /* circular hover fill */
 
 
-  /* ══ 5. SPACE ══════════════════════════════════════════════ */
+  /* ══ 5. SPACE ══════════════════════════════════════════════
+     Everything in rem, so it rides the fluid root alongside the
+     type. A fixed px container is what makes a site look
+     "designed for a 15-inch laptop": on a 27" it becomes a
+     narrow column adrift in empty space, because the content
+     stopped growing while the screen kept going. */
 
-  --container:  1240px;
-  --pad-x:      clamp(20px, 4vw, 48px);
-  --panel-y:    clamp(5rem, 11vh, 9rem);
+  /* 86vw until it hits 100rem (~2000px once the root has scaled
+     up). Prose is capped separately at 46ch, so a wide container
+     spreads the grids and display type rather than stretching
+     line length. Note most 27"/32" panels are run at 1.5–2×
+     scaling, so the real CSS width there is ~1920–2560, not the
+     native 3840 — this ceiling is set for that, not for a raw
+     4K viewport nobody actually browses at. */
+  --container:  clamp(20rem, 86vw, 100rem);
+  --pad-x:      clamp(1.25rem, 4vw, 4rem);
+  --panel-y:    clamp(4rem, 10vh, 8rem);
 
-  --nav-h:      64px;
-  --nav-inset:  12px;
+  --nav-h:      4rem;
+  --nav-inset:  0.75rem;
+  /* Past this the pill is a very long way from wall to wall and
+     its three clusters lose all relationship to each other. */
+  --nav-max:    112rem;
 
   --radius:     22px;
   --radius-sm:  12px;

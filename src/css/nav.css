@@ -12,6 +12,12 @@
   position: fixed;
   top: var(--nav-inset);
   inset-inline: var(--nav-inset);
+  /* Full width minus the inset on ordinary screens; centred and
+     capped past that, because a pill spanning a 32" display puts
+     its three clusters so far apart they stop reading as one
+     control. */
+  max-width: var(--nav-max);
+  margin-inline: auto;
   z-index: var(--z-nav);
   min-height: var(--nav-h);
   display: flex;

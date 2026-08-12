@@ -11,18 +11,17 @@
    stack. Only cross-cutting layout belongs here.
    ============================================================ */
 
-@media (max-width: 900px) {
-  .about-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2.5rem;
-  }
-}
+/* .about-grid collapses in about.css and .skills-grid sets its own
+   column counts in skills.css — each grid owns its breakpoints, so
+   there is one place to look when a layout is wrong. Only rules
+   that genuinely cross components live here.
 
-@media (max-width: 768px) {
-  .skills-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
+   Note: rem in a media query always resolves against 16px, never
+   against the fluid root. That is what keeps these thresholds
+   stable — otherwise scaling the root would move the breakpoints
+   and the layout could oscillate. */
 
+@media (max-width: 48rem) {
   .video-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
