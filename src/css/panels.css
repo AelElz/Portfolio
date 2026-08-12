@@ -1,0 +1,208 @@
+/* ============================================================
+   panels.css — The alternating chapter stack.
+
+   Sections alternate dark and light, each at least one viewport
+   tall. Each is sticky, so later panels slide OVER earlier ones
+   and the covered panel dims underneath. That layering is where
+   the depth comes from — it is not a parallax, nothing moves at
+   a different rate; panels simply stop and get covered.
+
+   The sticky offsets are computed in PanelStack.jsx, not here,
+   because they depend on measured content height.
+   ============================================================ */
+
+.container {
+  width: min(var(--container), 100% - 2 * var(--pad-x));
+  margin-inline: auto;
+}
+
+/* ── The panel ────────────────────────────────────────────── */
+
+.panel {
+  position: relative;
+  min-height: 100vh;          /* fallback first */
+  min-height: 100svh;         /* mobile browser chrome */
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  /* Its own stacking context, so .panel__shade can sit above the
+     content without competing with the stack's z-index ladder. */
+  isolation: isolate;
+}
+
+/* Silver is not a tint of the ground here — it is the third
+   colour, spent on the surfaces and lines that would otherwise
+   have to be a weaker ink. That is what keeps it near 20% of the
+   page instead of a rounding error. */
+
+.panel--dark {
+  background: var(--black);
+  color: var(--white);
+
+  --ground:  var(--black);
+  --raised:  var(--silver-dark);
+  --ink:     var(--white);
+  --ink-dim: var(--silver);          /* literal silver on black */
+  --on-ink:  var(--black);
+  --wash:    rgba(180, 185, 193, 0.08);
+  --hair:    rgba(180, 185, 193, 0.22);
+  --edge:    rgba(180, 185, 193, 0.45);
+}
+
+.panel--light {
+  background: var(--white);
+  color: var(--black);
+
+  --ground:  var(--white);
+  --raised:  var(--silver-light);
+  --ink:     var(--black);
+  /* Silver proper is too pale to read on white, so secondary text
+     takes the darkened silver instead of a black at low alpha —
+     same hue family, actually legible. */
+  --ink-dim: var(--silver-ink);
+  --on-ink:  var(--white);
+  --wash:    rgba(110, 116, 126, 0.08);
+  --hair:    rgba(110, 116, 126, 0.26);
+  --edge:    rgba(110, 116, 126, 0.5);
+}
+
+/* There is no silver GROUND. It was tried as a third chapter
+   colour and cut: a full viewport of mid-grey reads as a page
+   that failed to load rather than as a third voice. Silver stays
+   where it works — secondary text, hairlines, raised surfaces and
+   the hover fill — so the grounds are only ever black or white. */
+
+/* The measured box. Sticky offsets are derived from THIS, not
+   from .panel — measure the panel and a short chapter rests on
+   its own empty padding instead of on its content. */
+.panel__inner {
+  width: min(var(--container), 100% - 2 * var(--pad-x));
+  margin-inline: auto;
+  padding-block: var(--panel-y);
+  position: relative;
+  z-index: 1;
+}
+
+.panel__inner--wide {
+  width: min(1560px, 100% - 2 * var(--pad-x));
+}
+
+/* Dims as the next panel covers it. Above the content, below
+   nothing else — the panel's own isolation keeps it local. */
+.panel__shade {
+  position: absolute;
+  inset: 0;
+  background: #071B06;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Sticky behaviour ─────────────────────────────────────────
+   Desktop only. Below the breakpoint panels are relative and
+   simply stack; PanelStack clears the inline `top` there, because
+   a leftover top on a relative element offsets it and tears
+   visible holes between sections.
+
+   iOS Safari silently ignores position:sticky if ANY ancestor
+   has overflow hidden/clip/auto/scroll — which is why html and
+   body carry no overflow-x. It fails with no error and looks
+   perfectly fine in a screenshot. */
+
+@media (min-width: 681px) {
+  .panel--sticky {
+    position: sticky;
+  }
+}
+
+/* ── The hero chapter ─────────────────────────────────────────
+   Taller than a viewport so scroll progress has somewhere to
+   run. The scene inside is what actually pins. */
+
+.chapter--hero {
+  position: relative;
+  /* Shorter than the reference site's 380svh. The hero is the only
+     chapter allowed to be several viewports tall, so its height is
+     what decides how much of the page is black — at 380svh it
+     dragged the whole split to 63/37 on its own.
+
+     With six chapters alternating from black, the only free
+     variable in that ratio is this height: the other five are
+     sized by their content. 140svh is what brings black and white
+     level. Raising it tilts the page darker and buys the scrub
+     more runway — that trade lives on this one line. */
+  height: 140svh;
+  background: var(--black);
+  color: var(--white);
+}
+
+.hero__scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No scrub to drive, so the chapter collapses to one screen
+     and the scene just sits there. */
+  .chapter--hero { height: 100svh; }
+}
+
+/* ── Grain ────────────────────────────────────────────────────
+   Black chapters only — on white it reads as dirt, not film.
+
+   inset:-50% because a parent-sized layer drags its own edge
+   into view when it translates, sweeping a visible seam across
+   the section. steps(1,end) because interpolating makes the
+   grain SLIDE like a texture; stepping re-seeds it each frame,
+   which is what actually reads as grain.
+
+   Always on a viewport-sized element, never on the multi-
+   viewport-tall hero chapter — a several-thousand-pixel layer
+   repainting every frame is a real cost. */
+
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.19;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  animation: grain-shift 0.7s steps(1, end) infinite;
+}
+
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-4%, -3%); }
+  20%  { transform: translate(-8%, 2%); }
+  30%  { transform: translate(3%, -6%); }
+  40%  { transform: translate(-2%, 7%); }
+  50%  { transform: translate(-9%, -3%); }
+  60%  { transform: translate(6%, 1%); }
+  70%  { transform: translate(-1%, 5%); }
+  80%  { transform: translate(4%, -4%); }
+  90%  { transform: translate(-6%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The texture stays, the flicker goes. */
+  .grain::before { animation: none; }
+}
+
+/* ── Progressive-blur edges: removed on purpose ───────────────
+   The reference site frames each chapter in three stacked
+   backdrop-filter layers at the top and bottom of the viewport.
+   Here it did not work: panel content is vertically centred in a
+   full-viewport chapter, so section headings sit exactly in the
+   top band and read as permanently out of focus. Blurring the
+   content you are trying to read is not a material effect, it is
+   a defect — so the chapters end on a clean edge instead, and the
+   only glass left on the page is the nav pill, which has nothing
+   of its own to obscure. */

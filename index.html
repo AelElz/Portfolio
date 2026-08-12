@@ -3,30 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#0A0A0A" />
-  <title>Ayoub Elazhari Portfolio</title>
+  <!-- The page has dark chapters and light chapters, not a dark mode and a
+       light mode, so there is nothing for the OS preference to switch. The
+       ground colour is the black the page opens on. -->
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0B0B0D" />
+  <title>Ayoub Elazhari — Software Engineer &amp; Creative Director</title>
   <link rel="icon" type="image/png" href="/iconlogo2.png" />
-  <!-- Theme must be set before first paint or the page flashes the
-       wrong mode. Saved choice wins; otherwise follow the system. -->
-  <script>
-    (function () {
-      var theme = 'dark';
-      try {
-        theme = localStorage.getItem('theme') ||
-          (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-      } catch (e) { /* private mode etc. — dark default */ }
-      var root = document.documentElement;
-      root.dataset.theme = theme;
-      root.style.colorScheme = theme;
-      if (theme === 'light') {
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', '#F5F5F7');
-      }
-    })();
-  </script>
-  <!-- No webfont: the system face already ships optical sizing, tracking
-       tables and legibility tuning, and it costs nothing to load (§15). -->
+  <!-- No webfont: the system stack already ships optical sizing, tracking
+       tables and legibility tuning, and it costs nothing to load. Apple
+       devices resolve real SF Pro; everything else gets its native face. -->
 </head>
 <body>
   <div id="root"></div>

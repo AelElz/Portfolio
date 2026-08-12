@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react';
 
 const HOVER_SELECTOR = [
   'a', 'button', 'input',
-  '.skill-card', '.project-card', '.video-card', '.contact-link',
+  '.skill-card', '.reveal-row', '.video-card', '.contact-link',
   '.btn-primary', '.btn-ghost',
-  '.nav-logo-img', '.nav-btn', '.nav-menu-link',
+  '.nav-brand', '.nav-btn', '.nav-menu-link',
   '.about-avatar-wrap', '.exp-item',
   '.tag', '.chip',
   '.design-track', '.design-arrow', '.design-dot',
@@ -25,6 +25,42 @@ export default function Cursor() {
     let auraY = 0;
     let hasMoved = false;
     let frameId;
+
+    /* ── Which chapter is under the pointer ──
+       Same rule as the nav: chapters overlap in the sticky stack,
+       so the visible one is the highest z-index crossing the line,
+       not the first in the DOM. Probed at the CURSOR's y, not the
+       nav's, because that is the ground it actually sits on. */
+    let lastProbeY = NaN;
+    let lastScrollY = NaN;
+    let lastTheme = '';
+
+    const probeTheme = () => {
+      /* Reading layout for every panel is not free, so only re-probe
+         when the pointer or the page has actually moved. */
+      const scrollY = window.scrollY;
+      if (Math.abs(pointerY - lastProbeY) < 4 && scrollY === lastScrollY) return;
+      lastProbeY = pointerY;
+      lastScrollY = scrollY;
+
+      let winner = null;
+      let winnerZ = -Infinity;
+      document.querySelectorAll('[data-theme-section]').forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top > pointerY || rect.bottom < pointerY) return;
+        const z = parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+        if (z >= winnerZ) {
+          winnerZ = z;
+          winner = el;
+        }
+      });
+
+      const theme = winner?.dataset.themeSection || 'dark';
+      if (theme !== lastTheme) {
+        lastTheme = theme;
+        document.body.dataset.cursorOver = theme;
+      }
+    };
 
     const handlePointerMove = (e) => {
       pointerX = e.clientX;
@@ -51,6 +87,7 @@ export default function Cursor() {
         auraY += (pointerY - auraY) * 0.14;
         aura.style.transform = `translate3d(${auraX}px, ${auraY}px, 0)`;
       }
+      probeTheme();
       frameId = requestAnimationFrame(tick);
     };
 
@@ -83,6 +120,7 @@ export default function Cursor() {
       document.removeEventListener('pointercancel', handlePointerUp);
       cancelAnimationFrame(frameId);
       document.body.classList.remove('cursor-hover', 'cursor-press');
+      delete document.body.dataset.cursorOver;
     };
   }, []);
 

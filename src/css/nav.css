@@ -1,321 +1,271 @@
 /* ============================================================
-   nav.css — Chrome layer. A translucent material that content
-   scrolls under, not an opaque strip that eats a band of the
-   viewport (§12).
+   nav.css — A glass pill that inverts against whatever chapter
+   is behind it.
+
+   The tint and ink are driven by [data-over], set each frame by
+   Nav.jsx from the highest-z-index chapter crossing the pill's
+   centre line. Everything inside reads --ink / --hair, so the
+   whole pill flips with one attribute.
    ============================================================ */
 
-nav {
+#nav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--nav-h);
+  top: var(--nav-inset);
+  inset-inline: var(--nav-inset);
+  z-index: var(--z-nav);
+  min-height: var(--nav-h);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 var(--gutter-wide);
-  z-index: var(--z-chrome);
-  transition: background var(--t-chrome) var(--ease-out),
-              backdrop-filter var(--t-chrome) var(--ease-out);
+  gap: clamp(0.75rem, 2vw, 2rem);
+  padding-inline: clamp(0.9rem, 1.6vw, 1.5rem);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hair);
+
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+
+  transition:
+    background-color var(--t-chrome) var(--ease-out),
+    border-color var(--t-chrome) var(--ease-out),
+    color var(--t-chrome) var(--ease-out);
 }
 
-/* No blur until there is something behind it to blur. */
-nav.scrolled {
-  background: var(--mat-chrome);
-  backdrop-filter: var(--blur-chrome);
-  -webkit-backdrop-filter: var(--blur-chrome);
-  box-shadow: var(--shadow-chrome);
+#nav[data-over='dark'] {
+  --ink: var(--white);
+  --ink-dim: var(--silver);
+  --hair: rgba(250, 250, 251, 0.16);
+  --edge: rgba(250, 250, 251, 0.34);
+  --wash: rgba(250, 250, 251, 0.08);
+  --on-ink: var(--black);
+  --nav-sheet: rgba(20, 21, 25, 0.94);
+
+  background-color: rgba(11, 11, 13, 0.42);
+  color: var(--white);
 }
 
-/* Scroll edge effect, not a hard divider — a 1px line asserts the
-   boundary the translucency is trying to dissolve (§12). */
-nav.scrolled::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 1.5rem;
-  pointer-events: none;
-  background: linear-gradient(to bottom, var(--edge-fade), transparent);
+#nav[data-over='light'] {
+  --ink: var(--black);
+  --ink-dim: var(--silver-ink);
+  --hair: rgba(11, 11, 13, 0.16);
+  --edge: rgba(11, 11, 13, 0.34);
+  --wash: rgba(11, 11, 13, 0.06);
+  --on-ink: var(--white);
+  --nav-sheet: rgba(250, 250, 251, 0.96);
+
+  background-color: rgba(250, 250, 251, 0.52);
+  color: var(--black);
 }
 
-/* ── Logo ── */
-.nav-logo-img {
-  width: 2.5rem;
-  height: 2.5rem;
+/* No glass to refract through — fall back to a solid pill rather
+   than an unreadable transparent one. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  #nav[data-over='dark']   { background-color: rgba(11, 11, 13, 0.94); }
+  #nav[data-over='light']  { background-color: rgba(250, 250, 251, 0.96); }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  #nav { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  #nav[data-over='dark']   { background-color: var(--black); }
+  #nav[data-over='light']  { background-color: var(--white); }
+}
+
+/* ── Brand ── */
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: none;
+  padding-block: 0.9rem;
+}
+
+/* The same ring as the eyebrow mark, in currentColor so it
+   inverts with the pill. */
+.nav-mark {
+  width: 17px;
+  aspect-ratio: 1;
   border-radius: 50%;
-  border: 1px solid var(--tint-hairline);
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
-  transition: border-color var(--t-state) var(--ease-out),
-              opacity var(--t-state) var(--ease-out);
-}
-
-.nav-logo-img:hover {
-  border-color: var(--tint-edge);
-  opacity: 0.9;
-}
-
-.nav-logo-img:active {
-  transform: scale(0.96);
-  transition: transform var(--t-press) var(--ease-out);
-}
-
-/* ── Links ── */
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 2.25rem;
-  list-style: none;
-}
-
-/* Every item is the same flex row, so the one with a chevron sits on
-   exactly the same line as the ones without. */
-.nav-links li {
-  display: flex;
-  align-items: center;
-}
-
-.nav-links a {
-  position: relative;
-  font-size: var(--ty-caption-size);
-  letter-spacing: 0.01em;
-  color: var(--c-text-2);
-  transition: color var(--t-state) var(--ease-out);
-}
-
-.nav-links a:hover,
-.nav-links a.is-active {
-  color: var(--c-text-1);
-}
-
-/* Current section reads as present, not just brighter. */
-.nav-links a.is-active::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.4rem;
-  height: 1px;
-  background: var(--tint-edge);
-}
-
-.nav-links a:active {
-  opacity: 0.6;
-  transition: opacity var(--t-press) var(--ease-out);
-}
-
-/* ── Skills dropdown ── */
-.nav-dd-wrap {
-  position: relative;
-}
-
-/* The chevron hangs off the side of the word without taking layout
-   space, so "Skills" keeps exactly the same rhythm as its neighbours. */
-.nav-dd-toggle {
-  position: absolute;
-  left: calc(100% + 0.2rem);
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.125rem;
-  height: 1.125rem;
-  border-radius: 4px;
-  color: var(--c-text-3);
-  transition: color var(--t-state) var(--ease-out);
-}
-
-.nav-dd-toggle:hover {
-  color: var(--c-text-1);
-}
-
-.nav-dd-toggle svg {
-  width: 0.75rem;
-  height: 0.75rem;
+  border: 5px solid currentColor;
+  flex: none;
   transition: transform var(--t-state) var(--ease-out);
 }
 
-/* The glyph rotates into its other state — same object, no swap (§7). */
-.nav-dd-toggle.is-open svg {
-  transform: rotate(180deg);
+.nav-brand:hover .nav-mark {
+  transform: scale(1.12);
 }
 
-.nav-dd {
-  position: absolute;
-  top: calc(100% + 1.125rem);
-  left: 50%;
-  min-width: 11.5rem;
-  padding: 0.5rem;
-  border-radius: var(--radius);
-  background: var(--mat-sheet);
-  backdrop-filter: var(--blur-sheet);
-  -webkit-backdrop-filter: var(--blur-sheet);
-  border: 1px solid var(--c-border);
-  box-shadow: var(--shadow-sheet);
-}
-
-.nav-dd .nav-menu-link {
+.nav-wordmark {
+  font-size: var(--ty-meta-size);
+  font-weight: 600;
+  letter-spacing: -0.015em;
   white-space: nowrap;
 }
 
-/* ── Right cluster: external links · theme toggle · mobile menu ── */
+/* ── Section links ── */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.4rem, 1.2vw, 1.1rem);
+  list-style: none;
+  margin-inline: auto;
+}
+
+.nav-links li {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links > li > a {
+  font-size: var(--ty-meta-size);
+  color: var(--ink-dim);
+  padding: 0.5rem 0.2rem;
+  transition: color var(--t-state) var(--ease-out);
+}
+
+.nav-links > li > a:hover,
+.nav-links > li > a.is-active {
+  color: var(--ink);
+}
+
+.nav-dd-wrap { gap: 0.1rem; }
+
+.nav-dd-toggle {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  color: var(--ink-dim);
+  border-radius: 50%;
+  transition: color var(--t-state) var(--ease-out),
+              background var(--t-state) var(--ease-out),
+              transform var(--t-state) var(--ease-out);
+}
+
+.nav-dd-toggle svg { width: 13px; height: 13px; }
+
+.nav-dd-toggle:hover { color: var(--ink); background: var(--wash); }
+.nav-dd-toggle.is-open { color: var(--ink); transform: rotate(180deg); }
+
+.nav-dd {
+  position: absolute;
+  top: calc(100% + 0.9rem);
+  left: 50%;
+  min-width: 12.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.45rem;
+  border-radius: var(--radius-sm);
+  background: var(--nav-sheet);
+  border: 1px solid var(--hair);
+  box-shadow: var(--shadow-sheet);
+  -webkit-backdrop-filter: var(--blur-sheet);
+  backdrop-filter: var(--blur-sheet);
+}
+
+/* ── Right cluster ── */
+
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex: none;
 }
 
 .nav-actions {
   display: flex;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .nav-btn {
-  font-size: var(--ty-caption-size);
-  font-weight: 500;
-  padding: 0.5rem 1.125rem;
+  font-size: var(--ty-meta-size);
+  color: var(--ink);
+  padding: 0.5em 1em;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--tint-hairline);
-  color: var(--c-text-1);
-  background: transparent;
+  border: 1px solid var(--hair);
   white-space: nowrap;
   transition: background var(--t-state) var(--ease-out),
-              border-color var(--t-state) var(--ease-out),
-              color var(--t-state) var(--ease-out);
+              border-color var(--t-state) var(--ease-out);
 }
 
 .nav-btn:hover {
-  background: var(--accent);
-  border-color: transparent;
-  color: var(--on-accent);
+  background: var(--wash);
+  border-color: var(--edge);
 }
 
-/* ── Theme toggle ── */
-.theme-toggle {
-  position: relative;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  border: 1px solid var(--tint-hairline);
-  color: var(--c-text-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: border-color var(--t-state) var(--ease-out),
-              color var(--t-state) var(--ease-out),
-              background var(--t-state) var(--ease-out);
+/* ── Menu links (shared by dropdown and mobile sheet) ── */
+
+.nav-menu-link {
+  display: block;
+  font-size: var(--ty-meta-size);
+  color: var(--ink-dim);
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  transition: background var(--t-state) var(--ease-out),
+              color var(--t-state) var(--ease-out);
 }
 
-.theme-toggle:hover {
-  border-color: var(--tint-edge);
-  color: var(--c-text-1);
-  background: var(--tint-wash);
-}
+.nav-menu-link:hover { background: var(--wash); color: var(--ink); }
+.nav-menu-link.is-active { color: var(--ink); }
 
-.theme-toggle:active {
-  transform: scale(0.94);
-  transition: transform var(--t-press) var(--ease-out);
-}
+/* ── Mobile ── */
 
-.theme-toggle svg {
-  position: absolute;
-  width: 1rem;
-  height: 1rem;
-  transition: opacity var(--t-state) var(--ease-out),
-              transform var(--t-chrome) var(--ease-out);
-}
-
-/* Sun shows in the dark, moon in the light — each rotates away as the
-   other arrives. */
-:root[data-theme='light'] .theme-toggle .tt-sun,
-:root:not([data-theme='light']) .theme-toggle .tt-moon {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.6);
-}
-
-:root[data-theme='light'] .theme-toggle .tt-moon,
-:root:not([data-theme='light']) .theme-toggle .tt-sun {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-
-/* ── Mobile menu toggle ── */
 #nav-menu-toggle {
   display: none;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--tint-hairline);
-  align-items: center;
-  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--hair);
+  place-items: center;
+  gap: 4px;
   flex-direction: column;
-  gap: 5px;
-  transition: border-color var(--t-state) var(--ease-out),
-              background var(--t-state) var(--ease-out);
 }
 
 #nav-menu-toggle span {
   display: block;
-  width: 1rem;
+  width: 13px;
   height: 1.5px;
-  background: var(--c-text-1);
-  border-radius: 1px;
+  background: currentColor;
   transition: transform var(--t-state) var(--ease-out),
               opacity var(--t-state) var(--ease-out);
 }
 
-/* The glyph becomes the exit it opens — same object, not a swap (§7). */
-#nav-menu-toggle.is-open span:first-child {
-  transform: translateY(3.25px) rotate(45deg);
-}
+#nav-menu-toggle.is-open span:first-child { transform: translateY(2.75px) rotate(45deg); }
+#nav-menu-toggle.is-open span:last-child  { transform: translateY(-2.75px) rotate(-45deg); }
 
-#nav-menu-toggle.is-open span:last-child {
-  transform: translateY(-3.25px) rotate(-45deg);
-}
-
-/* ── Mobile menu sheet ── */
 #nav-menu {
   position: absolute;
-  top: calc(var(--nav-h) - 0.5rem);
-  right: var(--gutter);
-  min-width: 13rem;
+  top: calc(100% + 0.6rem);
+  inset-inline-end: 0;
+  min-width: 15rem;
   padding: 0.5rem;
   border-radius: var(--radius);
-  background: var(--mat-sheet);
-  backdrop-filter: var(--blur-sheet);
-  -webkit-backdrop-filter: var(--blur-sheet);
-  border: 1px solid var(--c-border);
+  background: var(--nav-sheet);
+  border: 1px solid var(--hair);
   box-shadow: var(--shadow-sheet);
+  -webkit-backdrop-filter: var(--blur-sheet);
+  backdrop-filter: var(--blur-sheet);
 }
 
-#nav-menu ul {
-  list-style: none;
-}
-
-.nav-menu-link {
-  display: block;
-  padding: 0.75rem 0.875rem;
-  border-radius: var(--radius-sm);
-  font-size: var(--ty-callout-size);
-  font-weight: 500;
-  color: var(--c-text-2);
-  transition: background var(--t-state) var(--ease-out),
-              color var(--t-state) var(--ease-out);
-}
-
-.nav-menu-link:hover,
-.nav-menu-link.is-active {
-  background: var(--tint-wash);
-  color: var(--c-text-1);
-}
+#nav-menu ul { list-style: none; }
 
 .nav-menu-group,
 .nav-menu-external {
-  margin-top: 0.375rem;
-  padding-top: 0.375rem;
-  border-top: 1px solid var(--c-border);
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--hair);
+}
+
+@media (max-width: 940px) {
+  .nav-links { display: none; }
+  .nav-actions { display: none; }
+  #nav-menu-toggle { display: flex; }
+  .nav-brand { margin-inline-end: auto; }
+}
+
+@media (max-width: 420px) {
+  .nav-wordmark { display: none; }
 }

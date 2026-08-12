@@ -1,48 +1,39 @@
+import { Panel } from './Panel';
 import Reveal from './Reveal';
+import RevealRow from './RevealRow';
 import { PROJECTS } from '../data/projects';
-
-/* Stagger caps at 0.06s per item — enough to read as a sequence,
-   not enough to make anyone wait for it (§3.3). */
-const DELAYS = [0, 0.06, 0.12];
 
 export default function Projects() {
   return (
-    <section id="projects">
-      <div className="container">
-        <div className="projects-header">
-          <Reveal as="p" className="section-label">Projects</Reveal>
-          <Reveal as="h2" className="section-title" delay={0.06}>What I've built</Reveal>
-          <Reveal as="p" className="section-body" delay={0.12}>
-            Every project from the 1337 curriculum is built from scratch, no frameworks, no shortcuts.
-          </Reveal>
-        </div>
-        <div className="projects-grid">
-          {PROJECTS.map((project, i) => (
-            <Reveal
-              as="div"
-              key={project.name}
-              className={`project-card${project.featured ? ' featured' : ''}`}
-              delay={DELAYS[i % DELAYS.length]}
-            >
-              <span className="project-badge">{project.badge}</span>
-              <div className="project-name">{project.name}</div>
-              <div className="project-desc">{project.desc}</div>
-              <div className="project-footer">
-                <div className="project-lang">
+    <Panel theme="light" id="projects">
+      <div className="projects-header">
+        <Reveal as="p" className="section-label">Projects</Reveal>
+        <Reveal as="h2" className="section-title" delay={0.06}>What I've built</Reveal>
+        <Reveal as="p" className="section-body" delay={0.12}>
+          Every project from the 1337 curriculum is built from scratch, no frameworks, no shortcuts.
+        </Reveal>
+      </div>
+
+      <div className="projects-list">
+        {PROJECTS.map((project, i) => (
+          <Reveal as="div" key={project.name} delay={Math.min(0.06 * i, 0.18)}>
+            <RevealRow href={project.href} external label={project.name}>
+              <span className="reveal-row__meta">
+                <span className="project-lang">
                   <span className={`lang-dot ${project.langClass}`} />
                   {project.lang}
-                </div>
-                <a href={project.href} target="_blank" rel="noreferrer" className="project-link">
-                  View on GitHub
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+                </span>
+                <span className="project-badge">{project.badge}</span>
+                <svg className="reveal-row__arrow" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+              <span className="reveal-row__desc">{project.desc}</span>
+            </RevealRow>
+          </Reveal>
+        ))}
       </div>
-    </section>
+    </Panel>
   );
 }

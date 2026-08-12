@@ -1,57 +1,56 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Panel, PanelStack } from '../components/Panel';
+import { DeepDiveHero, DeepDiveClosing } from '../components/DeepDivePage';
 import Reveal from '../components/Reveal';
 import VideoCard from '../components/VideoCard';
+import { scrollToTarget } from '../motion/smooth-scroll';
 import { MOTION_GRAPHICS_VIDEOS, CINEMATIC_VIDEOS } from '../data/motion-design-videos';
+
+const SECTIONS = [
+  {
+    id: 'motion-graphics',
+    theme: 'light',
+    label: 'Motion Graphics & Video Editing',
+    title: 'Motion & Editing',
+    videos: MOTION_GRAPHICS_VIDEOS,
+  },
+  {
+    id: 'cinematic',
+    theme: 'dark',
+    label: 'Cinematic Direction',
+    title: 'Cinematic & Video Editing',
+    videos: CINEMATIC_VIDEOS,
+  },
+];
 
 export default function MotionDesignPage() {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollToTarget(0, { immediate: true });
   }, []);
 
   return (
-    <main className="deepdive-page">
-      <section className="deepdive-hero">
-        <div className="container">
-          <Link to="/#skills" className="back-link">← Back to Portfolio</Link>
-          <Reveal as="p" className="section-label">Motion Design</Reveal>
-          <Reveal as="h1" className="section-title" delay={0.06}>
-            Motion graphics & cinematic work
-          </Reveal>
-          <Reveal as="p" className="section-body" delay={0.12}>
-            The other track: 4+ years of video editing, motion graphics, and creative direction
-            for institutional and enterprise clients. Same craft mindset as the code, different medium.
-          </Reveal>
-        </div>
-      </section>
+    <PanelStack>
+      <DeepDiveHero
+        eyebrow="Motion Design"
+        title="Motion graphics & cinematic work"
+        intro="The other track: 4+ years of video editing, motion graphics, and creative direction for institutional and enterprise clients. Same craft mindset as the code, different medium."
+      />
 
-      <section className="video-section">
-        <div className="container">
-          <Reveal as="p" className="section-label">Motion Graphics & Video Editing</Reveal>
+      {SECTIONS.map((section) => (
+        <Panel theme={section.theme} id={section.id} key={section.id} wide>
+          <Reveal as="p" className="section-label">{section.label}</Reveal>
           <Reveal as="h2" className="section-title video-section-title" delay={0.06}>
-            Motion & Editing
+            {section.title}
           </Reveal>
           <div className="video-grid">
-            {MOTION_GRAPHICS_VIDEOS.map((video, i) => (
+            {section.videos.map((video, i) => (
               <VideoCard key={video.title} {...video} delay={Math.min(0.06 * i, 0.18)} />
             ))}
           </div>
-        </div>
-      </section>
+        </Panel>
+      ))}
 
-      <section className="video-section">
-        <div className="container">
-          <Reveal as="p" className="section-label">Cinematic Direction</Reveal>
-          <Reveal as="h2" className="section-title video-section-title" delay={0.06}>
-            Cinematic & Video Editing
-          </Reveal>
-          <div className="video-grid">
-            {CINEMATIC_VIDEOS.map((video, i) => (
-              <VideoCard key={video.title} {...video} delay={Math.min(0.06 * i, 0.18)} />
-            ))}
-          </div>
-        </div>
-      </section>
-    </main>
+      <DeepDiveClosing theme="light" />
+    </PanelStack>
   );
 }

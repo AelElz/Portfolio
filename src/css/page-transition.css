@@ -8,9 +8,12 @@
   inset: 0;
   z-index: var(--z-transition);
   pointer-events: none;
+  /* Always black, never the current chapter's ground: the curtain
+     travels between two routes whose first chapters may differ, and
+     a curtain that changes colour mid-transition reads as a flash. */
   background:
-    radial-gradient(60% 45% at 50% 50%, var(--tint-faint), transparent 70%),
-    var(--mat-base);
+    radial-gradient(60% 45% at 50% 50%, rgba(180, 185, 193, 0.10), transparent 70%),
+    var(--black);
   will-change: transform;
 }
 
@@ -22,7 +25,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent 5%, var(--tint-glow) 50%, transparent 95%);
+  background: linear-gradient(90deg, transparent 5%, var(--silver) 50%, transparent 95%);
   opacity: 0.6;
 }
 

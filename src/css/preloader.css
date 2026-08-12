@@ -1,0 +1,150 @@
+/* ============================================================
+   preloader.css — The intro plate and its glass exit.
+   ============================================================ */
+
+/* Registered so the browser can interpolate them as real types.
+   GSAP writes these directly; without @property a custom
+   property is an untyped string and the glow steps instead of
+   ramping in browsers that would otherwise smooth it. */
+@property --g1 { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --g2 { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --gb { syntax: '<number>'; inherits: false; initial-value: 1; }
+@property --pl-tint { syntax: '<number>'; inherits: false; initial-value: 1; }
+@property --pl-blur { syntax: '<length>'; inherits: false; initial-value: 0px; }
+
+.preloader {
+  --pl-tint: 1;
+  --pl-blur: 0px;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  display: grid;
+  place-items: center;
+  overflow: clip;
+
+  /* The tint thins toward the end of the exit, which is what lets
+     the page show through the glass before it dissolves. */
+  background: rgb(11 11 13 / var(--pl-tint));
+  -webkit-backdrop-filter: blur(var(--pl-blur)) saturate(1.35);
+  backdrop-filter: blur(var(--pl-blur)) saturate(1.35);
+}
+
+/* Everything that moves lives in here. The scale is applied to
+   this element and never to .preloader, because a transformed
+   element resamples its own backdrop every frame and the
+   backdrop blur crawls and shimmers. */
+.pl-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding-inline: var(--pad-x);
+  text-align: center;
+  will-change: transform, filter, opacity;
+}
+
+/* ── The mark: the ring, multiplied outward and oversized ──
+   Concentric rather than a row, because the site's mark is an
+   annulus. Each one scales in behind the wordmark, staggered. */
+
+.pl-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pl-mark i {
+  grid-area: 1 / 1;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid var(--white);
+  opacity: 0;
+}
+
+.pl-mark i:nth-child(1) { width: clamp(120px, 15vw, 210px); border-width: 2px; }
+.pl-mark i:nth-child(2) { width: clamp(200px, 25vw, 350px); }
+.pl-mark i:nth-child(3) { width: clamp(280px, 35vw, 490px); }
+.pl-mark i:nth-child(4) { width: clamp(360px, 45vw, 630px); }
+.pl-mark i:nth-child(5) { width: clamp(440px, 55vw, 770px); }
+
+/* ── The wordmark ─────────────────────────────────────────────
+   Three states stacked in one grid cell, so the box is sized by
+   the type and the wipes have nothing to shift. */
+
+.pl-lockup {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  font-size: clamp(2rem, 6.4vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  white-space: nowrap;
+
+  /* A single drop-shadow reads as a flat blur. The tight core, the
+     wide halo and the brightness lift together are what make it
+     read as lit. drop-shadow follows the artwork's alpha, so it
+     haloes the letterforms rather than a box. */
+  filter:
+    drop-shadow(0 0 var(--g1) rgba(250, 250, 251, 0.95))
+    drop-shadow(0 0 var(--g2) rgba(250, 250, 251, 0.55))
+    brightness(var(--gb));
+  will-change: transform, opacity, filter;
+}
+
+.pl-layer {
+  grid-area: 1 / 1;
+  display: block;
+}
+
+/* State 1 — outline only. */
+.pl-layer--a {
+  color: transparent;
+  -webkit-text-stroke: 1.4px var(--white);
+}
+
+/* State 2 — the inverted slab. Padding is cancelled by an equal
+   negative margin so this state does not resize the grid cell. */
+.pl-layer--b {
+  color: var(--black);
+  background: var(--white);
+  padding: 0.08em 0.3em;
+  margin: -0.08em -0.3em;
+  border-radius: 0.12em;
+}
+
+/* State 3 — resolved. */
+.pl-layer--c {
+  color: var(--white);
+}
+
+/* ── Tagline ── */
+
+.pl-tag {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.92rem, 1.5vw, 1.2rem);
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--silver);
+}
+
+.pl-tag span {
+  display: inline-block;
+  white-space: pre;
+  will-change: transform, opacity;
+}
+
+/* The intro never plays under reduced motion — shouldPlayIntro()
+   returns false — but if it is ever forced, it must not animate. */
+@media (prefers-reduced-motion: reduce) {
+  .preloader { display: none; }
+}

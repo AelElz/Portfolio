@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
+import { PanelStack } from '../components/Panel';
+import { scrollToTarget } from '../motion/smooth-scroll';
 import Hero from '../components/Hero';
 import About from '../components/About';
 import Skills from '../components/Skills';
@@ -21,28 +23,29 @@ export default function Home() {
     if (!hash) {
       // Only reset scroll for in-app navigation; on refresh/back-forward
       // (POP) let the browser restore the previous position.
-      if (underCurtain && navType !== 'POP') window.scrollTo(0, 0);
+      if (underCurtain && navType !== 'POP') scrollToTarget(0, { immediate: true });
       return;
     }
+
     const el = document.querySelector(hash);
-    if (el) {
-      /* Smooth scroll is vestibular motion, and a JS scroll ignores the
-         CSS override — so it has to ask for itself (§14). */
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      requestAnimationFrame(() =>
-        el.scrollIntoView({ behavior: underCurtain || reduced ? 'auto' : 'smooth' })
-      );
-    }
-  }, [hash]);
+    if (!el) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    requestAnimationFrame(() =>
+      scrollToTarget(el, { immediate: underCurtain || reduced })
+    );
+  }, [hash, navType]);
 
   return (
-    <>
+    /* Six chapters, alternating, ending light. The 50/50 balance
+       between black and white is a property of this list
+       — not of tinting anything individually. */
+    <PanelStack>
       <Hero />
       <About />
       <Skills />
       <Projects />
       <Experience />
       <Contact />
-    </>
+    </PanelStack>
   );
 }

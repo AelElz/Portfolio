@@ -1,0 +1,127 @@
+/* ============================================================
+   interactive.css — The circular hover reveal.
+   ============================================================ */
+
+.reveal-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  padding-block: clamp(1.1rem, 2.4vh, 1.9rem);
+  border-top: 1px solid var(--hair);
+}
+
+.reveal-row:last-child {
+  border-bottom: 1px solid var(--hair);
+}
+
+/* fit-content is the whole point: the fill has to end where the
+   text ends. Stretched to the column edge it reads as a table
+   row highlight, not as the word being coloured in. */
+.reveal-row__surface {
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.12em 0.34em;
+  margin-inline-start: -0.34em;
+  border-radius: 0.16em;
+  overflow: clip;
+  transform-origin: left center;
+  transition: transform var(--t-reveal) var(--ease-out);
+}
+
+.reveal-row__fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.reveal-row__fill::before {
+  content: '';
+  position: absolute;
+  left: var(--mx, 50%);
+  top: var(--my, 50%);
+  width: var(--d, 0px);
+  height: var(--d, 0px);
+  margin-left: calc(var(--d, 0px) / -2);
+  margin-top: calc(var(--d, 0px) / -2);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform var(--t-reveal) var(--ease-out);
+
+  /* A mesh — four offset silver blooms over black. Flat colour
+     reads as a UI state; the mesh reads as a material, and it is
+     where the third colour does its most visible work. */
+  background:
+    radial-gradient(50% 60% at 22% 26%, rgba(180, 185, 193, 0.30), transparent 70%),
+    radial-gradient(46% 56% at 78% 18%, rgba(180, 185, 193, 0.16), transparent 72%),
+    radial-gradient(56% 66% at 30% 84%, rgba(180, 185, 193, 0.22), transparent 70%),
+    radial-gradient(52% 62% at 86% 78%, rgba(180, 185, 193, 0.12), transparent 70%),
+    var(--black);
+}
+
+.reveal-row__label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-size: var(--ty-title-size);
+  line-height: var(--ty-title-lh);
+  letter-spacing: var(--ty-title-ls);
+  font-weight: 600;
+  color: var(--ink);
+  transition: color var(--t-state) var(--ease-out) 0.1s;
+}
+
+.reveal-row__meta {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: var(--ty-meta-size);
+  color: var(--ink-dim);
+}
+
+.reveal-row__desc {
+  flex-basis: 100%;
+  font-size: var(--ty-meta-size);
+  line-height: var(--ty-meta-lh);
+  color: var(--ink-dim);
+  max-width: 62ch;
+}
+
+/* Touch has no hover state to enter from, and a sticky :hover on
+   tap would leave a row filled after the finger lifts. */
+@media (pointer: fine) {
+  .reveal-row:hover .reveal-row__fill::before {
+    transform: scale(1);
+  }
+
+  .reveal-row:hover .reveal-row__surface {
+    transform: scale(1.035);
+  }
+
+  /* The delay lets the fill arrive under the text before the text
+     changes colour — flipped first, the word goes invisible for a
+     few frames against the old ground. */
+  .reveal-row:hover .reveal-row__label {
+    color: var(--white);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-row__surface,
+  .reveal-row__fill::before,
+  .reveal-row__label {
+    transition-duration: 1ms;
+  }
+
+  .reveal-row:hover .reveal-row__surface {
+    transform: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .reveal-row__meta { margin-inline-start: 0; flex-basis: 100%; }
+}

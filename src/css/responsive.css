@@ -1,63 +1,36 @@
 /* ============================================================
    responsive.css — Breakpoints. Loads late so it reaches every
-   stylesheet (§9 tier 4).
+   stylesheet.
 
    Two independent axes: viewport WIDTH decides layout, input
    POINTER decides interaction. A touch laptop is wide and still
-   has no cursor, so those queries must not be conflated (§16.5).
+   has no cursor, so those queries must not be conflated.
+
+   Nav breakpoints live in nav.css with the rest of the pill;
+   the sticky-stack breakpoint lives in panels.css with the
+   stack. Only cross-cutting layout belongs here.
    ============================================================ */
 
 @media (max-width: 900px) {
   .about-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
   }
 }
 
 @media (max-width: 768px) {
-
-  /* ── Nav: links move into the menu sheet ── */
-  nav {
-    padding: 0 var(--gutter);
-  }
-
-  .nav-links,
-  .nav-actions {
-    display: none;
-  }
-
-  #nav-menu-toggle {
-    display: flex;
-  }
-
-  /* ── Grids collapse ── */
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .project-card.featured {
-    grid-column: span 1;
-  }
-
   .skills-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .video-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
   }
 
-  /* ── Experience rows stack ── */
-  .exp-item {
-    grid-template-columns: 1fr;
-    gap: 0.375rem;
-  }
-
-  /* ── Cards breathe less at this width ── */
-  .project-card,
   .skill-card {
     padding: 1.5rem;
+    min-height: 0;
   }
 
   .hero-actions {
@@ -66,6 +39,19 @@
 
   .hero-actions a {
     flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 680px) {
+  /* Below the sticky breakpoint the chapters simply stack, so a
+     full viewport each turns the page into a lot of scrolling for
+     not much content. */
+  .panel {
+    min-height: 0;
+  }
+
+  .contact-inner {
+    min-height: 0;
   }
 }
 
@@ -80,8 +66,7 @@
   }
 
   /* Hover states are meaningless without a hover; the press state
-     in reset.css is what carries feedback here (§1). */
-  .project-card:hover,
+     in reset.css is what carries feedback here. */
   .skill-card:hover,
   .video-card:hover {
     transform: none;

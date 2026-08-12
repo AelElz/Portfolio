@@ -3,32 +3,31 @@
    pages (C/C++, Docker & DevOps) and their diagram visuals.
    ============================================================ */
 
-.deepdive-page {
-  padding-top: var(--nav-h);
-}
-
-/* Wayfinding: every page states the way out (§16). */
+/* Wayfinding: every page states the way out. */
 .back-link {
-  display: inline-block;
-  font-size: var(--ty-caption-size);
-  font-weight: 500;
-  color: var(--c-text-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--ty-meta-size);
+  color: var(--ink-dim);
   margin-bottom: 2rem;
+  width: fit-content;
   transition: color var(--t-state) var(--ease-out);
 }
 
 .back-link:hover {
-  color: var(--c-text-1);
+  color: var(--ink);
 }
 
-.deepdive-hero {
-  padding-top: 5rem;
-  padding-bottom: 3.75rem;
+/* The deep-dive hero is a chapter like any other, so it takes its
+   height from .panel and needs no padding of its own. */
+.deepdive-title {
+  font-size: clamp(2.6rem, 7.2vw, 5.6rem);
 }
 
-/* ── Per-project section ── */
-.deepdive-section {
-  border-top: 1px solid var(--c-border);
+.deepdive-intro {
+  margin-top: 1.4rem;
+  max-width: 54ch;
 }
 
 .deepdive-header {
@@ -49,8 +48,8 @@
   font-size: clamp(1.625rem, 3vw, 2.25rem);
   line-height: 1.15;
   letter-spacing: var(--ty-title-ls);
-  font-weight: 700;
-  color: var(--c-text-1);
+  font-weight: 600;
+  color: var(--ink);
   margin-bottom: 0.375rem;
 }
 
@@ -133,8 +132,10 @@
   align-items: center;
   justify-content: center;
   min-height: 20rem;
-  position: sticky;
-  top: calc(var(--nav-h) + 2rem);
+  /* Was sticky. Inside a chapter that is itself sticky and roughly
+     one viewport tall there is nothing left for it to travel
+     against, and nesting the two makes the resolved scrollport
+     browser-dependent. */
 }
 
 .diagram {
@@ -181,7 +182,7 @@
 
 .diagram-hub-label {
   font-size: 8px;
-  font-weight: 700;
+  font-weight: 600;
   fill: var(--c-text-1);
   letter-spacing: 0.02em;
 }
@@ -429,4 +430,35 @@
     position: static;
     min-height: 16rem;
   }
+}
+
+/* ── Closing chapter ──────────────────────────────────────────
+   Every deep-dive ends on a full ground with the way out and the
+   footer, so no page trails off into a bare strip. */
+
+.closing-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 2 * var(--panel-y));
+}
+
+.closing-body {
+  margin-block: auto;
+}
+
+.closing-body .section-title {
+  font-size: var(--ty-hero-size);
+  line-height: var(--ty-hero-lh);
+  letter-spacing: var(--ty-hero-ls);
+}
+
+.closing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.4rem;
+}
+
+@media (max-width: 680px) {
+  .closing-inner { min-height: 0; }
 }

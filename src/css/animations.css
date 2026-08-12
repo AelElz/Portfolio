@@ -1,40 +1,23 @@
 /* ============================================================
    animations.css — Accessibility overrides. Loads late, so it
-   reaches every stylesheet (§9 tier 4).
+   reaches every stylesheet.
 
    Reduced motion means a gentler, non-vestibular equivalent —
-   NOT no feedback. Travel, loops and parallax go; opacity and
-   colour changes that aid comprehension stay (§14).
+   NOT no feedback. Travel, loops and scrubs go; opacity and
+   colour changes that aid comprehension stay.
    ============================================================ */
-
-/* ── Theme switch — ease the brightness jump (§14) ──
-   The nav toggle adds this class for ~400ms around a dark↔light
-   swap so every surface cross-fades instead of hard-cutting. */
-html.theme-switching,
-html.theme-switching *,
-html.theme-switching *::before,
-html.theme-switching *::after {
-  transition: background-color var(--t-chrome) var(--ease-out),
-              background var(--t-chrome) var(--ease-out),
-              color var(--t-chrome) var(--ease-out),
-              border-color var(--t-chrome) var(--ease-out),
-              fill var(--t-chrome) var(--ease-out),
-              stroke var(--t-chrome) var(--ease-out),
-              box-shadow var(--t-chrome) var(--ease-out) !important;
-}
 
 @media (prefers-reduced-motion: reduce) {
 
-  /* Smooth scrolling is vestibular motion too, and it survives a
-     blanket transition override — it has to be named. */
+  /* Named explicitly: a blanket transition override does not
+     reach scroll-behavior, and Lenis is already disabled in JS. */
   html,
   .chat-messages {
     scroll-behavior: auto;
   }
 
   /* ── Stop every ambient loop ── */
-  #hero::before,
-  .orbit-ring,
+  .grain::before,
   .about-avatar-ring,
   .chat-orbit,
   .chat-notify,
@@ -50,21 +33,16 @@ html.theme-switching *::after {
   }
 
   /* ── Drop travel, keep the state change ── */
-  .project-card:hover,
   .skill-card:hover,
   .video-card:hover,
   .contact-link:hover,
   .skill-link:hover,
-  .about-avatar-wrap:hover .about-avatar-ring::before {
+  .reveal-row:hover .reveal-row__surface {
     transform: none;
   }
 
-  .project-card::after {
-    transition: opacity var(--t-state) var(--ease-out);
-  }
-
   /* Press feedback becomes a dimming rather than a scale — still
-     instant, still on pointer-down, just not spatial (§1 + §14). */
+     instant, still on pointer-down, just not spatial. */
   .btn-primary:active,
   .btn-ghost:active,
   .nav-btn:active,
@@ -74,7 +52,6 @@ html.theme-switching *::after {
   .skill-link:active,
   .project-link:active,
   .back-link:active,
-  .nav-logo-img:active,
   #chat-send:active,
   #chat-trigger:active,
   #nav-menu-toggle:active {

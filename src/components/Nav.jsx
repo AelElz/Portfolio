@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import gsap from 'gsap';
 import { spring } from '../motion/springs';
 
 const LINKS = [
@@ -11,8 +12,6 @@ const LINKS = [
   { href: '#contact', label: 'Contact' },
 ];
 
-/* The deep-dive pages behind the Skills chevron. Direct, specific labels —
-   they name their contents, not a vague umbrella (§16). */
 const SKILL_PAGES = [
   { to: '/projects/c-cpp', label: 'C / C++' },
   { to: '/projects/docker-devops', label: 'Docker & DevOps' },
@@ -28,50 +27,78 @@ const EXTERNAL = [
   { href: 'https://github.com/AelElz', label: 'GitHub ↗' },
 ];
 
+/* The nav's own centre line. Whatever chapter crosses it is what
+   the pill is sitting on, and therefore what it has to invert
+   against. */
+const PROBE_Y = 44;
+
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
   const [activeId, setActiveId] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [skillsOpen, setSkillsOpen] = useState(false);
-  const [theme, setTheme] = useState(
-    () => document.documentElement.dataset.theme || 'dark'
-  );
+  const [over, setOver] = useState('dark');
   const navRef = useRef(null);
-  const switchTimer = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const onHome = location.pathname === '/';
 
-  /* Theme is a token swap on <html>. The transient class eases the
-     brightness jump — §14 warns against abrupt dark↔light cuts. */
-  const toggleTheme = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    const root = document.documentElement;
-    root.classList.add('theme-switching');
-    root.dataset.theme = next;
-    root.style.colorScheme = next;
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute('content', next === 'light' ? '#F5F5F7' : '#0A0A0A');
-    try {
-      localStorage.setItem('theme', next);
-    } catch { /* private mode — the choice just won't persist */ }
-    clearTimeout(switchTimer.current);
-    switchTimer.current = setTimeout(
-      () => root.classList.remove('theme-switching'),
-      400
-    );
-    setTheme(next);
-  };
-
+  /* ── Chapter-adaptive colouring ──
+     Panels overlap in the sticky stack, so more than one chapter
+     can cross the probe line at once. Taking the first match
+     picks whichever is earliest in the DOM, which is the one
+     UNDERNEATH — the pill then inverts against a chapter the user
+     cannot see. The visible one is the highest z-index. */
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    let lastY = -1;
+    let lastTheme = '';
 
+    const probe = () => {
+      const sections = document.querySelectorAll('[data-theme-section]');
+      let winner = null;
+      let winnerZ = -Infinity;
+
+      sections.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top > PROBE_Y || rect.bottom < PROBE_Y) return;
+        const z = parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+        if (z >= winnerZ) {
+          winnerZ = z;
+          winner = el;
+        }
+      });
+
+      const theme = winner?.dataset.themeSection || 'dark';
+      if (theme !== lastTheme) {
+        lastTheme = theme;
+        setOver(theme);
+      }
+    };
+
+    /* Runs on GSAP's ticker, which is already the site's single rAF
+       loop — but only re-measures when the page actually moved. */
+    const tick = () => {
+      const y = window.scrollY;
+      if (y === lastY) return;
+      lastY = y;
+      probe();
+    };
+
+    probe();
+    gsap.ticker.add(tick);
+    window.addEventListener('resize', probe);
+    return () => {
+      gsap.ticker.remove(tick);
+      window.removeEventListener('resize', probe);
+    };
+  }, [location.pathname]);
+
+  /* ── Active section ──
+     NOT threshold 0.5: a chapter taller than the viewport never
+     reaches 50% visible, so it would never fire. A centre-line
+     band fires on whatever is crossing the middle of the screen,
+     whatever its height. */
   useEffect(() => {
-    const sections = document.querySelectorAll('section[id]');
+    const sections = document.querySelectorAll('section[id], [data-theme-section][id]');
     if (!sections.length) {
       setActiveId('');
       return;
@@ -83,16 +110,15 @@ export default function Nav() {
           if (entry.isIntersecting) setActiveId(entry.target.id);
         });
       },
-      { threshold: 0.5 }
+      { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
     );
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, [location.pathname]);
 
-  // Never trap the user in an open menu (§16 Wayfinding): Escape closes
-  // both surfaces, and so does any press outside the nav — no two
-  // translucent layers left stacked by accident (§1 layer model).
+  // Never trap the user in an open menu: Escape closes both
+  // surfaces, and so does any press outside the nav.
   useEffect(() => {
     if (!menuOpen && !skillsOpen) return;
     const close = () => {
@@ -123,12 +149,20 @@ export default function Nav() {
       e.preventDefault();
       navigate(`/${href}`);
     }
+    /* On Home the global anchor handler in App routes this through
+       Lenis — letting the browser jump would fight the smoothing. */
   };
 
   return (
-    <nav id="nav" ref={navRef} className={scrolled ? 'scrolled' : ''}>
-      <a href="#" onClick={(e) => handleLinkClick(e, '')} aria-label="Back to top">
-        <img src="/iconlogo2.png" alt="Ayoub Elazhari" className="nav-logo-img" />
+    <nav id="nav" ref={navRef} data-over={over}>
+      <a
+        href="#"
+        className="nav-brand"
+        onClick={(e) => handleLinkClick(e, '')}
+        aria-label="Back to top"
+      >
+        <span className="nav-mark" aria-hidden="true" />
+        <span className="nav-wordmark">Ayoub El Azhari</span>
       </a>
 
       <ul className="nav-links">
@@ -168,7 +202,6 @@ export default function Nav() {
                         initial={{ opacity: 0, y: -6, x: '-50%', scale: 0.96 }}
                         animate={{ opacity: 1, y: 0, x: '-50%', scale: 1 }}
                         exit={{ opacity: 0, y: -6, x: '-50%', scale: 0.96 }}
-                        /* Anchored to its trigger, no bounce on a click (§4, §7) */
                         transition={spring.move}
                         style={{ transformOrigin: 'top center' }}
                       >
@@ -202,26 +235,6 @@ export default function Nav() {
           ))}
         </div>
 
-        {/* Sun in the dark, moon in the light — the glyph names where the
-            click takes you. CSS on [data-theme] swaps them (§7: one object
-            rotating into its other state, not two unrelated icons). */}
-        <button
-          className="theme-toggle"
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          onClick={toggleTheme}
-        >
-          <svg className="tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            strokeWidth="2" strokeLinecap="round">
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-          </svg>
-          <svg className="tt-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        </button>
-
-        {/* ── Mobile ── the section links have to live somewhere (§16 Wayfinding) */}
         <button
           id="nav-menu-toggle"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -259,7 +272,7 @@ export default function Nav() {
                 </li>
               ))}
             </ul>
-            {/* Same destinations as the desktop chevron — parity across inputs (§16.5) */}
+            {/* Same destinations as the desktop chevron — parity across inputs */}
             <div className="nav-menu-group">
               {SKILL_PAGES.map(({ to, label }) => (
                 <Link

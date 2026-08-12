@@ -1,223 +1,258 @@
 /* ============================================================
    tokens.css — The single source of truth.
-   Six groups: color · material · motion · type · space · layer.
-   Nothing outside this file declares a raw color, duration,
-   ease, z-index, or type size. See DESIGN.md §2.
+   Three colours, two weights, one ease. Nothing outside this
+   file declares a raw colour, duration, ease, or type size.
+
+   The palette does not have a light mode and a dark mode. It
+   has dark CHAPTERS and light CHAPTERS, alternating down the
+   page, and every component reads the same semantic names
+   (--ink, --ground, --hair) which each panel redefines. That
+   is why there is no theme toggle: you get both on every
+   scroll, and the ratio is a layout property.
    ============================================================ */
 
 :root {
 
-  /* ══ 1. COLOR ══════════════════════════════════════════════
-     Monochrome. White is the accent; black is the ground.
-     One ramp, everything else derived from it. */
+  /* ══ 1. COLOUR ═════════════════════════════════════════════
+     Black 40 / white 40 / silver 20.
 
-  --accent:        #FFFFFF;
-  --accent-dim:    #D8D8DC;   /* gradient tail, pressed accent */
-  --accent-deep:   #8E8E93;   /* far end of display gradients */
-  --on-accent:     #000000;   /* text on a filled accent surface */
+     The 40/40 is bought by the chapter rhythm — six chapters
+     alternating black and white ground, so neither can run away
+     with the page. The remaining 20 is silver, and it is spent
+     deliberately rather than sprinkled: every raised surface,
+     every hairline, all secondary text, and the hover fill are
+     silver. Nothing else is allowed a colour.
 
-  /* Alpha derivatives — semantic, never numeric at the call site. */
-  --tint-wash:     rgba(255, 255, 255, 0.05);   /* hover fill      */
-  --tint-hairline: rgba(255, 255, 255, 0.10);   /* quiet borders   */
-  --tint-edge:     rgba(255, 255, 255, 0.28);   /* active borders  */
-  --tint-glow:     rgba(255, 255, 255, 0.45);   /* shadow bloom    */
-  --tint-faint:    rgba(255, 255, 255, 0.07);   /* decorative rings, faint lines */
-  --glow-core:     rgba(255, 255, 255, 0.30);   /* orbit body glows */
-  --edge-fade:     rgba(10, 10, 10, 0.5);       /* scroll edge smudge under chrome */
+     Not pure #000/#FFF: at full contrast the type buzzes and
+     large flat grounds glare. These are black and white with
+     just enough tooth to sit still. */
 
-  --c-border:      rgba(255, 255, 255, 0.08);
+  --black:        #0B0B0D;
+  --white:        #FAFAFB;
+  --silver:       #B4B9C1;
 
-  /* Text — three steps, no more. */
-  --c-text-1:      #F5F5F7;
-  --c-text-2:      #A1A1A6;
-  --c-text-3:      #6E6E73;
+  --black-dim:    rgba(11, 11, 13, 0.62);
+  --white-dim:    rgba(250, 250, 251, 0.62);
 
-  /* Display gradient — white falling to silver. Solid backgrounds only. */
-  --g-accent:      linear-gradient(135deg, #FFFFFF, var(--accent-dim));
-  --g-accent-text: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 42%, var(--accent-deep) 100%);
-  --g-accent-soft: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  /* Silver carried into each ground, for surfaces that must read
+     as raised without introducing a fourth colour. */
+  --silver-dark:  #17181C;   /* silver in black — cards on dark  */
+  --silver-light: #E8EAEE;   /* silver in white — cards on light */
+  --silver-ink:   #6E747E;   /* silver dark enough to read on white */
 
 
-  /* ══ 2. MATERIAL ═══════════════════════════════════════════
-     Weight encodes hierarchy. Opaque carries content;
-     translucent is chrome that content scrolls under. */
+  /* ══ 2. SEMANTIC INK & GROUND ══════════════════════════════
+     Redefined by .panel--dark / .panel--light in panels.css.
+     Components never name a colour, only a role — which is
+     what lets one card component sit on either chapter. */
 
-  --mat-base:      #0A0A0A;                    /* page               */
-  --mat-raised:    #141414;                    /* cards, above base  */
-  --mat-sunken:    #060606;                    /* insets, video wells */
-  --mat-chrome:    rgba(10, 10, 10, 0.72);     /* nav                */
-  --mat-sheet:     rgba(20, 20, 20, 0.88);     /* chat panel — heavier than
-                                                  chrome: it's the focused
-                                                  surface over busy content */
+  --ground:     var(--black);
+  --raised:     var(--silver-dark);
+  --ink:        var(--white);
+  --ink-dim:    var(--silver);
+  --on-ink:     var(--black);   /* text on a filled ink surface */
 
-  --blur-chrome:   blur(20px) saturate(180%);
-  --blur-sheet:    blur(24px) saturate(180%);
-
-  /* Bigger surface reads as thicker: stronger blur, deeper shadow. */
-  --shadow-card:   0 20px 60px rgba(0, 0, 0, 0.45);
-  --shadow-sheet:  0 24px 70px rgba(0, 0, 0, 0.55);
-  --shadow-chrome: 0 1px 24px rgba(0, 0, 0, 0.35);
+  --wash:       rgba(250, 250, 251, 0.06);   /* hover fill     */
+  --hair:       rgba(250, 250, 251, 0.16);   /* quiet borders  */
+  --edge:       rgba(250, 250, 251, 0.34);   /* active borders */
 
 
-  /* ══ 3. MOTION ═════════════════════════════════════════════
-     Three durations, three eases. Springs live in
-     src/motion/springs.js — these are for discrete CSS state only. */
+  /* ══ 3. TYPE ═══════════════════════════════════════════════
+     System stack on purpose: Apple devices get real SF Pro,
+     everything else its native equivalent. SF Pro is NOT
+     self-hosted — Apple does not license it for embedding.
 
-  --t-press:       100ms;   /* pointer-down feedback  */
-  --t-state:       180ms;   /* hover, color, border   */
-  --t-chrome:      320ms;   /* material, blur ramps   */
+     Two weights, 400 and 600. No 300, no 700, no italics. */
 
-  --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in:       cubic-bezier(0.64, 0, 0.78, 0);   /* inverse of --ease-out */
-  --ease-both:     cubic-bezier(0.76, 0, 0.24, 1);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+               "Helvetica Neue", "Segoe UI", Roboto, Inter, Arial, sans-serif;
 
+  --ty-hero-size:  clamp(3.2rem, 10.5vw, 8.75rem);
+  --ty-hero-lh:    0.98;
+  --ty-hero-ls:    -0.03em;
 
-  /* ══ 4. TYPE ═══════════════════════════════════════════════
-     System font — it already ships optical sizing and tracking
-     tables. Sizes in rem so the user's text-size setting works.
-     Tracking is size-specific: large negative, body zero, small positive. */
+  --ty-title-size: clamp(2rem, 4.6vw, 3.9rem);
+  --ty-title-lh:   1.06;
+  --ty-title-ls:   -0.02em;
 
-  /* One face everywhere: SF Pro. No mono accents, no second family. */
-  --font:      "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
-               "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ty-body-size:  clamp(1.05rem, 1.6vw, 1.35rem);
+  --ty-body-lh:    1.55;
+  --ty-body-ls:    -0.005em;
 
-  --ty-display-size: clamp(3rem, 7vw, 5.5rem);
-  --ty-display-lh:   1.04;
-  --ty-display-ls:   -0.04em;
+  /* Eyebrows sit at label size in the SAME family and case as
+     body text. Uppercase + wide tracking reads as a second
+     typeface and cheapens the whole page — see DESIGN.md. */
+  --ty-label-size: clamp(1rem, 1.35vw, 1.28rem);
+  --ty-label-lh:   1.3;
 
-  --ty-title-size:   clamp(2rem, 4vw, 3.25rem);
-  --ty-title-lh:     1.1;
-  --ty-title-ls:     -0.03em;
+  /* Not in the brief, but the site needs a step below body for
+     tags, dates and captions. Same family, same case. */
+  --ty-meta-size:  clamp(0.875rem, 1.05vw, 0.97rem);
+  --ty-meta-lh:    1.45;
 
-  --ty-headline-size: 1.25rem;
-  --ty-headline-lh:   1.3;
-  --ty-headline-ls:   -0.02em;
+  /* Optical alignment of display type. Glyph side bearing scales
+     with font size, so a display heading looks indented next to
+     body text even when the CSS boxes match. Corrected in em so
+     it holds across clamp(), and logical so RTL corrects the
+     other edge.
 
-  --ty-body-lg-size: clamp(1.125rem, 2.5vw, 1.5rem);
-  --ty-body-lg-lh:   1.55;
-  --ty-body-lg-ls:   -0.01em;
-
-  --ty-body-size:    1.0625rem;
-  --ty-body-lh:      1.65;
-  --ty-body-ls:      0;
-
-  --ty-callout-size: 0.9375rem;
-  --ty-callout-lh:   1.6;
-  --ty-callout-ls:   0;
-
-  --ty-caption-size: 0.8125rem;
-  --ty-caption-lh:   1.5;
-  --ty-caption-ls:   0.01em;
-
-  --ty-label-size:   0.8125rem;
-  --ty-label-lh:     1.2;
-  --ty-label-ls:     0.01em;
+     Measured on this stack, not inherited: canvas measureText
+     reports 7.92px of left bearing on the 128px heading against
+     1.21px on the body, and 6.71/128 = 0.0524em is what closes
+     that gap. Verified after the fact — heading ink lands at
+     49.21px, body ink at 49.21px. */
+  --optical-lead: -0.0524em;
 
 
-  /* ══ 5. SPACE ══════════════════════════════════════════════
-     rem, so layout scales with the text (§15). */
+  /* ══ 4. MOTION ═════════════════════════════════════════════
+     One ease carries the whole site. Everything that uses it
+     needs a prefers-reduced-motion fallback. */
 
-  --nav-h:         4rem;
-  --section-gap:   8.75rem;
-  --max-w:         61.25rem;
-  --gutter:        1.5rem;
-  --gutter-wide:   3rem;
-  --grid-gap:      1.25rem;
+  --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-both:  cubic-bezier(0.76, 0, 0.24, 1);
 
-  --radius:        18px;
-  --radius-sm:     10px;
-  --radius-pill:   980px;
+  --t-press:    100ms;
+  --t-state:    180ms;
+  --t-chrome:   320ms;
+
+  --t-reveal:   620ms;   /* circular hover fill */
+
+
+  /* ══ 5. SPACE ══════════════════════════════════════════════ */
+
+  --container:  1240px;
+  --pad-x:      clamp(20px, 4vw, 48px);
+  --panel-y:    clamp(5rem, 11vh, 9rem);
+
+  --nav-h:      64px;
+  --nav-inset:  12px;
+
+  --radius:     22px;
+  --radius-sm:  12px;
+  --radius-pill: 999px;
 
 
   /* ══ 6. LAYER ══════════════════════════════════════════════
-     Six layers. No z-index outside this table. */
+     Panels claim 1–99 dynamically (assigned by PanelStack).
+     No z-index outside this table. */
 
-  --z-base:        0;
-  --z-raised:      1;
-  --z-chrome:      100;
-  --z-float:       1000;
-  --z-transition:  2000;
-  --z-pointer:     9000;
+  --z-base:       0;
+  --z-raised:     1;
+  --z-nav:        200;
+  --z-float:      250;
+  --z-preloader:  300;
+  --z-pointer:    400;
 
 
   /* ── Cursor geometry ── */
-  --cursor-size:   10px;
-  --cursor-aura:   38px;
+  --cursor-size:  10px;
+  --cursor-aura:  38px;
 }
 
-/* ══ LIGHT THEME ═══════════════════════════════════════════
-   The same system, inverted: black becomes the accent, white
-   the ground. Set via data-theme on <html> (see index.html
-   bootstrap + the nav toggle). Only tokens change — no other
-   file knows which theme is active. */
 
-:root[data-theme='light'] {
-  --accent:        #000000;
-  --accent-dim:    #3A3A3C;
-  --accent-deep:   #86868B;
-  --on-accent:     #FFFFFF;
+/* ══ BRIDGE ════════════════════════════════════════════════
+   The deep-dive CSS, chatbot and diagrams were written against
+   the old monochrome token names. Rather than a big-bang
+   rename, those names now resolve onto the new palette, so
+   every surface is already black/white/silver before rewriting.
+   Anything still reading these is styled but not yet designed. */
 
-  --tint-wash:     rgba(0, 0, 0, 0.04);
-  --tint-hairline: rgba(0, 0, 0, 0.12);
-  --tint-edge:     rgba(0, 0, 0, 0.30);
-  --tint-glow:     rgba(0, 0, 0, 0.30);
-  --tint-faint:    rgba(0, 0, 0, 0.08);
-  --glow-core:     rgba(0, 0, 0, 0.22);
-  --edge-fade:     rgba(245, 245, 247, 0.55);
+:root {
+  --accent:        var(--ink);
+  --accent-dim:    var(--ink-dim);
+  --accent-deep:   var(--ink-dim);
+  --on-accent:     var(--on-ink);
 
-  --c-border:      rgba(0, 0, 0, 0.10);
+  --tint-wash:     var(--wash);
+  --tint-hairline: var(--hair);
+  --tint-edge:     var(--edge);
+  /* Silver, not white-at-alpha: these are absolute values used by
+     the diagrams, which appear on both grounds. A white tint is
+     invisible on a white chapter; a mid-tone silver reads on
+     either — which is the whole argument for the third colour. */
+  --tint-glow:     rgba(180, 185, 193, 0.50);
+  --tint-faint:    rgba(180, 185, 193, 0.12);
+  --glow-core:     rgba(180, 185, 193, 0.30);
+  --edge-fade:     rgba(11, 11, 13, 0.5);
+  --c-border:      var(--hair);
 
-  --c-text-1:      #1D1D1F;
-  --c-text-2:      #55555A;
-  --c-text-3:      #86868B;
+  --c-text-1:      var(--ink);
+  --c-text-2:      var(--ink-dim);
+  --c-text-3:      var(--ink-dim);
 
-  --g-accent:      linear-gradient(135deg, #000000, var(--accent-dim));
-  --g-accent-text: linear-gradient(135deg, #000000 0%, #000000 42%, var(--accent-deep) 100%);
-  --g-accent-soft: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.015));
+  --g-accent:      linear-gradient(135deg, var(--ink), var(--ink));
+  --g-accent-text: linear-gradient(135deg, var(--ink) 0%, var(--ink) 42%, var(--ink-dim) 100%);
+  --g-accent-soft: linear-gradient(135deg, var(--wash), transparent);
 
-  --mat-base:      #F5F5F7;
-  --mat-raised:    #FFFFFF;
-  --mat-sunken:    #E8E8EA;
-  --mat-chrome:    rgba(245, 245, 247, 0.72);
-  --mat-sheet:     rgba(255, 255, 255, 0.88);
+  --mat-base:      var(--ground);
+  --mat-raised:    var(--raised);
+  --mat-sunken:    color-mix(in srgb, var(--ground) 86%, #000);
+  --mat-chrome:    color-mix(in srgb, var(--ground) 72%, transparent);
+  --mat-sheet:     color-mix(in srgb, var(--raised) 92%, transparent);
 
-  --shadow-card:   0 20px 60px rgba(0, 0, 0, 0.10);
-  --shadow-sheet:  0 24px 70px rgba(0, 0, 0, 0.16);
-  --shadow-chrome: 0 1px 24px rgba(0, 0, 0, 0.06);
+  --blur-chrome:   blur(20px) saturate(1.5);
+  --blur-sheet:    blur(24px) saturate(1.5);
+
+  --shadow-card:   0 20px 60px rgba(0, 0, 0, 0.34);
+  --shadow-sheet:  0 24px 70px rgba(0, 0, 0, 0.44);
+  --shadow-chrome: 0 1px 24px rgba(0, 0, 0, 0.24);
+
+  --font:          var(--font-sans);
+
+  --ty-display-size: var(--ty-hero-size);
+  --ty-display-lh:   var(--ty-hero-lh);
+  --ty-display-ls:   var(--ty-hero-ls);
+  --ty-headline-size: clamp(1.15rem, 1.7vw, 1.4rem);
+  --ty-headline-lh:   1.3;
+  --ty-headline-ls:   -0.015em;
+  --ty-body-lg-size: var(--ty-body-size);
+  --ty-body-lg-lh:   var(--ty-body-lh);
+  --ty-body-lg-ls:   var(--ty-body-ls);
+  --ty-body-ls:      -0.005em;
+  --ty-callout-size: clamp(0.97rem, 1.25vw, 1.08rem);
+  --ty-callout-lh:   1.5;
+  --ty-caption-size: var(--ty-meta-size);
+  --ty-caption-lh:   var(--ty-meta-lh);
+  --ty-caption-ls:   0;
+  --ty-label-ls:     0;
+
+  --nav-h:         64px;
+  --section-gap:   var(--panel-y);
+  --max-w:         var(--container);
+  --gutter:        var(--pad-x);
+  --gutter-wide:   var(--pad-x);
+  --grid-gap:      1.25rem;
+
+  --ease-in:       cubic-bezier(0.64, 0, 0.78, 0);
+  --ease-both:     cubic-bezier(0.76, 0, 0.24, 1);
+
+  --z-chrome:      var(--z-nav);
+  --z-transition:  280;
 }
 
-@media (max-width: 768px) {
-  :root {
-    --section-gap: 5.5rem;
-    --grid-gap:    1rem;
-  }
-}
 
-/* Frostier, not translucent, when the user asks for it (§14). */
+/* Frostier, not translucent, when the user asks for it. */
 @media (prefers-reduced-transparency: reduce) {
   :root {
-    --mat-chrome: var(--mat-base);
-    --mat-sheet:  var(--mat-raised);
+    --mat-chrome: var(--ground);
+    --mat-sheet:  var(--raised);
     --blur-chrome: none;
     --blur-sheet:  none;
   }
 }
 
-/* Near-solid surfaces with defined borders (§14). */
+/* Near-solid surfaces with defined borders. The three colours
+   stay; only the alpha on the derived lines goes up. */
 @media (prefers-contrast: more) {
-  :root {
-    --c-border:      rgba(255, 255, 255, 0.24);
-    --tint-hairline: rgba(255, 255, 255, 0.32);
-    --tint-edge:     rgba(255, 255, 255, 0.55);
-    --c-text-2:      #C9C9CE;
-    --c-text-3:      #9A9AA0;
+  .panel--dark {
+    --hair: rgba(180, 185, 193, 0.45);
+    --edge: rgba(180, 185, 193, 0.75);
+    --ink-dim: #D6DAE0;
   }
 
-  :root[data-theme='light'] {
-    --c-border:      rgba(0, 0, 0, 0.35);
-    --tint-hairline: rgba(0, 0, 0, 0.40);
-    --tint-edge:     rgba(0, 0, 0, 0.60);
-    --c-text-2:      #3A3A3C;
-    --c-text-3:      #55555A;
+  .panel--light {
+    --hair: rgba(110, 116, 126, 0.5);
+    --edge: rgba(110, 116, 126, 0.8);
+    --ink-dim: #4A4F58;
   }
 }

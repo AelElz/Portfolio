@@ -33,23 +33,38 @@
   transform: translate(-50%, -50%);
 }
 
+/* ── Colour follows the chapter under the pointer ──────────────
+   Cursor.jsx writes body[data-cursor-over] from the highest
+   z-index chapter crossing the CURSOR's y. Explicit colours, not
+   difference blending: blending inverts correctly over pure black
+   and pure white but turns muddy over the silver ground, and it
+   is at the mercy of whichever ancestor last isolated a stacking
+   context. Naming the two colours is predictable everywhere. */
+
+#cursor-dot i,
+#cursor-aura i {
+  --cursor-ink: #FAFAFB;   /* default: the page opens on black */
+}
+
+body[data-cursor-over='light'] #cursor-dot i,
+body[data-cursor-over='light'] #cursor-aura i {
+  --cursor-ink: #0B0B0D;
+}
+
 #cursor-dot i {
   width: var(--cursor-size);
   height: var(--cursor-size);
-  /* Always literal white: with difference blending, white inverts
-     whatever is behind it in BOTH themes. A theme-aware accent here
-     would vanish on its own background. */
-  background: #FFFFFF;
-  mix-blend-mode: difference;
+  background: var(--cursor-ink);
   transition: width var(--t-state) var(--ease-out),
               height var(--t-state) var(--ease-out),
+              background-color var(--t-state) var(--ease-out),
               opacity var(--t-state) var(--ease-out);
 }
 
 #cursor-aura i {
   width: var(--cursor-aura);
   height: var(--cursor-aura);
-  border: 1px solid var(--tint-edge);
+  border: 1px solid color-mix(in srgb, var(--cursor-ink) 55%, transparent);
   background: transparent;
   transition: width var(--t-chrome) var(--ease-out),
               height var(--t-chrome) var(--ease-out),
@@ -67,8 +82,8 @@ body.cursor-hover #cursor-dot i {
 body.cursor-hover #cursor-aura i {
   width: 3.5rem;
   height: 3.5rem;
-  border-color: var(--tint-glow);
-  background: var(--tint-wash);
+  border-color: color-mix(in srgb, var(--cursor-ink) 85%, transparent);
+  background: color-mix(in srgb, var(--cursor-ink) 10%, transparent);
 }
 
 /* ── Press: acknowledged the instant the pointer goes down (§1) ── */
