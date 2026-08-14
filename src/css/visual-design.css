@@ -193,3 +193,111 @@
   .design-arrow-prev { left: 0.5rem; }
   .design-arrow-next { right: 0.5rem; }
 }
+
+/* ── Shipped builds ───────────────────────────────────────────
+   A client that shipped twice gets both builds side by side, each
+   linking to its own live URL. Showing them together is the
+   point: the progression is the work, and a single "latest"
+   screenshot would throw away the earlier one.
+
+   The whole card is the link — frame and caption bar — so the
+   target is the size of the card, not the size of the words. */
+
+.version-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+/* Only split into columns when there is more than one build; a
+   lone site gets the full measure instead of a half-width card
+   with dead space beside it. */
+@media (min-width: 56rem) {
+  .version-grid[data-count='2'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.version-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.version-frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: clip;
+  border-radius: var(--radius);
+  background: var(--raised);
+  border: 1px solid var(--hair);
+  transition: border-color var(--t-state) var(--ease-out),
+              transform var(--t-chrome) var(--ease-out),
+              box-shadow var(--t-chrome) var(--ease-out);
+}
+
+.version-frame img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Anchored to the top: these are landing pages, and the hero is
+     the part worth showing when the crop has to give somewhere. */
+  object-position: top center;
+}
+
+/* Sits behind the image. If a screenshot has not been dropped in
+   yet the frame still reads as a deliberate, titled placeholder
+   instead of a broken-image icon. */
+.version-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  padding-inline: 1.5rem;
+  text-align: center;
+  font-size: var(--ty-meta-size);
+  color: var(--ink-dim);
+}
+
+.version-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.version-label {
+  font-size: var(--ty-headline-size);
+  line-height: var(--ty-headline-lh);
+  letter-spacing: var(--ty-headline-ls);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.version-cta {
+  font-size: var(--ty-meta-size);
+  color: var(--ink-dim);
+  white-space: nowrap;
+  transition: color var(--t-state) var(--ease-out);
+}
+
+@media (pointer: fine) {
+  .version-card:hover .version-frame {
+    border-color: var(--edge);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .version-card:hover .version-cta {
+    color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .version-card:hover .version-frame { transform: none; }
+}

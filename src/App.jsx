@@ -14,6 +14,10 @@ import CProjectsPage from './pages/CProjectsPage';
 import DockerDevOpsPage from './pages/DockerDevOpsPage';
 import MotionDesignPage from './pages/MotionDesignPage';
 import VisualDesignPage from './pages/VisualDesignPage';
+/* The /react entry, not /next. This is a Vite + React SPA — the
+   Next build of the package imports next/navigation, which does not
+   exist here, and Rollup fails the production build on it. */
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const location = useLocation();
@@ -99,6 +103,9 @@ export default function App() {
       </AnimatePresence>
 
       <Chatbot />
+
+      {/* Was imported but never rendered, so it collected nothing. */}
+      <Analytics />
 
       {intro && <Preloader onDone={() => setIntro(false)} />}
     </>

@@ -95,7 +95,17 @@ export default function DesignCarousel({ items, label = 'Designs' }) {
                 <img
                   src={item.image}
                   alt={item.alt}
-                  loading={i === 0 ? 'eager' : 'lazy'}
+                  /* NOT loading="lazy". These slides live inside a
+                     sticky chapter that pins at a negative offset,
+                     and the browser's lazy heuristic measures an
+                     image against its LAYOUT position, not the
+                     position it is painted at. Inside the stack it
+                     decides the image is far off-screen and never
+                     requests it — slides 3, 4 and 5 stayed blank
+                     even when fully visible. Priority still tells
+                     the browser these are not urgent. */
+                  loading="eager"
+                  fetchPriority={i === 0 ? 'high' : 'low'}
                   decoding="async"
                   draggable={false}
                 />
