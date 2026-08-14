@@ -1,4 +1,4 @@
-/* Visual design & UI/UX portfolio, grouped by client.
+/* UI/UX Projects & UI/UX portfolio, grouped by client.
    Add a client object to this array and the page renders it —
    nothing else to touch.
 

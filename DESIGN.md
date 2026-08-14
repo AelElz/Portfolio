@@ -450,3 +450,6 @@ Ranked by how much each costs the "quiet precision" the site is going for.
 **Suggested order:** 1–3 first (they're felt immediately, on every visit, by everyone), then
 4 and 7–8 (they unblock everything else), then 5–6 and 15 (correctness), then the rest.
 Item 17 is the only one that needs the gesture stack from §7 — do it last, or not at all.
+
+
+//https://www.instagram.com/reel/DZ3PQxzoUEr/?igsh=NTlzcWdyZHFjemQ4

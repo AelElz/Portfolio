@@ -16,7 +16,7 @@ const SKILL_PAGES = [
   { to: '/projects/c-cpp', label: 'C / C++' },
   { to: '/projects/docker-devops', label: 'Docker & DevOps' },
   { to: '/projects/motion-design', label: 'Motion Design' },
-  { to: '/projects/visual-design', label: 'Visual Design' },
+  { to: '/projects/visual-design', label: 'UI/UX Projects' },
 ];
 
 const EXTERNAL = [

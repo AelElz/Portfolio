@@ -9,7 +9,7 @@ import Reveal from './Reveal';
    position, and every chapter here is a sticky panel pinned at a
    negative offset — inside that stack it concludes the embed is
    far off-screen and never fetches it. The same bug left four
-   images blank on the Visual Design page while they were fully
+   images blank on the UI/UX Projects page while they were fully
    visible.
 
    An IntersectionObserver uses the real intersection rectangle,
