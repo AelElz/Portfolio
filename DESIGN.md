@@ -1,5 +1,24 @@
 # Design Structure — Ayoub Elazhari Portfolio
 
+> ## ⚠️ Historical — superseded by `DOCUMENTATION.md`
+>
+> This document describes the site's **first** design system: monochrome
+> (white-on-black), with a light/dark theme toggle in the nav, fixed-px sizing,
+> and no chapter stack.
+>
+> The site has since been rebuilt around a black / white / silver palette, an
+> alternating sticky chapter stack, a fluid root font-size, and **no theme
+> toggle** — the chapters themselves carry dark and light. Specific things below
+> that are no longer true: the `--accent`/`--mat-*`/`--c-text-*` token names, the
+> `:root[data-theme='light']` block, the theme-switching transition, and the
+> fixed type scale.
+>
+> Kept because the *reasoning* is still good — the Apple design principles, the
+> four-state interaction contract, the layer model and the accessibility rules
+> all still hold and are still followed. Read it for the "why", not the "what".
+>
+> **For current tokens, architecture and conventions, see `DOCUMENTATION.md`.**
+
 The design system for this site, specified against the **Apple Design** principles
 (*Designing Fluid Interfaces*, WWDC 2018; *The Details of UI Typography*, WWDC 2020;
 *Principles of Great Design*, WWDC 2026).
